@@ -1,0 +1,865 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="document-language" content="English">
+  <meta name="language-guard" content="is_american_english">
+  <meta name="handout:pdf:inject_supplementary_css" content="false">
+  <title>HuleEdu: The Essay-Scoring System</title>
+  <meta name="description" content="A public research overview of the HuleEdu essay-scoring system, its methods, evaluation, and data flow.">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="HuleEdu: The Essay-Scoring System">
+  <meta property="og:description" content="A public research overview of the HuleEdu essay-scoring system, its methods, evaluation, and data flow.">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="HuleEdu: The Essay-Scoring System">
+  <meta name="twitter:description" content="A public research overview of the HuleEdu essay-scoring system, its methods, evaluation, and data flow.">
+  <style>
+    /* Identity: university research-report family ("Where the Instrument Stands",
+       WeasyPrint/DejaVu). DejaVu Serif is not installed on this machine;
+       PT Serif is the substituted body face and Verdana substitutes for
+       DejaVu Sans inside the figures. */
+    @page {
+      size: A4;
+      margin: 17mm;
+      @bottom-right {
+        content: counter(page);
+        font-family: "PT Serif", "Charter", "Georgia", serif;
+        font-size: 8pt;
+        color: #717171;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: #111111;
+      background: #ffffff;
+      font-family: "PT Serif", "Charter", "Georgia", serif;
+      font-size: 10.5pt;
+      line-height: 1.5;
+      text-align: left;
+      counter-reset: sec;
+    }
+
+    h1,
+    h2,
+    h3 {
+      color: #111111;
+      font-weight: 700;
+      letter-spacing: 0;
+      page-break-after: avoid;
+    }
+
+    h1 {
+      font-size: 18pt;
+      line-height: 1.15;
+      margin: 0 0 5pt 0;
+    }
+
+    .meta {
+      color: #3f3f3f;
+      font-size: 11pt;
+      line-height: 1.5;
+      margin: 0 0 10pt 0;
+    }
+
+    .title-rule {
+      border: none;
+      border-top: 1.1pt solid #111111;
+      margin: 0 0 20pt 0;
+    }
+
+    h2 {
+      font-size: 13pt;
+      line-height: 1.2;
+      margin: 22pt 0 10pt 0;
+      counter-increment: sec;
+      counter-reset: subsec;
+    }
+
+    h2::before {
+      content: counter(sec);
+      margin-right: 0.68em;
+    }
+
+    h3 {
+      font-size: 11.5pt;
+      line-height: 1.2;
+      margin: 16pt 0 8pt 0;
+      counter-increment: subsec;
+    }
+
+    h3::before {
+      content: counter(sec) "." counter(subsec);
+      margin-right: 0.68em;
+    }
+
+    p {
+      margin: 0 0 9pt 0;
+    }
+
+    ul {
+      margin: 9pt 0 9pt 0;
+      padding: 0 0 0 14pt;
+    }
+
+    li {
+      margin-bottom: 5pt;
+    }
+
+    .figure {
+      margin: 14pt 0 14pt 0;
+      page-break-inside: avoid;
+    }
+
+    .figure svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .figure-caption {
+      font-size: 9.5pt;
+      line-height: 1.45;
+      color: #555555;
+      margin-top: 8pt;
+    }
+
+    .figure-caption strong {
+      font-weight: 400;
+      color: #555555;
+    }
+  </style>
+</head>
+<body>
+  <h1>HuleEdu: The Essay-Scoring System</h1>
+  <div class="meta">Reference document, August 2026.</div>
+  <hr class="title-rule">
+
+        <h2>About This Document</h2>
+
+        <p>The system behind my research has grown past the point where a description in
+        passing works. This document explains what the system is made
+        of, how a score is produced, how I test whether the scores mean anything, and, in
+        a section of its own, where student text travels when the system runs. It
+        assumes no background in machine learning or programming, and the glossary at
+        the end collects the technical terms. The results it mentions are current as
+        of August 2026, and none of them is final.</p>
+
+        <h2>What the System Is</h2>
+
+        <p>The system is a research instrument that produces estimates of essay quality.
+        It produces these estimates through several independent methods, so that the
+        methods can check each other. I designed it, built it, and run it myself. It is a
+        tool for studying assessment, and specifically for studying what happens when
+        different ways of judging writing agree or disagree. It is not a product that
+        grades students. No student receives a grade or feedback from it, and no teacher
+        uses it in live assessment work.</p>
+
+        <h2>The Essays the System Learns From</h2>
+
+        <p>A scoring method must learn from essays that already carry trusted human
+        scores, and it needs many of them. The system works with two collections of
+        essays.</p>
+
+        <p>The first collection is ELLIPSE, a public research corpus. A corpus is a
+        collection of texts assembled for study. ELLIPSE contains roughly 6,500 essays
+        written by school-age learners of English in the United States. Trained human
+        raters scored each essay on a scale from 1 to 5, in half-point steps, and every
+        essay carries the judgment of two raters. The corpus was released for research
+        use. It is anonymized, and it contains no identifiable students.</p>
+
+        <p>Because every essay carries two independent trained judgments, the corpus
+        also shows how often and how far trained raters disagree with each other. That record of human disagreement
+        becomes the benchmark against which the system's agreement must be read, and I
+        return to it in the section on evaluation.</p>
+
+        <p>The second collection is Swedish. It holds 281 essays written by my own
+        upper-secondary students across the courses English 5, English 6, and English 7.
+        Each essay is stored under an anonymous identifier. No path leads from an essay
+        to a student's identity for any party outside my own records.</p>
+
+        <p>ELLIPSE provides thousands of essays, each rated twice
+        by trained raters, so it is the material the methods learn from. The Swedish
+        essays carry no comparable double-rated reference scores, and 281 essays are far
+        too few to learn from. The Swedish essays therefore serve a different purpose.
+        They provide transfer evidence, which means evidence about how well something
+        learned from one population of writers carries over to another. The system
+        learns nothing from the Swedish essays.</p>
+
+        <h2>How a Score Is Produced</h2>
+
+        <p>The system estimates essay quality through three separate methods. I call them
+        lanes. The lanes are kept apart on purpose. Each lane looks at writing quality
+        from a partly different direction, so their agreement is informative and their
+        disagreement is evidence. Figure 1
+        shows the three lanes and how their outputs come together.</p>
+
+        <div class="figure">
+            <svg viewBox="0 0 760 460" width="760" height="460" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Flow diagram of the three scoring lanes">
+                <g font-family="Verdana, 'DejaVu Sans', sans-serif">
+                    <!-- Lane labels -->
+                    <text x="120" y="40" font-size="13" font-weight="700" fill="#111111">The transparent lane</text>
+                    <text x="120" y="180" font-size="13" font-weight="700" fill="#111111">The hybrid lane</text>
+                    <text x="120" y="320" font-size="13" font-weight="700" fill="#111111">The comparative-judgment lane</text>
+
+                    <!-- Essay document shape (feeds lanes a and b) -->
+                    <path d="M 20 116 L 72 116 L 88 132 L 88 204 L 20 204 Z" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+                    <path d="M 72 116 L 72 132 L 88 132" fill="none" stroke="#111111" stroke-width="1.5"/>
+                    <line x1="28" y1="148" x2="80" y2="148" stroke="#bbbbbb" stroke-width="1.5"/>
+                    <line x1="28" y1="160" x2="80" y2="160" stroke="#bbbbbb" stroke-width="1.5"/>
+                    <line x1="28" y1="172" x2="80" y2="172" stroke="#bbbbbb" stroke-width="1.5"/>
+                    <text x="54" y="222" font-size="12" fill="#111111" text-anchor="middle">one essay</text>
+
+                    <!-- Arrows: essay to lane a and lane b -->
+                    <path d="M 88 150 L 104 150 L 104 96 L 110 96" fill="none" stroke="#1f77b4" stroke-width="1.5"/>
+                    <polygon points="120,96 110,91 110,101" fill="#1f77b4"/>
+                    <path d="M 88 176 L 104 176 L 104 214 L 110 214" fill="none" stroke="#1f77b4" stroke-width="1.5"/>
+                    <polygon points="120,214 110,209 110,219" fill="#1f77b4"/>
+
+                    <!-- Lane a: 31 counted measures -->
+                    <rect x="120" y="50" width="180" height="96" rx="0" fill="#f1f1f1" stroke="#111111" stroke-width="1.5"/>
+                    <text x="130" y="68" font-size="12" font-weight="700" fill="#111111">31 counted measures</text>
+                    <text x="130" y="86" font-size="12" fill="#555555">errors per 100 words</text>
+                    <text x="130" y="103" font-size="12" fill="#555555">sentence-structure depth</text>
+                    <text x="130" y="120" font-size="12" fill="#555555">vocabulary variety</text>
+                    <text x="130" y="137" font-size="12" fill="#555555">organization</text>
+
+                    <line x1="300" y1="98" x2="312" y2="98" stroke="#1f77b4" stroke-width="1.5"/>
+                    <polygon points="322,98 312,93 312,103" fill="#1f77b4"/>
+
+                    <rect x="322" y="72" width="176" height="52" rx="0" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+                    <text x="410" y="93" font-size="12" font-weight="700" fill="#111111" text-anchor="middle">small regression model</text>
+                    <text x="410" y="111" font-size="12" fill="#555555" text-anchor="middle">(learned weights)</text>
+
+                    <line x1="498" y1="98" x2="510" y2="98" stroke="#1f77b4" stroke-width="1.5"/>
+                    <polygon points="520,98 510,93 510,103" fill="#1f77b4"/>
+
+                    <rect x="520" y="80" width="80" height="36" rx="0" fill="#e0e0e0" stroke="#111111" stroke-width="1.5"/>
+                    <text x="560" y="103" font-size="12" font-weight="700" fill="#111111" text-anchor="middle">score</text>
+
+                    <!-- Lane b: embedding + measures -->
+                    <rect x="120" y="190" width="180" height="52" rx="0" fill="#f1f1f1" stroke="#111111" stroke-width="1.5"/>
+                    <text x="210" y="211" font-size="12" font-weight="700" fill="#111111" text-anchor="middle">language model reading</text>
+                    <text x="210" y="229" font-size="12" fill="#555555" text-anchor="middle">768 numbers (embedding)</text>
+
+                    <rect x="120" y="252" width="180" height="30" rx="0" fill="#ffffff" stroke="#bbbbbb" stroke-width="1.5"/>
+                    <text x="210" y="272" font-size="12" fill="#111111" text-anchor="middle">+ the 31 measures</text>
+
+                    <path d="M 300 216 L 306 216 L 306 236 L 312 236" fill="none" stroke="#1f77b4" stroke-width="1.5"/>
+                    <path d="M 300 267 L 306 267 L 306 236" fill="none" stroke="#1f77b4" stroke-width="1.5"/>
+                    <polygon points="322,236 312,231 312,241" fill="#1f77b4"/>
+
+                    <rect x="322" y="210" width="176" height="52" rx="0" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+                    <text x="410" y="231" font-size="12" font-weight="700" fill="#111111" text-anchor="middle">small regression model</text>
+                    <text x="410" y="249" font-size="12" fill="#555555" text-anchor="middle">(learned weights)</text>
+
+                    <line x1="498" y1="236" x2="510" y2="236" stroke="#1f77b4" stroke-width="1.5"/>
+                    <polygon points="520,236 510,231 510,241" fill="#1f77b4"/>
+
+                    <rect x="520" y="218" width="80" height="36" rx="0" fill="#e0e0e0" stroke="#111111" stroke-width="1.5"/>
+                    <text x="560" y="241" font-size="12" font-weight="700" fill="#111111" text-anchor="middle">score</text>
+
+                    <!-- Lane c: essay pairs -->
+                    <path d="M 20 336 L 60 336 L 72 348 L 72 402 L 20 402 Z" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+                    <path d="M 34 328 L 74 328 L 86 340 L 86 394 L 76 394" fill="none" stroke="#111111" stroke-width="1.5"/>
+                    <text x="53" y="420" font-size="12" fill="#111111" text-anchor="middle">essay pairs</text>
+
+                    <line x1="88" y1="366" x2="110" y2="366" stroke="#1f77b4" stroke-width="1.5"/>
+                    <polygon points="120,366 110,361 110,371" fill="#1f77b4"/>
+
+                    <rect x="120" y="334" width="180" height="64" rx="0" fill="#f1f1f1" stroke="#111111" stroke-width="1.5"/>
+                    <text x="210" y="356" font-size="12" font-weight="700" fill="#111111" text-anchor="middle">model judge picks the</text>
+                    <text x="210" y="373" font-size="12" font-weight="700" fill="#111111" text-anchor="middle">better of two</text>
+                    <text x="210" y="390" font-size="12" fill="#555555" text-anchor="middle">repeated over many pairs</text>
+
+                    <line x1="300" y1="366" x2="312" y2="366" stroke="#1f77b4" stroke-width="1.5"/>
+                    <polygon points="322,366 312,361 312,371" fill="#1f77b4"/>
+
+                    <rect x="322" y="344" width="176" height="44" rx="0" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+                    <text x="410" y="371" font-size="12" font-weight="700" fill="#111111" text-anchor="middle">Bradley-Terry ranking</text>
+
+                    <line x1="498" y1="366" x2="510" y2="366" stroke="#1f77b4" stroke-width="1.5"/>
+                    <polygon points="520,366 510,361 510,371" fill="#1f77b4"/>
+
+                    <rect x="520" y="348" width="80" height="36" rx="0" fill="#e0e0e0" stroke="#111111" stroke-width="1.5"/>
+                    <text x="560" y="371" font-size="12" font-weight="700" fill="#111111" text-anchor="middle">rank</text>
+
+                    <text x="330" y="410" font-size="12" font-style="italic" fill="#555555">this lane is never trained on the human scores</text>
+
+                    <!-- Convergence -->
+                    <path d="M 600 98 L 616 98 L 616 190 L 622 190" fill="none" stroke="#1f77b4" stroke-width="1.5"/>
+                    <polygon points="632,190 622,185 622,195" fill="#1f77b4"/>
+                    <path d="M 600 236 L 622 236" fill="none" stroke="#1f77b4" stroke-width="1.5"/>
+                    <polygon points="632,236 622,231 622,241" fill="#1f77b4"/>
+                    <path d="M 600 366 L 616 366 L 616 282 L 622 282" fill="none" stroke="#1f77b4" stroke-width="1.5"/>
+                    <polygon points="632,282 622,277 622,287" fill="#1f77b4"/>
+
+                    <rect x="632" y="160" width="116" height="152" rx="0" fill="#e0e0e0" stroke="#111111" stroke-width="1.5"/>
+                    <text x="690" y="216" font-size="12" font-weight="700" fill="#111111" text-anchor="middle">comparison and</text>
+                    <text x="690" y="234" font-size="12" font-weight="700" fill="#111111" text-anchor="middle">combination</text>
+                    <text x="690" y="252" font-size="12" fill="#111111" text-anchor="middle">(triangulation)</text>
+                </g>
+            </svg>
+            <div class="figure-caption">
+                <strong>Figure 1. How a score is produced.</strong> One essay enters the transparent lane and the hybrid lane, and essay pairs enter the comparative-judgment lane. Each lane produces its own output, and the outputs are compared and combined only after every lane has finished. The comparative-judgment lane is never trained on the human scores.
+            </div>
+        </div>
+
+        <h3>The Transparent Lane</h3>
+
+        <p>The first is the transparent lane. My working name for it is the
+        white-box lane. Here the computer counts and measures properties of the
+        essay text. The properties are ones that writing research has long linked to
+        proficiency. It uses 31 such measures. They fall into a few families. One
+        family counts spelling, grammar, and punctuation errors and expresses them as
+        rates per hundred words, using an error-checking program. Another family measures
+        sentence structure. It relies on a parser, which is a program that works out the
+        grammatical structure of each sentence, so that depth and complexity of that
+        structure can be measured. A third family measures variety of vocabulary, for
+        example how much of the essay repeats the same words and how much of it draws on
+        rarer words rather than the most common ones. Related measures draw on published
+        word-norm studies, which record how familiar and how concrete individual words
+        are to readers, so that the essay's vocabulary can be characterized beyond simple
+        variety. A fourth family measures whether the essay stays on the assigned task,
+        by comparing the content of the essay with the content of the task description. A
+        fifth family measures how the essay is organized as a whole, for example how its
+        parts connect, how it holds together across paragraph boundaries, and in what
+        order its argumentative moves appear. Every measure can be inspected on its own,
+        and every measure has a stated rationale in writing research.</p>
+
+        <p>The 31 measures must then become a single score. This is done by a model. A
+        model, in this document, is a computer program that has learned a rule from
+        examples instead of being given the rule directly. The learning works as follows.
+        The program is shown the 31 measures for each ELLIPSE essay together with the
+        human score for that essay. Across thousands of essays, it adjusts how much
+        weight each measure deserves, so that its combined estimate lands as close as
+        possible to the human scores. A model that learns to predict a number in this way
+        is called a regression model. The regression model used here is small. It could
+        run on a phone. It contains no language ability of its own. It only weighs the 31
+        measurements it is given.</p>
+
+        <h3>The Hybrid Lane</h3>
+
+        <p>The second adds a different kind of evidence. It uses a language model. A
+        language model is a program trained on very large amounts of text until it can
+        process and produce language. Here, a language model reads the whole
+        essay and condenses its reading into a list of 768 numbers. Such a list is called
+        an embedding. The numbers have no individual meaning that a person can read off,
+        but together they capture patterns of meaning, phrasing, and fluency that the 31
+        counted measures do not reach. A regression model of the same kind as in the
+        transparent lane then learns, again from the human-scored ELLIPSE essays, how to
+        combine the 768 numbers with the transparent measures into one score.</p>
+
+        <p>The hybrid lane agrees with human raters more closely than the transparent
+        lane does. It is also less inspectable, because no one of the 768 numbers can be
+        pointed at and explained. When the transparent lane places an essay, I can state
+        which measures drove the placement. When the hybrid lane places an essay, I can
+        state only that the language model's reading, taken as a whole, pointed there.
+        I keep the lanes paired because the gap between them is
+        evidence: it estimates how much of human scoring behavior lies beyond the
+        measures that writing research can currently name.</p>
+
+        <h3>The Comparative-Judgment Lane</h3>
+
+        <p>The third uses comparative judgment, the method established in the
+        assessment literature, with a language model as the judge. Instead of scoring one
+        essay on a scale, a large language model is shown two essays and asked which one
+        is better. This is repeated many times over many pairs. A long-established
+        statistical method then turns the wins and losses into a ranking of all the
+        essays. The method is the Bradley-Terry model, which comes from psychometrics and
+        is the same machinery that underlies human comparative judgment studies. It
+        uses no counted measures and no embeddings, and it is never trained on the
+        ELLIPSE scores. It arrives at its ranking from pairwise decisions alone.</p>
+
+        <p>The comparative-judgment literature argues that deciding which of two texts
+        is better is an easier and more consistent act than placing one text on an
+        absolute scale, and that reliability comes from accumulating many such
+        decisions. The practical obstacle
+        for human panels is the number of comparisons required. A model judge removes
+        that obstacle, because it can make thousands of comparisons at negligible cost.
+        A model judge must itself be validated, and validating
+        it is part of what the project studies.</p>
+
+        <p>Two essays that receive the same grade can differ clearly in quality. A scale
+        score cannot state that difference, so absolute scoring collapses the
+        differences within a grade band. A ranking built from many pairwise decisions
+        preserves the order of essays within a band. That within-band information
+        survives even after the ranking is mapped onto grade thresholds.</p>
+
+        <p>Writing proficiency is the underlying construct. A test represents the construct only in part, because the
+        test domain is a limited expression of it. A rubric then puts into words what
+        raters should look for. The scale compresses those judgments into a small set
+        of levels. Raters interpret the scale through their experience and norms.
+        Grades finally make those interpretations durable, for example when they carry
+        into university admission or stand as evidence of proficiency. Each step
+        narrows the expression of the construct. Comparative judgment operates before
+        the scale step, on the direct relation between two texts within the same test
+        domain, so it captures relative quality without first forcing every essay
+        through the scale's small set of levels.</p>
+
+        <h3>Combining the Lanes</h3>
+
+        <p>The three lanes disagree with each other in informative ways, and the pattern
+        of agreement and disagreement is a research object in its own right. The research
+        proposal calls this a hybrid evidence structure. The lanes are also combined. In
+        experiments run on one ELLIPSE writing task as of mid-2026, adding the
+        comparative-judgment ranking to either scorer raised agreement with the human
+        raters, and a simple average of all three lanes agreed with the human raters more
+        closely than any single lane. The combination happens only after each lane has
+        produced its output. The comparative-judgment results never enter the training of
+        the scorers. The purpose of the combination is triangulation, meaning that partly
+        independent methods constrain each other's errors. Independence is what makes the
+        combination informative. The transparent lane sees counted properties, the hybrid
+        lane sees a language model's reading, and the comparative-judgment lane sees only
+        pairwise preferences, so when all three place an essay in the same region, that
+        placement rests on more than one view of writing quality. The combination
+        experiments have so far covered only one ELLIPSE writing task, and the
+        improvement must be shown to hold across tasks before it can be treated as a
+        settled property of the instrument.</p>
+
+        <h2>How I Know Whether It Works</h2>
+
+        <p>A scoring method must never be judged on the essays it learned from. A model
+        tested on its own training material looks better than it is, in the same way that
+        a student who has seen the answer key looks better than they are. The basic
+        safeguard is held-out testing. Some essays are set aside before training begins,
+        and the model never sees them until it is evaluated.</p>
+
+        <p>The primary test goes further than holding out essays. Essays are written in
+        response to writing tasks, and a model can quietly learn habits of one task
+        rather than writing quality in general. It can learn, for example, that essays on
+        a particular topic tend to use particular words, and then reward those words
+        instead of writing quality. The test therefore holds out whole tasks: the
+        model is evaluated on essays written for tasks it has never seen, the
+        closest available rehearsal of meeting new material in practice. A
+        portion of ELLIPSE is also kept sealed. It is opened only at declared checkpoints, so
+        that repeated peeking cannot gradually inflate the results. Between checkpoints,
+        all development runs against the ordinary held-out material, and the sealed
+        portion answers only the question of whether a declared stage of the work holds
+        up.</p>
+
+        <p>Agreement with human raters is measured with a statistic called quadratic
+        weighted kappa. In plain terms, it rewards close agreement and penalizes distant
+        disagreement more heavily. Being half a point away from the human score costs
+        little. Being two points away costs a great deal. The statistic runs from 0,
+        meaning agreement no better than chance, to 1, meaning perfect agreement. A
+        second, simpler measure is also tracked, namely the average distance between the
+        model's score and the human score, because the two measures can move apart and a
+        change is trusted more when both improve.</p>
+
+        <p>The two trained ELLIPSE raters agree with each other only moderately. Measured over thousands of
+        double-rated essays, their agreement lands near 0.58 on that scale. This does not
+        set a hard ceiling for a model, because a model is compared with the raters'
+        combined score rather than with a single rater. When trained human raters
+        agree at 0.58, no model's agreement figure can
+        read as a measure of truth; it reads as closeness to a
+        human judgment that is itself variable. My documentation treats the 0.58 figure
+        as context, never as a limit or a target.</p>
+
+        <p>Very few ELLIPSE essays sit at the extremes of the scale, so the models have
+        the least material to learn from at the ends of the scale. As a result, the models are most reliable in
+        the middle of the scale and compress their estimates toward the middle at the
+        ends. Diagnostics on the sealed material, as of mid-2026, show that this
+        compression is real but bounded. It is a known and quantified property of the
+        instrument.</p>
+
+        <p>ELLIPSE is released with an official division into training essays and test
+        essays. Published systems
+        report their results on the official test essays, so results computed on that
+        material can be compared across research groups. The sealed portion described
+        above is drawn from this official test material. In August 2026 I evaluated
+        the scorers on the complete official test set in one declared pass. The
+        scorers were frozen, which means that their training and settings were fixed
+        before the evaluation and nothing was changed afterwards. The official test
+        set holds 2,571 essays, and the evaluation covered 2,567 of them, because
+        four fragments shorter than fifty words were excluded. On the agreement
+        statistic described above, the hybrid scorer reached 0.756 when trained with
+        the re-admitted essays described later in this document, and 0.744 without
+        them. Its average distance from the human score was 0.30 scale points. A
+        system published in 2026 reports an agreement of 0.726 on the same official
+        test essays (Choi et al., 2026). The comparison is fair because both figures
+        come from the same complete official test material rather than from a reduced
+        or private portion of it. Results computed on one writing task, or on splits
+        that keep most of the data for training, are common in the field, but such
+        results are not comparable to results on the complete official test set. The
+        two systems differ in their training data and in what they model, so I read
+        the comparison as descriptive rather than as proof that one system is better.
+        This result comes from the regression scorer alone and uses no comparative
+        judgment. The hypothesis for comparative judgment therefore concerns more
+        than accuracy. The hypothesis is that the within-band quality information it
+        preserves can make the instrument one that teachers, and not only
+        researchers, can trust and use.</p>
+
+        <h2>Open Research</h2>
+
+        <p>Five lines of work are open, and each runs from a gap in the current evidence
+        to a hypothesis and a method that tests it.</p>
+
+        <h3>Verified Corrections for Second-Language Errors</h3>
+
+        <p>Ordinary spelling and grammar checkers are built for native-like text. They
+        miss errors that are typical of second-language writers, and they sometimes
+        correct a misspelled word into a real word that is wrong in context. The
+        hypothesis has two parts: error counts are themselves informative measures of
+        proficiency, and a repaired version of the essay should improve every
+        downstream measure that depends on parsing garbled text, because the parser and
+        the embedding both read a repaired sentence better than a broken one. The method
+        separates proposal from acceptance. One language model proposes a correction. A
+        second, independent model sees only the surrounding sentence, the original word,
+        and the proposed correction, and accepts or rejects it. A proposer reviewing its
+        own suggestion would accept its own mistakes.
+        Only clean one-word-to-one-word spelling corrections are promoted into a durable
+        dictionary of verified second-language corrections. Once a correction pair is in
+        the dictionary, applying it is a local lookup that involves no model at all.
+        Ongoing work tests repaired against unrepaired text across both scorers,
+        ends with an evaluation on the sealed material, and includes a human usefulness
+        decision before any of it enters routine use.</p>
+
+        <h3>Re-Admitting Excluded Essays</h3>
+
+        <p>The authors of ELLIPSE excluded a set of essays whose rubric profiles were
+        uneven, and this exclusion thinned the already thin ends of the scale. The
+        excluded essays were not removed because their overall scores were unusable. They
+        were removed because their scores across the separate rubric dimensions did not
+        form the even pattern the authors' scaling procedure expected. An essay that is
+        strong in some dimensions and weak in others is exactly the kind of uneven
+        performance the assessment literature calls a discordant text, so removing such
+        essays may have made the corpus tidier than real student writing is. The
+        hypothesis is that many of these essays are usable and that re-admitting them
+        gives the models more to learn from at the extremes. The method is to qualify the
+        excluded essays and add them back under controlled retraining. Results so far
+        point to improvement, including at both ends of the scale, but the retraining
+        comparisons are still running and the gain is not settled. I treat this as
+        open research with early directional evidence.</p>
+
+        <h3>Comparative Judgment as a Source of Relative Quality</h3>
+
+        <p>The scoring models learn only from absolute scores. The information that
+        absolute scoring collapses, including the differences between essays within a
+        grade band, therefore never reaches them. The hypothesis is that the
+        comparative-judgment ranking carries information about essay quality that
+        absolute scores cannot provide, and that providing this relational information
+        to the system should improve both its accuracy and what it can express about a
+        cohort. The method starts from the combination experiments described earlier,
+        which join the ranking with the scorers only after training. The open work
+        studies how relative-quality information can be represented and provided to the
+        system, and what it adds beyond the absolute scores. The ranking should also
+        span writing tasks rather than depend on one, because a signal about writing quality
+        within the same construct should preferably not depend on the task. The
+        evaluation of candidate model judges therefore uses judging instructions that
+        are not tuned to any single model, so that it measures each model's raw
+        ability to discriminate writing quality and what that ability costs.</p>
+
+        <h3>Linking the ELLIPSE Scale to the Swedish Course Continuum</h3>
+
+        <p>ELLIPSE scores are defined for one population of learners in the United
+        States. Whether they order Swedish upper-secondary essays sensibly is an open
+        question, and it is the question the 281 Swedish essays exist to probe. So
+        far, when the two scoring lanes score the Swedish essays, the average rises
+        step by step with course level, without inversions. The
+        lowest cohort, a vocational English 5 group, lands slightly above the ELLIPSE
+        scale midpoint, and the English 7 cohort lands roughly 1.3 scale points above it.
+        Figure 3 shows the two populations placed on the same scale.</p>
+
+        <div class="figure">
+            <svg viewBox="0 0 760 400" width="760" height="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Schematic of the ELLIPSE score distribution and Swedish cohort positions on one scale">
+                <g font-family="Verdana, 'DejaVu Sans', sans-serif">
+                    <!-- Reliability band (mid-scale) -->
+                    <rect x="260" y="88" width="240" height="162" fill="#f1f1f1"/>
+                    <text x="380" y="78" font-size="12" font-weight="700" fill="#111111" text-anchor="middle">most reliable region</text>
+
+                    <!-- Density curve -->
+                    <path d="M 90 249 C 230 244, 260 122, 380 118 C 500 122, 530 244, 670 249"
+                          fill="none" stroke="#111111" stroke-width="2.5"/>
+                    <text x="380" y="106" font-size="12" fill="#111111" text-anchor="middle">ELLIPSE essays (schematic)</text>
+
+                    <!-- Proficiency cap bracket -->
+                    <path d="M 560 178 L 560 170 L 680 170 L 680 178" fill="none" stroke="#555555" stroke-width="1.5"/>
+                    <text x="620" y="140" font-size="12" fill="#555555" text-anchor="middle">learners who become proficient</text>
+                    <text x="620" y="157" font-size="12" fill="#555555" text-anchor="middle">leave the ELLIPSE population</text>
+
+                    <!-- Axis -->
+                    <line x1="80" y1="250" x2="680" y2="250" stroke="#111111" stroke-width="1.5"/>
+                    <line x1="80" y1="250" x2="80" y2="256" stroke="#111111" stroke-width="1.5"/>
+                    <line x1="230" y1="250" x2="230" y2="256" stroke="#111111" stroke-width="1.5"/>
+                    <line x1="380" y1="250" x2="380" y2="256" stroke="#111111" stroke-width="1.5"/>
+                    <line x1="530" y1="250" x2="530" y2="256" stroke="#111111" stroke-width="1.5"/>
+                    <line x1="680" y1="250" x2="680" y2="256" stroke="#111111" stroke-width="1.5"/>
+                    <text x="80" y="272" font-size="12" fill="#111111" text-anchor="middle">1</text>
+                    <text x="230" y="272" font-size="12" fill="#111111" text-anchor="middle">2</text>
+                    <text x="380" y="272" font-size="12" fill="#111111" text-anchor="middle">3</text>
+                    <text x="530" y="272" font-size="12" fill="#111111" text-anchor="middle">4</text>
+                    <text x="680" y="272" font-size="12" fill="#111111" text-anchor="middle">5</text>
+                    <text x="720" y="272" font-size="12" fill="#555555" text-anchor="middle">score</text>
+
+                    <!-- Midpoint guide -->
+                    <line x1="380" y1="250" x2="380" y2="320" stroke="#999999" stroke-width="1" stroke-dasharray="4 3"/>
+                    <line x1="380" y1="344" x2="380" y2="372" stroke="#999999" stroke-width="1" stroke-dasharray="4 3"/>
+                    <text x="380" y="390" font-size="12" fill="#555555" text-anchor="middle">scale midpoint (3)</text>
+
+                    <!-- Swedish cohort ranges -->
+                    <rect x="387" y="296" width="60" height="10" rx="0" fill="#1f77b4"/>
+                    <text x="374" y="306" font-size="12" fill="#111111" text-anchor="end">English 5 (vocational)</text>
+                    <rect x="440" y="326" width="75" height="10" rx="0" fill="#1f77b4"/>
+                    <text x="432" y="336" font-size="12" fill="#111111" text-anchor="end">English 6</text>
+                    <rect x="537" y="356" width="75" height="10" rx="0" fill="#1f77b4"/>
+                    <text x="529" y="366" font-size="12" fill="#111111" text-anchor="end">English 7</text>
+                    <text x="574" y="390" font-size="12" fill="#555555" text-anchor="middle">about 1.3 above the midpoint</text>
+
+                    <text x="80" y="336" font-size="12" fill="#555555">Swedish cohorts</text>
+                    <text x="80" y="353" font-size="12" fill="#555555">(schematic ranges)</text>
+                </g>
+            </svg>
+            <div class="figure-caption">
+                <strong>Figure 3. Two populations on one scale.</strong> The figure is schematic. The curve sketches where ELLIPSE essays sit on the 1-to-5 scale, with thin ends, and the shaded band marks the mid-scale region where the models are most reliable, because the thin ends leave them the least material to learn from. The Swedish cohorts are shown as ranges rather than points; only the placement of English 5 slightly above the midpoint and the English 7 position of roughly 1.3 points above it are stated results.
+            </div>
+        </div>
+
+        <p>The two populations differ in a way that may explain the climb. ELLIPSE is a
+        corpus of designated English learners, and students who
+        become proficient leave that population. The corpus therefore has a proficiency
+        cap. Swedish school English has no such cutoff, because every student takes the
+        courses regardless of proficiency. If this reading is correct, the two
+        populations should overlap most around the end of Swedish compulsory school and
+        the start of English 5, and Swedish cohorts above that point should sit
+        progressively above the ELLIPSE range, which is what the climb shows. Ninth-grade
+        essays would test the predicted overlap directly, and I do not yet have them. I
+        do not claim that ELLIPSE and Swedish school English share one construct. The
+        work maps where the scales overlap, where they diverge, and where the models
+        remain reliable enough to support assessment. The planned next step
+        extends the Swedish material with roughly ten years of national assessment
+        exemplar essays. The exemplars matter because they carry official grade
+        designations, so they can anchor the comparison to the Swedish grading standard
+        in a way my own course cohorts cannot.</p>
+
+        <h3>The Teacher Panel</h3>
+
+        <p>The comparisons so far measure models against rater scores. The reference
+        that matters
+        for the project is teacher judgment. The planned teacher panel produces a bounded
+        account of the quality construct that Swedish teachers of English apply when they
+        assess these essays. That account is then compared against the exemplar essays,
+        the comparative-judgment ranking, and the ELLIPSE-trained scorers. In this design
+        the instrument is the thing being checked, and teacher judgment is the thing it
+        is checked against. That ordering is a standing commitment of the project. However well the lanes agree with each other or with the
+        ELLIPSE raters, the question that decides whether the instrument can support
+        Swedish assessment work is whether its outputs hold up against the judgment of
+        the teachers who do that work.</p>
+
+        <h2>Where Computation Happens and Where Data Goes</h2>
+
+        <p>Where student text goes depends on how the model is used.</p>
+
+        <p>A chat interface is a consumer product in which a person types or uploads
+        text into a conversation window. The provider of
+        the product may store that text, and under common consumer terms the provider may
+        use it to improve or train future models. This is the mode of use in which
+        uploaded student texts can end up in a provider's training data.</p>
+
+        <p>An API differs from a chat interface in the way that decides where text
+        goes. It is an arrangement in which one program answers requests from another
+        program. A request carries exactly the text the
+        sending program puts in it, the answer comes back to the sending program, and
+        there is no conversation window and no chat history. API use is governed by
+        business contract terms rather than consumer product terms, and under those
+        terms the provider does not use what is sent to train future models. The
+        sending side controls precisely what is transmitted. Research pipelines of the kind described
+        in this document can only work this way, because a program that must make
+        thousands of controlled, logged, and repeatable requests cannot type into a
+        conversation window. I do not use chat interfaces for any part of this work.</p>
+
+        <p>A self-hosted model runs on hardware the researcher owns. The text is processed
+        on that machine and never leaves the building.</p>
+
+        <p>The system runs almost entirely in the self-hosted mode. I built a server at home
+        for this project. Its name is Hemma. Hemma runs the language model that produces
+        embeddings, the parser, the error-checking programs, and the local language
+        models, and all large-scale processing of essay text happens on it. The two
+        scoring models themselves are the small regression models described earlier. They
+        run locally on ordinary hardware and could run on a phone.</p>
+
+        <p>Exactly two categories of text have been sent to external providers. One is
+        essay text from the public, anonymized ELLIPSE corpus. The pairwise comparative-judgment experiment
+        sent ELLIPSE essay pairs to a provider-hosted OpenAI model for about 7,500
+        comparisons in mid-2026. The correction work sends ELLIPSE text to
+        provider-hosted models that propose and adjudicate corrections. It has run on
+        ELLIPSE text only.</p>
+
+        <p>The other is de-identified Swedish essay text. The
+        comparative-judgment lane has also judged Swedish student essays against anchor
+        essays. An anchor essay is an essay selected as a fixed reference point, so
+        that other essays can be compared against it. In how it is produced, an anchor
+        essay is an assessment exemplar. Its score does not come from one rater.
+        Several raters assess it and mediate their judgments until they converge, so
+        its score carries low measurement error and small rater effects. I use the
+        term anchor because of what the essay does. It anchors the comparisons, and
+        through them the model, in the shared understanding of the test domain that
+        the teachers who assess in it hold. For that work, Swedish student
+        essays and anchor essays have been sent to the same provider-hosted OpenAI
+        model through the same pipeline as the ELLIPSE experiment. Each essay travels
+        as text under an anonymous identifier. A request contains the judging
+        instructions, the writing task, and the essay texts, and nothing else. No name,
+        class, school, or other personal detail is present in any request. The mapping
+        between identifier and student exists only in a separate offline record on my
+        own machine, and that record is never transmitted. The receiving party
+        therefore has no way to connect an essay to a student's identity.</p>
+
+        <p>Identity information has never left my hardware. Every outward
+        request passes through a single internal gateway component that validates what
+        may be sent and to where. The programs that handle real essay text write only
+        sanitized records of their work, such as content digests and counts, never the
+        text itself. Figure 2 shows these boundaries and the single path that crosses
+        them.</p>
+
+        <div class="figure">
+            <svg viewBox="0 0 760 540" width="760" height="540" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Boundary diagram of where essay text travels">
+                <g font-family="Verdana, 'DejaVu Sans', sans-serif">
+                    <!-- Outer boundary: researcher's own hardware -->
+                    <rect x="12" y="20" width="568" height="490" rx="0" fill="none" stroke="#555555" stroke-width="1.5" stroke-dasharray="7 5"/>
+                    <text x="24" y="44" font-size="13" font-weight="700" fill="#555555">the researcher's own hardware</text>
+
+                    <!-- Hemma box -->
+                    <rect x="32" y="58" width="428" height="350" rx="0" fill="#f1f1f1" stroke="#111111" stroke-width="2"/>
+                    <text x="44" y="82" font-size="13" font-weight="700" fill="#111111">Hemma (home server)</text>
+
+                    <!-- Components -->
+                    <rect x="44" y="96" width="120" height="34" rx="0" fill="#ffffff" stroke="#bbbbbb" stroke-width="1.5"/>
+                    <text x="104" y="117" font-size="12" fill="#111111" text-anchor="middle">parser</text>
+                    <rect x="176" y="96" width="130" height="34" rx="0" fill="#ffffff" stroke="#bbbbbb" stroke-width="1.5"/>
+                    <text x="241" y="117" font-size="12" fill="#111111" text-anchor="middle">error checkers</text>
+                    <rect x="318" y="96" width="130" height="34" rx="0" fill="#ffffff" stroke="#bbbbbb" stroke-width="1.5"/>
+                    <text x="383" y="117" font-size="12" fill="#111111" text-anchor="middle">embedding model</text>
+                    <rect x="44" y="142" width="180" height="34" rx="0" fill="#ffffff" stroke="#bbbbbb" stroke-width="1.5"/>
+                    <text x="134" y="163" font-size="12" fill="#111111" text-anchor="middle">local language models</text>
+                    <rect x="236" y="142" width="212" height="34" rx="0" fill="#ffffff" stroke="#bbbbbb" stroke-width="1.5"/>
+                    <text x="342" y="163" font-size="12" fill="#111111" text-anchor="middle">the two scoring models</text>
+
+                    <!-- ELLIPSE text node -->
+                    <rect x="44" y="192" width="210" height="40" rx="0" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+                    <text x="149" y="216" font-size="12" fill="#111111" text-anchor="middle">public ELLIPSE essay text</text>
+
+                    <!-- Swedish student and anchor essays node -->
+                    <rect x="44" y="244" width="220" height="56" rx="0" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+                    <text x="154" y="262" font-size="12" font-weight="700" fill="#111111" text-anchor="middle">Swedish student and</text>
+                    <text x="154" y="278" font-size="12" font-weight="700" fill="#111111" text-anchor="middle">anchor essays</text>
+                    <text x="154" y="294" font-size="12" fill="#555555" text-anchor="middle">(anonymous identifiers)</text>
+
+                    <!-- Converging arrows into the gateway -->
+                    <path d="M 254 212 L 430 212 L 430 242" fill="none" stroke="#1f77b4" stroke-width="2"/>
+                    <path d="M 264 272 L 430 272 L 430 242" fill="none" stroke="#1f77b4" stroke-width="2"/>
+                    <line x1="430" y1="242" x2="460" y2="242" stroke="#1f77b4" stroke-width="2"/>
+                    <polygon points="470,242 460,237 460,247" fill="#1f77b4"/>
+
+                    <!-- What crosses the boundary -->
+                    <text x="246" y="330" font-size="12" font-weight="700" fill="#111111" text-anchor="middle">what crosses the boundary</text>
+                    <text x="246" y="348" font-size="12" fill="#111111" text-anchor="middle">essay text under anonymous identifiers</text>
+                    <text x="246" y="366" font-size="11.5" fill="#555555" text-anchor="middle">comparative judgment sends ELLIPSE pairs and</text>
+                    <text x="246" y="383" font-size="11.5" fill="#555555" text-anchor="middle">de-identified Swedish student and anchor essays</text>
+                    <text x="246" y="400" font-size="11.5" fill="#555555" text-anchor="middle">correction candidates come from ELLIPSE only</text>
+
+                    <!-- Gateway -->
+                    <rect x="470" y="200" width="104" height="84" rx="0" fill="#e0e0e0" stroke="#111111" stroke-width="2"/>
+                    <text x="522" y="226" font-size="12" font-weight="700" fill="#111111" text-anchor="middle">single</text>
+                    <text x="522" y="243" font-size="12" font-weight="700" fill="#111111" text-anchor="middle">gateway</text>
+                    <text x="522" y="261" font-size="11.5" fill="#111111" text-anchor="middle">checks every</text>
+                    <text x="522" y="276" font-size="11.5" fill="#111111" text-anchor="middle">request in code</text>
+
+                    <!-- The crossing arrow -->
+                    <line x1="574" y1="242" x2="618" y2="242" stroke="#1f77b4" stroke-width="2"/>
+                    <polygon points="628,242 618,237 618,247" fill="#1f77b4"/>
+
+                    <!-- External providers -->
+                    <rect x="628" y="207" width="120" height="70" rx="0" fill="#ffffff" stroke="#555555" stroke-width="1.5"/>
+                    <text x="688" y="237" font-size="12" font-weight="700" fill="#111111" text-anchor="middle">external API</text>
+                    <text x="688" y="255" font-size="12" font-weight="700" fill="#111111" text-anchor="middle">providers</text>
+
+                    <!-- Offline identity record with stopped path -->
+                    <rect x="44" y="432" width="250" height="52" rx="0" fill="#ffffff" stroke="#111111" stroke-width="1.5"/>
+                    <text x="169" y="453" font-size="12" font-weight="700" fill="#111111" text-anchor="middle">identifier-to-student record</text>
+                    <text x="169" y="471" font-size="12" fill="#555555" text-anchor="middle">offline, never transmitted</text>
+
+                    <line x1="294" y1="458" x2="448" y2="458" stroke="#111111" stroke-width="1.5" stroke-dasharray="5 4"/>
+                    <circle cx="466" cy="458" r="12" fill="#ffffff" stroke="#d62728" stroke-width="2.5"/>
+                    <line x1="458" y1="450" x2="474" y2="466" stroke="#d62728" stroke-width="2.5"/>
+                    <line x1="474" y1="450" x2="458" y2="466" stroke="#d62728" stroke-width="2.5"/>
+                    <text x="371" y="426" font-size="12" font-weight="700" fill="#111111" text-anchor="middle">never crosses the boundary</text>
+                </g>
+            </svg>
+            <div class="figure-caption">
+                <strong>Figure 2. Where text travels when the system runs.</strong> All processing of essay text happens on Hemma, inside the researcher's own hardware. One path crosses the boundary, and it passes through a single gateway that checks every request in code. The path carries essay text under anonymous identifiers. For comparative judgment this covers ELLIPSE pairs and de-identified Swedish student and anchor essays, and correction candidates come from ELLIPSE only. The identifier-to-student record stays offline on the researcher's own hardware and is never transmitted, so no request can connect an essay to a student.
+            </div>
+        </div>
+
+        <p>I want to reduce external use further. Open-weight models now exist that could serve as the comparative
+        judge on Hemma. An open-weight model is one whose full internals are published,
+        so that anyone can run it on their own hardware. Models small enough to run on
+        hardware like Hemma trade capability for that locality; the strongest of them
+        now reach roughly where the leading closed models stood a year ago. Whether such a model can serve as a durable judge on my own
+        hardware is therefore an open question, and I do not present it as a settled
+        plan. The ranking signal does not need to be perfect. It needs to be strong
+        enough to provide the information the instrument uses, and where that
+        threshold lies is not yet known. One of my main current tasks is an evaluation
+        of open-weight models as comparative judges, and it will answer how much
+        judging capability each model offers against its cost.</p>
+
+        <h2>What Can Be Claimed Today</h2>
+
+        <p>The system can produce essay-quality estimates from three partly independent
+            methods, and combining them has agreed with trained human raters more closely
+            than any single method in held-out experiments as of mid-2026. On the
+            complete official ELLIPSE test set, the hybrid scorer has also agreed with
+            the human raters more closely than a published comparison system (Choi et
+            al., 2026), under the descriptive comparison stated in the section on
+            evaluation. The system's estimates are
+            most reliable in the middle of the 1 to 5 scale, and the weakening at the
+            extremes has been measured and quantified. Its evidence about Swedish student
+            writing is transfer evidence from an American learner corpus, ordered plausibly
+            by course level but not yet anchored to Swedish grading standards. The
+            instrument can therefore support research on assessment, and it cannot yet
+            support assessment decisions, which is the boundary the teacher panel and the
+            exemplar work are designed to test.</p>
+
+        <h2>Cited Work</h2>
+
+        <p>Choi, H., Kim, S., Liermann, W., Seong, J., and Huang, J.-X. (2026).
+        Enhancing Automated Essay Scoring With Three Techniques: Two-Stage
+        Fine-Tuning, Score Alignment, and Self-Training. IEEE Access, 14,
+        117193-117208. https://doi.org/10.1109/ACCESS.2026.3718177</p>
+
+        <h2>Glossary</h2>
+
+        <ul>
+                <li><strong>Anchor essay.</strong> An assessment exemplar used as a fixed reference point against which other essays are compared. Several raters assess it and mediate their judgments until they converge, so its score carries low measurement error and small rater effects.</li>
+                <li><strong>API.</strong> An arrangement in which one program answers requests from another program, with no conversation window and no chat history.</li>
+                <li><strong>Bradley-Terry model.</strong> A statistical method from psychometrics that turns the outcomes of many pairwise comparisons into a ranking.</li>
+                <li><strong>Chat interface.</strong> A consumer product in which a person types or uploads text into a conversation window, where the provider may store the text and may use it for training.</li>
+                <li><strong>Comparative judgment.</strong> An assessment method in which a judge decides which of two texts is better, instead of scoring one text on a scale.</li>
+                <li><strong>Corpus.</strong> A collection of texts assembled for study.</li>
+                <li><strong>Discordant text.</strong> A student text whose qualities pull in different directions across assessment dimensions, producing rater disagreement.</li>
+                <li><strong>ELLIPSE.</strong> A public, anonymized research corpus of roughly 6,500 essays by school-age English learners in the United States, each scored 1 to 5 by two trained human raters.</li>
+                <li><strong>Embedding.</strong> A list of numbers, here 768 of them, into which a language model condenses its reading of a whole text.</li>
+                <li><strong>Frozen scorer.</strong> A scorer whose training and settings were fixed before an evaluation and were not changed afterwards.</li>
+                <li><strong>Held-out testing.</strong> Evaluating a model only on material that was set aside before training and that the model has never seen.</li>
+                <li><strong>Hemma.</strong> The server I built and run at home, on which the language models, the parser, the error checkers, and the embedding extraction run.</li>
+                <li><strong>Hybrid lane.</strong> The scoring method that combines the embedding with the transparent measures in one regression model.</li>
+                <li><strong>Language model.</strong> A program trained on very large amounts of text until it can process and produce language.</li>
+                <li><strong>Model.</strong> A computer program that has learned a rule from examples instead of being given the rule directly.</li>
+                <li><strong>Official test set.</strong> The set of ELLIPSE test essays published with the corpus, on which published systems report their results.</li>
+                <li><strong>Open-weight model.</strong> A model whose full internals are published, so that anyone can run it on their own hardware.</li>
+                <li><strong>Parser.</strong> A program that works out the grammatical structure of a sentence.</li>
+                <li><strong>Quadratic weighted kappa.</strong> An agreement statistic that rewards close agreement and penalizes distant disagreement more heavily, running from 0 for chance-level agreement to 1 for perfect agreement.</li>
+                <li><strong>Regression model.</strong> A model that learns from examples to predict a number, here an essay score.</li>
+                <li><strong>Sealed test set.</strong> A portion of the data locked away and opened only at declared checkpoints, so that repeated evaluation cannot inflate results.</li>
+                <li><strong>Self-hosted model.</strong> A model that runs on hardware the researcher owns, so the text it processes never leaves the building.</li>
+                <li><strong>Transfer evidence.</strong> Evidence about how well something learned from one population of writers carries over to another.</li>
+                <li><strong>Transparent lane.</strong> The scoring method built on 31 inspectable text measures, also called the white-box lane.</li>
+                <li><strong>Triangulation.</strong> Using partly independent methods on the same question so that they constrain each other's errors.</li>
+                <li><strong>Writing task.</strong> The assignment and topic an essay responds to, also called a writing prompt.</li>
+        </ul>
+</body>
+</html>
