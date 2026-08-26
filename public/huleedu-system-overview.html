@@ -296,11 +296,24 @@
         text-decoration: none;
       }
 
-      #glossary li {
+      .glossary-list {
+        display: grid;
+        gap: 1.25rem;
+        padding-left: 0;
+        list-style: none;
+      }
+
+      .glossary-list li {
+        margin: 0;
         scroll-margin-top: 2rem;
       }
 
-      #glossary li:target {
+      .glossary-list li > strong {
+        display: block;
+        margin-bottom: 0.18rem;
+      }
+
+      .glossary-list li:target {
         margin-inline: -0.75rem;
         padding: 0.55rem 0.75rem;
         border-left: 3px solid #173e70;
@@ -1058,7 +1071,7 @@
 
         <h2 id="glossary">Glossary</h2>
 
-        <ul>
+        <ul class="glossary-list">
                 <li id="glossary-anchor-essay"><strong>Anchor essay.</strong> An assessment exemplar used as a fixed reference point against which other essays are compared. Several raters assess it and mediate their judgments until they converge, so its score carries low measurement error and small rater effects.</li>
                 <li id="glossary-api"><strong>API.</strong> An arrangement in which one program answers requests from another program, with no conversation window and no chat history.</li>
                 <li id="glossary-bradley-terry"><strong>Bradley-Terry model.</strong> A statistical method from psychometrics that turns the outcomes of many pairwise comparisons into a ranking.</li>
