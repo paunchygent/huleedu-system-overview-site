@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Official-test scalar attribution inventory | HuleEdu</title>
+  <link rel="icon" href="/favicon.svg">
+  <link rel="stylesheet" href="/evidence/evidence.css">
+  <link rel="canonical" href="https://research.hule.education/evidence/official-test-benchmark-feature-detail/">
+</head>
+<body>
+  <header class="page-header">
+    <a class="back-link" href="/huleedu-system-overview/">HuleEdu system overview</a>
+    <h1>Official-test scalar attribution inventory</h1>
+    <p class="source-line"><a href="/evidence/source/official-test-benchmark-feature-detail.md">Markdown source</a> · <code>docs/reference/ref-hule-research-ellipse-frozen-scorer-benchmark-against-choi-et-al-2026-ellipse-frozen-scorer-benchmark-against-choi-et-al-2026-part-01.md</code> · <code>310ab8d4cb80f5fcde2f0c75e1e141366f7a991c</code></p>
+  </header>
+  <main>
+    <article class="markdown-body"><p><span id="research-purpose-and-boundary"></span></p>
+<h2>Research Purpose And Boundary</h2>
+<p>This part preserves the individual scalar attribution and correlation
+inventory for the frozen Task 43 raw-inclusive hybrid. The root reference owns
+the benchmark claim, component-head performance, family totals, mapping
+contrast, population stability, and external comparison. This part owns only
+the 37 scalar rows and their measured overlap on the fixed 5,042-row training
+matrix.</p>
+<p>Mean absolute TreeSHAP measures use by the existing nonlinear ensemble. The
+Pearson values measure association. Neither quantity is an additive QWK
+contribution, causal effect, or feature-removal result.</p>
+<p><span id="evidence-and-sources"></span></p>
+<h2>Evidence And Sources</h2>
+<ul>
+<li>Canonical component result:
+<code>.orchestration/context/sessions/01a02917-0817-773e-90d4-43870e2002b7/evidence/task-hule-20-44-03/component-audit-result-v3.json</code>,
+SHA-256
+<code>79e9f8c1d17ec6fa36e3d035cf620d0468462b8190628bc4cd6383733f185bbb</code>.</li>
+<li>Ordered scalar inventory:
+<code>.orchestration/context/sessions/01a02917-0817-773e-90d4-43870e2002b7/evidence/task-hule-20-44-03/scalar-features-v3.jsonl</code>,
+SHA-256
+<code>111b11ea70c85ccaa8f68744aad17ffcfed5ce8205b0f35be82f1aeb35c3166e</code>.</li>
+<li>Population: the fixed 3,479 base plus 1,563 candidate training rows used by
+the frozen raw-inclusive hybrid.</li>
+<li>Attribution: member-averaged TreeSHAP from the five frozen 805-column hybrid
+models. Its ensemble reconstruction maximum absolute error is <code>0.00000477</code>.</li>
+<li>Correlation: Pearson correlation on the same 5,042 rows. <code>Max |r|</code> is the
+maximum absolute correlation between one scalar and any one of the 768
+embedding coordinates.</li>
+</ul>
+<p><span id="findings-and-interpretation"></span></p>
+<h2>Findings And Interpretation</h2>
+<p>Four scalar features share the accepted DeBERTa runtime lineage:
+<code>sent_similarity_variance</code>, <code>prompt_similarity</code>, <code>intro_prompt_sim</code>, and
+<code>min_para_relevance</code>. The remaining 33 scalars do not consume that embedding
+runtime.</p>
+<table>
+<thead>
+<tr>
+<th>Construct family</th>
+<th>Scalar feature</th>
+<th align="right">Mean absolute TreeSHAP</th>
+<th align="right">Max |r|</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Correction/error</td>
+<td><code>grammar_errors_per_100_words</code></td>
+<td align="right">0.001296</td>
+<td align="right">0.500</td>
+</tr>
+<tr>
+<td>Correction/error</td>
+<td><code>language_tool_spelling_errors_per_100_words</code></td>
+<td align="right">0.017286</td>
+<td align="right">0.660</td>
+</tr>
+<tr>
+<td>Correction/error</td>
+<td><code>final_spelling_issues_per_100_words</code></td>
+<td align="right">0.002690</td>
+<td align="right">0.678</td>
+</tr>
+<tr>
+<td>Correction/error</td>
+<td><code>punctuation_errors_per_100_words</code></td>
+<td align="right">0.000000</td>
+<td align="right">0.281</td>
+</tr>
+<tr>
+<td>Readability</td>
+<td><code>smog</code></td>
+<td align="right">0.000183</td>
+<td align="right">0.329</td>
+</tr>
+<tr>
+<td>Readability</td>
+<td><code>coleman_liau</code></td>
+<td align="right">0.001813</td>
+<td align="right">0.584</td>
+</tr>
+<tr>
+<td>Readability</td>
+<td><code>ari</code></td>
+<td align="right">0.003098</td>
+<td align="right">0.383</td>
+</tr>
+<tr>
+<td>Readability</td>
+<td><code>avg_sentence_length</code></td>
+<td align="right">0.001825</td>
+<td align="right">0.428</td>
+</tr>
+<tr>
+<td>Lexical statistics</td>
+<td><code>ttr</code></td>
+<td align="right">0.000103</td>
+<td align="right">0.660</td>
+</tr>
+<tr>
+<td>Length</td>
+<td><code>word_count</code></td>
+<td align="right">0.052873</td>
+<td align="right">0.378</td>
+</tr>
+<tr>
+<td>Length</td>
+<td><code>avg_word_length</code></td>
+<td align="right">0.001016</td>
+<td align="right">0.591</td>
+</tr>
+<tr>
+<td>Syntax</td>
+<td><code>parse_tree_depth</code></td>
+<td align="right">0.000403</td>
+<td align="right">0.472</td>
+</tr>
+<tr>
+<td>Syntax</td>
+<td><code>passive_ratio</code></td>
+<td align="right">0.000367</td>
+<td align="right">0.218</td>
+</tr>
+<tr>
+<td>Syntax</td>
+<td><code>dep_distance</code></td>
+<td align="right">0.000984</td>
+<td align="right">0.424</td>
+</tr>
+<tr>
+<td>Semantic coherence, embedding-derived</td>
+<td><code>sent_similarity_variance</code></td>
+<td align="right">0.000377</td>
+<td align="right">0.161</td>
+</tr>
+<tr>
+<td>Prompt relevance, embedding-derived</td>
+<td><code>prompt_similarity</code></td>
+<td align="right">0.000761</td>
+<td align="right">0.305</td>
+</tr>
+<tr>
+<td>Prompt relevance, embedding-derived</td>
+<td><code>intro_prompt_sim</code></td>
+<td align="right">0.000165</td>
+<td align="right">0.240</td>
+</tr>
+<tr>
+<td>Prompt relevance, embedding-derived</td>
+<td><code>min_para_relevance</code></td>
+<td align="right">0.000000</td>
+<td align="right">0.286</td>
+</tr>
+<tr>
+<td>Complex nominal</td>
+<td><code>procedural_or_event_head_complex_np_density_log1p</code></td>
+<td align="right">0.000095</td>
+<td align="right">0.264</td>
+</tr>
+<tr>
+<td>RST relation</td>
+<td><code>tier3_rst_gum_primary_tree_satellite_relation_rate</code></td>
+<td align="right">0.001632</td>
+<td align="right">0.332</td>
+</tr>
+<tr>
+<td>Clause rates</td>
+<td><code>finite_advcl_per_100w</code></td>
+<td align="right">0.000885</td>
+<td align="right">0.259</td>
+</tr>
+<tr>
+<td>Clause rates</td>
+<td><code>finite_relative_clause_per_100w</code></td>
+<td align="right">0.000128</td>
+<td align="right">0.234</td>
+</tr>
+<tr>
+<td>Clause rates</td>
+<td><code>nonfinite_participial_advcl_per_100w</code></td>
+<td align="right">0.000321</td>
+<td align="right">0.205</td>
+</tr>
+<tr>
+<td>Clause rates</td>
+<td><code>nonfinite_participial_acl_per_100w</code></td>
+<td align="right">0.000000</td>
+<td align="right">0.172</td>
+</tr>
+<tr>
+<td>Frequency/sophistication</td>
+<td><code>p_lex_lambda</code></td>
+<td align="right">0.000175</td>
+<td align="right">0.423</td>
+</tr>
+<tr>
+<td>Frequency/sophistication</td>
+<td><code>advanced_guiraud</code></td>
+<td align="right">0.018843</td>
+<td align="right">0.487</td>
+</tr>
+<tr>
+<td>Word-range dispersion</td>
+<td><code>mean_log_contextual_diversity</code></td>
+<td align="right">0.000213</td>
+<td align="right">0.466</td>
+</tr>
+<tr>
+<td>Word-range dispersion</td>
+<td><code>mean_contextual_diversity_percent</code></td>
+<td align="right">0.000000</td>
+<td align="right">0.496</td>
+</tr>
+<tr>
+<td>Word-range dispersion</td>
+<td><code>contextual_diversity_coverage</code></td>
+<td align="right">0.000000</td>
+<td align="right">0.352</td>
+</tr>
+<tr>
+<td>Moving-average lexical diversity</td>
+<td><code>mattr_50</code></td>
+<td align="right">0.000000</td>
+<td align="right">0.566</td>
+</tr>
+<tr>
+<td>Concreteness</td>
+<td><code>mean_concreteness</code></td>
+<td align="right">0.000390</td>
+<td align="right">0.461</td>
+</tr>
+<tr>
+<td>Concreteness</td>
+<td><code>concreteness_coverage</code></td>
+<td align="right">0.000511</td>
+<td align="right">0.304</td>
+</tr>
+<tr>
+<td>Word prevalence</td>
+<td><code>mean_word_prevalence</code></td>
+<td align="right">0.000231</td>
+<td align="right">0.257</td>
+</tr>
+<tr>
+<td>Word prevalence</td>
+<td><code>word_prevalence_coverage</code></td>
+<td align="right">0.000507</td>
+<td align="right">0.283</td>
+</tr>
+<tr>
+<td>Lexical decision</td>
+<td><code>mean_lexical_decision_rt_ms</code></td>
+<td align="right">0.000728</td>
+<td align="right">0.424</td>
+</tr>
+<tr>
+<td>Lexical decision</td>
+<td><code>lexical_decision_rt_coverage</code></td>
+<td align="right">0.002162</td>
+<td align="right">0.252</td>
+</tr>
+<tr>
+<td>Causal-predicate complex nominal</td>
+<td><code>abstract_np_with_causal_predicate</code></td>
+<td align="right">0.000376</td>
+<td align="right">0.244</td>
+</tr>
+</tbody></table>
+<p>No scalar is constant, and no two scalar columns are exact duplicates. Eight
+scalar pairs have absolute Pearson correlation at least <code>0.8</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Scalar pair</th>
+<th align="right">r</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ari</code> / <code>avg_sentence_length</code></td>
+<td align="right">0.988</td>
+</tr>
+<tr>
+<td><code>mean_log_contextual_diversity</code> / <code>mean_contextual_diversity_percent</code></td>
+<td align="right">0.953</td>
+</tr>
+<tr>
+<td><code>coleman_liau</code> / <code>avg_word_length</code></td>
+<td align="right">0.945</td>
+</tr>
+<tr>
+<td><code>concreteness_coverage</code> / <code>word_prevalence_coverage</code></td>
+<td align="right">0.936</td>
+</tr>
+<tr>
+<td><code>language_tool_spelling_errors_per_100_words</code> / <code>final_spelling_issues_per_100_words</code></td>
+<td align="right">0.935</td>
+</tr>
+<tr>
+<td><code>ari</code> / <code>parse_tree_depth</code></td>
+<td align="right">0.833</td>
+</tr>
+<tr>
+<td><code>avg_sentence_length</code> / <code>parse_tree_depth</code></td>
+<td align="right">0.832</td>
+</tr>
+<tr>
+<td><code>p_lex_lambda</code> / <code>mean_log_contextual_diversity</code></td>
+<td align="right">-0.813</td>
+</tr>
+</tbody></table>
+<p>The high correlations include shared denominators and overlapping constructs,
+but correlation alone does not establish that one feature is removable. The
+TreeSHAP values likewise describe the fitted ensemble on this matrix; they do
+not report performance after removing a feature.</p>
+<p><span id="evidence-gaps-and-follow-up"></span></p>
+<h2>Evidence Gaps And Follow-Up</h2>
+<p>No matched per-feature removal fits were run. They were outside Task 03 and
+would add 37 post-hoc model-selection comparisons. The three declared reduced
+heads and the root reference&#39;s family attribution are the bounded component
+evidence for this story.</p>
+</article>
+  </main>
+</body>
+</html>

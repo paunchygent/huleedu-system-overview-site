@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Student identity and research-manifest separation | HuleEdu</title>
+  <link rel="icon" href="/favicon.svg">
+  <link rel="stylesheet" href="/evidence/evidence.css">
+  <link rel="canonical" href="https://research.hule.education/evidence/student-identity-separation/">
+</head>
+<body>
+  <header class="page-header">
+    <a class="back-link" href="/huleedu-system-overview/">HuleEdu system overview</a>
+    <h1>Student identity and research-manifest separation</h1>
+    <p class="source-line"><a href="/evidence/source/student-identity-separation.md">Markdown source</a> · <code>docs/backlog/tasks/task-hule-08-02-17-add-governed-vt26-manifests-with-restorable-private-student-identity-map.md</code> · <code>c9d8b6ef60c19bbbdb17b9b46243ab4abfce35bb</code></p>
+  </header>
+  <main>
+    <article class="markdown-body"><p><span id="student-identity-and-research-manifest-separation"></span></p>
+<h1>Student identity and research-manifest separation</h1>
+<p>Source record:
+<code>docs/backlog/tasks/task-hule-08-02-17-add-governed-vt26-manifests-with-restorable-private-student-identity-map.md</code>
+at HuleEdu revision <code>c9d8b6ef60c19bbbdb17b9b46243ab4abfce35bb</code>.</p>
+<p><span id="retained-contract"></span></p>
+<h2>Retained Contract</h2>
+<p>The Swedish research data uses two separate manifest layers:</p>
+<ul>
+<li>The tracked structural manifest contains assignment and prompt identity,
+pseudonymous essay IDs, source checksums, provenance, and aggregate cohort
+counts. It contains no raw essay text or direct student-name mapping.</li>
+<li>The private identity manifest contains the teacher-owned mapping between
+pseudonymous IDs and names, classes, local source files, and result records.
+That manifest and the identity-bearing runtime catalog remain outside Git.</li>
+</ul>
+<p><span id="validation-results"></span></p>
+<h2>Validation Results</h2>
+<p>The completed task recorded:</p>
+<ul>
+<li>61 student records and 9 anchors in the VT26 manifest;</li>
+<li>successful full verification of the structural manifest, private manifest,
+and local catalog;</li>
+<li>successful structural-only verification without the private identity file;</li>
+<li>a failed identity-bearing verification when the private identity file was
+deliberately absent; and</li>
+<li>a structural privacy scan with no direct-name, local-path, class, source-role,
+or source-filename fields in the tracked manifest.</li>
+</ul>
+<p>These results substantiate the separation between public research identity and
+the private restoration map. They do not claim that essay text itself is absent
+from a comparative-judgment provider request; that request shape is recorded
+separately.</p>
+</article>
+  </main>
+</body>
+</html>

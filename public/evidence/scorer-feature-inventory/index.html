@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Production scorer feature inventory | HuleEdu</title>
+  <link rel="icon" href="/favicon.svg">
+  <link rel="stylesheet" href="/evidence/evidence.css">
+  <link rel="canonical" href="https://research.hule.education/evidence/scorer-feature-inventory/">
+</head>
+<body>
+  <header class="page-header">
+    <a class="back-link" href="/huleedu-system-overview/">HuleEdu system overview</a>
+    <h1>Production scorer feature inventory</h1>
+    <p class="source-line"><a href="/evidence/source/scorer-feature-inventory.md">Markdown source</a> · <code>docs/reference/ref-hule-general-task-0810-production-essay-scoring-feature-state-task-0810-production-essay-scoring-feature-state.md</code> · <code>c9d8b6ef60c19bbbdb17b9b46243ab4abfce35bb</code></p>
+  </header>
+  <main>
+    <article class="markdown-body"><p><span id="production-scorer-feature-inventory"></span></p>
+<h1>Production scorer feature inventory</h1>
+<p>Source record:
+<code>docs/reference/ref-hule-general-task-0810-production-essay-scoring-feature-state-task-0810-production-essay-scoring-feature-state.md</code>
+at HuleEdu revision <code>c9d8b6ef60c19bbbdb17b9b46243ab4abfce35bb</code>.</p>
+<p><span id="production-feature-inventory"></span></p>
+<h2>Production Feature Inventory</h2>
+<p>The accepted scorer registry records three different feature surfaces. The
+transparent and hybrid scorers do not use the same scalar set.</p>
+<table>
+<thead>
+<tr>
+<th>surface</th>
+<th>accepted identity</th>
+<th align="right">scalar count</th>
+<th align="right">embedding count</th>
+<th>current composition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>pure feature scorer</td>
+<td><code>handcrafted.current.v1</code></td>
+<td align="right">31</td>
+<td align="right">0</td>
+<td>Includes both accepted RST rates and the three selected T-unit metrics.</td>
+</tr>
+<tr>
+<td>embeddings scorer</td>
+<td><code>embeddings.primary.v1</code></td>
+<td align="right">0</td>
+<td align="right">768</td>
+<td>Contains no linguistic scalar features.</td>
+</tr>
+<tr>
+<td>hybrid scorer</td>
+<td><code>combined.current.v1</code></td>
+<td align="right">38</td>
+<td align="right">768</td>
+<td>Includes the satellite-relation rate and four selected parser-clause rates in its scalar component.</td>
+</tr>
+</tbody></table>
+<p>The source record resolves schema identity and membership from the accepted
+registry. The counts describe the production feature surfaces, not a claim
+that every feature contributes equally to a prediction.</p>
+</article>
+  </main>
+</body>
+</html>

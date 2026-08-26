@@ -1,0 +1,78 @@
+{
+  "documents": [
+    {
+      "slug": "scorer-feature-inventory",
+      "title": "Production scorer feature inventory",
+      "import": false,
+      "sourceRepo": "huleedu",
+      "sourceRevision": "c9d8b6ef60c19bbbdb17b9b46243ab4abfce35bb",
+      "sourcePath": "docs/reference/ref-hule-general-task-0810-production-essay-scoring-feature-state-task-0810-production-essay-scoring-feature-state.md"
+    },
+    {
+      "slug": "cohort-overlap",
+      "title": "ELLIPSE and Swedish cohort overlap",
+      "sourceRepo": "huleedu",
+      "sourceRevision": "c9d8b6ef60c19bbbdb17b9b46243ab4abfce35bb",
+      "sourcePath": "docs/reference/ref-hule-research-ellipse-distribution-overlap-map-and-tail-data-strategy-survey-ellipse-distribution-overlap-map-and-tail-data-strategy-survey-part-01.md"
+    },
+    {
+      "slug": "comparative-judgment-fusion",
+      "title": "Comparative-judgment and scorer fusion results",
+      "sourceRepo": "huleedu",
+      "sourceRevision": "c9d8b6ef60c19bbbdb17b9b46243ab4abfce35bb",
+      "sourcePath": "docs/backlog/tasks/task-hule-18-02-24-make-ellipse-fusion-arms-and-claims-experiment-configured.md"
+    },
+    {
+      "slug": "human-rater-agreement",
+      "title": "Human-rater agreement evidence",
+      "import": false,
+      "sourceRepo": "huleedu",
+      "sourceRevision": "c9d8b6ef60c19bbbdb17b9b46243ab4abfce35bb",
+      "sourcePath": "docs/reference/ref-hule-research-selection-decision-noise-asymmetry.md"
+    },
+    {
+      "slug": "official-test-benchmark",
+      "title": "Official ELLIPSE test benchmark",
+      "sourceRepo": "huleeduBenchmark",
+      "sourceRevision": "310ab8d4cb80f5fcde2f0c75e1e141366f7a991c",
+      "sourcePath": "docs/reference/ref-hule-research-ellipse-frozen-scorer-benchmark-against-choi-et-al-2026-ellipse-frozen-scorer-benchmark-against-choi-et-al-2026.md"
+    },
+    {
+      "slug": "official-test-benchmark-feature-detail",
+      "title": "Official-test scalar attribution inventory",
+      "sourceRepo": "huleeduBenchmark",
+      "sourceRevision": "310ab8d4cb80f5fcde2f0c75e1e141366f7a991c",
+      "sourcePath": "docs/reference/ref-hule-research-ellipse-frozen-scorer-benchmark-against-choi-et-al-2026-ellipse-frozen-scorer-benchmark-against-choi-et-al-2026-part-01.md"
+    },
+    {
+      "slug": "length-inclusion",
+      "title": "Unrestricted-length ELLIPSE experiment",
+      "sourceRepo": "huleedu",
+      "sourceRevision": "c9d8b6ef60c19bbbdb17b9b46243ab4abfce35bb",
+      "sourcePath": "docs/reference/ref-hule-research-task-43-05-unrestricted-length-ellipse-experiment-results-task-43-05-unrestricted-length-ellipse-experiment-results.md"
+    },
+    {
+      "slug": "student-identity-separation",
+      "title": "Student identity and research-manifest separation",
+      "import": false,
+      "sourceRepo": "huleedu",
+      "sourceRevision": "c9d8b6ef60c19bbbdb17b9b46243ab4abfce35bb",
+      "sourcePath": "docs/backlog/tasks/task-hule-08-02-17-add-governed-vt26-manifests-with-restorable-private-student-identity-map.md"
+    },
+    {
+      "slug": "comparative-judgment-request-shape",
+      "title": "Comparative-judgment request shape",
+      "sourceRepo": "huleedu",
+      "sourceRevision": "c9d8b6ef60c19bbbdb17b9b46243ab4abfce35bb",
+      "sourcePath": "docs/reference/ref-hule-general-cj-to-llm-prompt-contract-cj-to-llm-prompt-contract.md"
+    }
+  ],
+  "assetCopies": [
+    {
+      "sourceRepo": "huleedu",
+      "sourceRevision": "c9d8b6ef60c19bbbdb17b9b46243ab4abfce35bb",
+      "sourcePath": "docs/reference/ellipse-overlap-map-v0",
+      "destinationPath": "cohort-overlap/ellipse-overlap-map-v0"
+    }
+  ]
+}

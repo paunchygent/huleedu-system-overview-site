@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ELLIPSE and Swedish cohort overlap | HuleEdu</title>
+  <link rel="icon" href="/favicon.svg">
+  <link rel="stylesheet" href="/evidence/evidence.css">
+  <link rel="canonical" href="https://research.hule.education/evidence/cohort-overlap/">
+</head>
+<body>
+  <header class="page-header">
+    <a class="back-link" href="/huleedu-system-overview/">HuleEdu system overview</a>
+    <h1>ELLIPSE and Swedish cohort overlap</h1>
+    <p class="source-line"><a href="/evidence/source/cohort-overlap.md">Markdown source</a> · <code>docs/reference/ref-hule-research-ellipse-distribution-overlap-map-and-tail-data-strategy-survey-ellipse-distribution-overlap-map-and-tail-data-strategy-survey-part-01.md</code> · <code>c9d8b6ef60c19bbbdb17b9b46243ab4abfce35bb</code></p>
+  </header>
+  <main>
+    <article class="markdown-body"><p><span id="part-01-the-e4-distribution-overlap-map"></span></p>
+<h2>Part 01 — the E4 distribution overlap map</h2>
+<p>Ordered part 1 of 2. The root document carries the purpose, the claim boundary,
+the evidence inventory with digest identities, the method authority, the figure
+asset index, and the gap list. This part carries the E4 findings in full.</p>
+<p>Everything below is descriptive. The pre-committed statistics spec defines no
+threshold, no pass/fail band, no verdict, and no remediation trigger, and no
+offset magnitude is classified or compared against one.</p>
+<p><span id="the-three-ellipse-reference-layers"></span></p>
+<h2>The three ELLIPSE reference layers</h2>
+<p>These layers are lane-specific and course-independent, so they are identical on
+every figure for a given lane and account for 42 of the 66 statistics rows.</p>
+<table>
+<thead>
+<tr>
+<th>Lane</th>
+<th>Layer</th>
+<th align="right">n</th>
+<th align="right">Median</th>
+<th align="right">Mean</th>
+<th align="right">p25</th>
+<th align="right">p75</th>
+<th align="right">Peak</th>
+<th align="right">Offset vs label</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>both</td>
+<td>ellipse_train_label</td>
+<td align="right">3481</td>
+<td align="right">3.000</td>
+<td align="right">3.137</td>
+<td align="right">2.500</td>
+<td align="right">3.500</td>
+<td align="right">3.00</td>
+<td align="right">+0.000</td>
+</tr>
+<tr>
+<td>handcrafted</td>
+<td>ellipse_train_oof</td>
+<td align="right">3479</td>
+<td align="right">3.152</td>
+<td align="right">3.153</td>
+<td align="right">2.789</td>
+<td align="right">3.517</td>
+<td align="right">3.08</td>
+<td align="right">+0.152</td>
+</tr>
+<tr>
+<td>handcrafted</td>
+<td>ellipse_test_pred</td>
+<td align="right">2259</td>
+<td align="right">3.164</td>
+<td align="right">3.160</td>
+<td align="right">2.787</td>
+<td align="right">3.554</td>
+<td align="right">3.16</td>
+<td align="right">+0.164</td>
+</tr>
+<tr>
+<td>combined</td>
+<td>ellipse_train_oof</td>
+<td align="right">3479</td>
+<td align="right">3.130</td>
+<td align="right">3.140</td>
+<td align="right">2.747</td>
+<td align="right">3.518</td>
+<td align="right">3.11</td>
+<td align="right">+0.130</td>
+</tr>
+<tr>
+<td>combined</td>
+<td>ellipse_test_pred</td>
+<td align="right">2259</td>
+<td align="right">3.117</td>
+<td align="right">3.141</td>
+<td align="right">2.751</td>
+<td align="right">3.552</td>
+<td align="right">3.02</td>
+<td align="right">+0.117</td>
+</tr>
+</tbody></table>
+<p>The label layer&#39;s peak cell holds the modal label, 3.0, not a KDE argmax.</p>
+<p>The label mass carries 641 of its 3,481 labels at 4.0 or above, which is 18.4
+percent. Both lanes&#39; prediction masses sit slightly above the label median and
+occupy a narrower interquartile span. Where the labels place 18.4 percent of
+their mass at 4.0 or above, the four prediction layers place between 4.8 and 5.7
+percent there: 4.83 percent handcrafted OOF, 5.53 percent handcrafted test, 5.61
+percent combined OOF, and 5.71 percent combined test. The largest single value
+anywhere in those four layers is 4.911, in the handcrafted OOF layer.</p>
+<p>Each lane&#39;s train OOF and sealed-test layers stay close throughout: their
+medians differ by 0.011 in the handcrafted lane and 0.013 in the combined lane,
+and the two curves are visually near-coincident on every figure.</p>
+<p><span id="where-each-swedish-course-s-center-mass-sits"></span></p>
+<h2>Where each Swedish course&#39;s center mass sits</h2>
+<p>Six course cohorts carry a student layer; <code>eng6_vt2026</code> is absent per D05 below.
+Offsets are against the 3.000 ELLIPSE train label median. The final two columns
+give the share of each cohort&#39;s predictions at 4.0 or above, against the 4.8 to
+5.7 percent the ELLIPSE prediction layers place there.</p>
+<table>
+<thead>
+<tr>
+<th>Course cohort</th>
+<th align="right">n per lane</th>
+<th align="right">HC median</th>
+<th align="right">HC offset</th>
+<th align="right">CB median</th>
+<th align="right">CB offset</th>
+<th align="right">HC &gt;= 4.0</th>
+<th align="right">CB &gt;= 4.0</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>eng1_vt2026</td>
+<td align="right">22</td>
+<td align="right">3.246</td>
+<td align="right">+0.246</td>
+<td align="right">3.379</td>
+<td align="right">+0.379</td>
+<td align="right">9.1%</td>
+<td align="right">18.2%</td>
+</tr>
+<tr>
+<td>eng5_vt2017</td>
+<td align="right">46</td>
+<td align="right">3.523</td>
+<td align="right">+0.523</td>
+<td align="right">3.512</td>
+<td align="right">+0.512</td>
+<td align="right">4.3%</td>
+<td align="right">23.9%</td>
+</tr>
+<tr>
+<td>eng6_vt2023_a</td>
+<td align="right">60</td>
+<td align="right">3.917</td>
+<td align="right">+0.917</td>
+<td align="right">3.960</td>
+<td align="right">+0.960</td>
+<td align="right">38.3%</td>
+<td align="right">48.3%</td>
+</tr>
+<tr>
+<td>eng6_vt2023_b</td>
+<td align="right">62</td>
+<td align="right">4.125</td>
+<td align="right">+1.125</td>
+<td align="right">4.141</td>
+<td align="right">+1.141</td>
+<td align="right">54.8%</td>
+<td align="right">59.7%</td>
+</tr>
+<tr>
+<td>eng7_vt2017</td>
+<td align="right">24</td>
+<td align="right">4.264</td>
+<td align="right">+1.264</td>
+<td align="right">4.335</td>
+<td align="right">+1.335</td>
+<td align="right">66.7%</td>
+<td align="right">75.0%</td>
+</tr>
+<tr>
+<td>eng7_vt2018</td>
+<td align="right">7 (low n)</td>
+<td align="right">4.147</td>
+<td align="right">+1.147</td>
+<td align="right">4.124</td>
+<td align="right">+1.124</td>
+<td align="right">85.7%</td>
+<td align="right">57.1%</td>
+</tr>
+</tbody></table>
+<p><strong>The headline finding, stated descriptively.</strong> Every Swedish student layer sits
+above the ELLIPSE train label median, and the offset grows with course level:
+from +0.246 at ENG1 through +0.523 at ENG5 and roughly a full scale point at
+both ENG6 assignments, to +1.264 handcrafted and +1.335 combined at ENG7 VT2017.
+The growth is monotone across ENG1, ENG5, ENG6_a, ENG6_b and ENG7 VT2017 in both
+lanes; ENG7 VT2018, at n=7 and flagged low-n, sits slightly below ENG7 VT2017
+rather than above it. The ordering is the same in both lanes, the two lanes
+place each cohort&#39;s median within 0.133 of each other, and every lane gap except
+ENG1&#39;s is below 0.08.</p>
+<p>The ELLIPSE prediction layers themselves sit only +0.117 to +0.164 above the
+label median, and they carry 4.8 to 5.7 percent of their mass at 4.0 or above
+against the labels&#39; 18.4 percent. The scorers&#39; own predictions on ELLIPSE data
+therefore sit far closer to the training label center than any Swedish course
+cohort does, and they carry less high-band mass than the labels they were
+trained on.</p>
+<p>Read against the model&#39;s own prediction mass rather than the label mass, the
+picture is slightly sharper: across those eight student layers the medians sit
+between 0.753 and 1.218 above their lane&#39;s train OOF and sealed-test medians,
+the minimum at <code>eng6_vt2023_a</code> handcrafted against sealed test and the maximum at
+<code>eng7_vt2017</code> combined against sealed test.</p>
+<p><span id="anchor-layers-on-the-same-axis"></span></p>
+<h2>Anchor layers on the same axis</h2>
+<p>Six of the seven course figures carry a full-form anchor layer; <code>eng1_vt2026</code>
+carries none, because the ENG1 anchor rows are excluded upstream. The anchor
+cohort <code>eng6_vt2023</code> is one instrument set for that course year and appears
+identically on both the <code>_a</code> and <code>_b</code> figures.</p>
+<table>
+<thead>
+<tr>
+<th>Anchor cohort</th>
+<th align="right">n per lane</th>
+<th align="right">HC median</th>
+<th align="right">HC offset</th>
+<th align="right">CB median</th>
+<th align="right">CB offset</th>
+<th>Low n</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>eng5_vt2017</td>
+<td align="right">12</td>
+<td align="right">3.378</td>
+<td align="right">+0.378</td>
+<td align="right">3.624</td>
+<td align="right">+0.624</td>
+<td></td>
+</tr>
+<tr>
+<td>eng6_vt2023, on <code>_a</code> and <code>_b</code></td>
+<td align="right">10</td>
+<td align="right">3.862</td>
+<td align="right">+0.862</td>
+<td align="right">4.096</td>
+<td align="right">+1.096</td>
+<td></td>
+</tr>
+<tr>
+<td>eng6_vt2026</td>
+<td align="right">9</td>
+<td align="right">3.685</td>
+<td align="right">+0.685</td>
+<td align="right">3.904</td>
+<td align="right">+0.904</td>
+<td>yes</td>
+</tr>
+<tr>
+<td>eng7_vt2017</td>
+<td align="right">12</td>
+<td align="right">4.214</td>
+<td align="right">+1.214</td>
+<td align="right">4.259</td>
+<td align="right">+1.259</td>
+<td></td>
+</tr>
+<tr>
+<td>eng7_vt2018</td>
+<td align="right">9</td>
+<td align="right">4.094</td>
+<td align="right">+1.094</td>
+<td align="right">4.625</td>
+<td align="right">+1.625</td>
+<td>yes</td>
+</tr>
+</tbody></table>
+<p>Four courses place an anchor layer and a student layer on the same figure, and
+their medians sit close together in every case. The <code>eng6_vt2026</code> figures carry
+their 9-row anchor layer with no student layer beside it; that layer&#39;s median
+places it below both <code>eng6_vt2023</code> student layers and below the <code>eng6_vt2023</code>
+anchor layer on the same axis.</p>
+<p><span id="the-d05-eng6vt2026-student-layer-drop"></span></p>
+<h2>The D05 eng6_vt2026 student-layer drop</h2>
+<p>TASK-HULE-20-41-01 D05 drops the <code>eng6_vt2026</code> student layer from the map. The
+basis is a forward measurement from the essay catalog&#39;s <code>checksum</code> column,
+recorded in <code>task_20_41_03_review_01.md</code> finding B1 and reverified independently
+in <code>task_20_41_03_results.md</code>: <strong>59 checksum-duplicate pairs exist between
+<code>eng6_vt2023_b</code> and <code>eng6_vt2026</code>, 57 of them still identical after text
+canonicalization, and the 281 scored rows resolve to 224 distinct texts per
+lane.</strong> All 59 duplicate groups fall between those two assignments and no other
+pair. The dual registration therefore covers 59 of the 60 <code>eng6_vt2026</code> rows, so
+that layer is very nearly a re-registration of <code>eng6_vt2023_b</code> rather than an
+independent cohort.</p>
+<p>The parent reconciliation record first measured this backward, from prediction
+equality, and reported 21 pairs. That route undercounts: the two cohorts carry
+different prompt authorities (<code>eng6_np_vt_2023.prompt.full.v1</code> against
+<code>eng6_np_vt_2026.prompt.full.v1</code>), so prompt-bound features differ even on
+identical essay text, and a duplicate surfaces through predictions only when
+both GBDT ensembles land it in identical leaves. The 21 pairs are a strict
+subset of the 59, and the forward count supersedes them.</p>
+<p><code>eng6_vt2023_b</code>, at 62 rows, is consequently the only student layer in the map
+carrying that essay population. The separate <code>eng6_vt2023_a</code> layer, at 60 rows,
+is unaffected by the duplication finding and remains in the map. The two
+<code>eng6_vt2026</code> figures are still produced with their anchor and ELLIPSE layers,
+so the anchor instrument for that course year stays visible on the shared axis.</p>
+<p><strong>Superseded numbers, quoted once so the record shows what was dropped.</strong> The
+<code>eng6_vt2026</code> student layer&#39;s previously computed statistics were n=60 per lane,
+handcrafted median 4.102 with offset +1.102, combined median 4.130 with offset
++1.130, and 53.3 percent of handcrafted and 58.3 percent of combined values at
+4.0 or above. These are superseded and appear in no figure and in no row of the
+committed
+<a href="ellipse-overlap-map-v0/center_mass_stats.csv">center_mass_stats.csv</a> or its
+retained original <code>task_20_41_01_center_mass_stats.csv</code>.</p>
+<p>The duplication is a property of the catalog, not a defect in the scoring run.
+The scorers behaved deterministically on identical input bytes, every row-count
+gate held, and the digest chain is unaffected. Which of the two registrations is
+correct is a catalog and intake question outside ST-HULE-20-41&#39;s scope.</p>
+<p><span id="mandatory-caveats"></span></p>
+<h2>Mandatory caveats</h2>
+<p>These travel with every citation of the numbers above and must not be dropped.</p>
+<ul>
+<li><strong>One value sits outside the plotted axis.</strong> One handcrafted student
+prediction in <code>eng6_vt2023_a</code> has the value 5.099, above the 5.0 axis ceiling.
+It enters every statistic in the table and is the only value in any layer
+outside the plotted <code>[1.0, 5.0]</code> range. It is gradient-boosting overshoot on 1
+of 281 rows, not an artifact defect, and it is unaffected by the D05 drop.</li>
+<li><strong>Three low-n layers.</strong> The <code>eng7_vt2018</code> student cohort at n=7, the
+<code>eng6_vt2026</code> anchor layer at n=9, and the <code>eng7_vt2018</code> anchor layer at n=9
+fall under the spec&#39;s <code>n &lt; 10</code> presentation marker. Their statistics are
+computed and reported by the same rules with no adjustment; a smooth curve over
+few points is not a well-estimated density. Every figure also carries a rug of
+individual values, so the sample behind each curve stays visible.</li>
+<li><strong>281 scored rows are 224 distinct texts.</strong> Any pooled estimate over all 281
+rows double-weights the 59 duplicated essays, and treating <code>eng6_vt2023_b</code> and
+<code>eng6_vt2026</code> as two independent samples is near-totally circular.</li>
+<li><strong>The merged CSV carries no text digest.</strong>
+<code>task_20_41_03_student_predictions.csv</code> carries <code>essay_uid</code>, <code>course_code</code>,
+<code>assignment_id</code>, <code>cohort_label</code>, <code>lane</code>, <code>raw_prediction</code>, and
+<code>calibrated_grade_band</code> and no text digest, so duplicate content is
+undetectable from that file alone. The duplication count above comes from the
+catalog <code>checksum</code> column, not from the CSV.</li>
+<li><strong>KDE curves are uncorrected at the boundaries.</strong> Mass outside <code>[1.0, 5.0]</code> is
+not drawn and no truncation or reflection correction is applied, so
+near-boundary curve heights must not be read as corrected densities.</li>
+</ul>
+</article>
+  </main>
+</body>
+</html>

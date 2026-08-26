@@ -21,10 +21,19 @@ for `research.hule.education`.
   `public/huleedu-system-overview.html` before deployment.
 - Preserve the canonical public path
   `https://research.hule.education/huleedu-system-overview/` across updates.
+- Keep public evidence sources in `evidence/manifest.json`, pinned to their
+  retained source revisions. Publish only reviewed records, aggregate
+  artifacts, and sanitized extracts; never publish student text, identity
+  mappings, credentials, local absolute paths, or server diagnostics.
+- Render evidence Markdown during the build and serve both the HTML page and
+  its Markdown source as static files. Link overview claims directly to stable
+  evidence-page headings.
 
 ## Validation
 
 - `npm run build`
+- `npm run evidence:import` when refreshing sources, followed by review of the
+  imported public tree before commit.
 - `docker compose config --quiet`
 - `docker compose build`
 - Confirm the container is healthy and its effective restart policy is
@@ -32,4 +41,3 @@ for `research.hule.education`.
 - Confirm the canonical public path returns HTTP 200 over HTTPS with the
   expected page title and a certificate for `research.hule.education`.
 - `git diff --check`
-

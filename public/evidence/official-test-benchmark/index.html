@@ -1,0 +1,1176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Official ELLIPSE test benchmark | HuleEdu</title>
+  <link rel="icon" href="/favicon.svg">
+  <link rel="stylesheet" href="/evidence/evidence.css">
+  <link rel="canonical" href="https://research.hule.education/evidence/official-test-benchmark/">
+</head>
+<body>
+  <header class="page-header">
+    <a class="back-link" href="/huleedu-system-overview/">HuleEdu system overview</a>
+    <h1>Official ELLIPSE test benchmark</h1>
+    <p class="source-line"><a href="/evidence/source/official-test-benchmark.md">Markdown source</a> · <code>docs/reference/ref-hule-research-ellipse-frozen-scorer-benchmark-against-choi-et-al-2026-ellipse-frozen-scorer-benchmark-against-choi-et-al-2026.md</code> · <code>310ab8d4cb80f5fcde2f0c75e1e141366f7a991c</code></p>
+  </header>
+  <main>
+    <article class="markdown-body"><p><span id="research-purpose-and-boundary"></span></p>
+<h2>Research Purpose And Boundary</h2>
+<p>This reference reports the predeclared Story 20-44 evaluation of two frozen
+ELLIPSE scorer arms in the whitebox and hybrid lanes, plus their fixed
+equal-weight late fusions. It asks whether the frozen scorers retain their
+performance when the inherited prompt and 200-to-1,000-word filters are
+removed, while excluding four source rows below the accepted 50-alphabetic-
+token essay boundary.</p>
+<p>The comparison is to the ELLIPSE Overall QWK <code>0.726</code> reported by Choi et al.
+in Table 8 of <em>Enhancing Automated Essay Scoring With Three Techniques:
+Two-Stage Fine-Tuning, Score Alignment, and Self-Training</em>, IEEE Access 14
+(2026), DOI <code>10.1109/ACCESS.2026.3718177</code>. The comparison is descriptive.
+It does not select a model, change a frozen scorer, authorize production use,
+or claim a protocol-identical replication.</p>
+<p><span id="evidence-and-sources"></span></p>
+<h2>Evidence And Sources</h2>
+<ul>
+<li>The predeclared protocol was retained at
+<code>.orchestration/context/sessions/01a02917-0817-773e-90d4-43870e2002b7/evidence/task-hule-20-44-02/evaluation-protocol-v1.json</code>
+at <code>2026-08-25T20:16:28Z</code>, SHA-256
+<code>92f9e02f66a32a245597a8a289031481f4a5f8c45e670fe2806dd277f5b82b97</code>,
+before any full-population metric was computed.</li>
+<li>The four 2,567-row prediction files and their common row order are bound by
+<code>full-prediction-manifest.json</code>, file SHA-256
+<code>f10154bb5f3aca2af0c3ef8b0aa3d5e40ab0441660bc98e668e87a179865a97e</code>
+and ordered-record digest
+<code>4da3c55c22d8b2a43d1dce9cce47aa8ee04c7407b8f29c7a32b25047d28c239a</code>.</li>
+<li>The population manifest SHA-256 is
+<code>67b37d94aa5bedec811cb4f88d50e0fd56b817c99a562f0d1c73fabda383c601</code>.
+It admits 2,259 sealed rows and 308 extension rows: 138 excluded-prompt,
+120 short, and 50 long rows. Source indices <code>361</code>, <code>1278</code>, <code>1589</code>, and
+<code>2446</code> are excluded because they contain only 25-46 alphabetic tokens.</li>
+<li>The one-pass result is retained at
+<code>.orchestration/context/sessions/01a02917-0817-773e-90d4-43870e2002b7/evidence/task-hule-20-44-02/evaluation-v1.json</code>,
+SHA-256
+<code>daa09380618dd1612d7a95b747b50825d9999cc64151c91d1d90f68acac143cd</code>.
+Its compact one-off evaluator has SHA-256
+<code>e5aba8a2eca504d7030f6aef51c36d7e30a07c750ac194020d0a494782adb6f2</code>.
+A second invocation over the same inputs produced byte-identical output.</li>
+<li>The sealed view exactly reproduced the retained Task 43 QWK, MAE, and
+adjacent-agreement values for all four shared cells. The four pinned Task 43
+metric-file digests are recorded in the result.</li>
+<li>The post-benchmark component protocol was committed at <code>ff2d8e55a</code> before
+fitting. Its canonical result is retained at
+<code>.orchestration/context/sessions/01a02917-0817-773e-90d4-43870e2002b7/evidence/task-hule-20-44-03/component-audit-result-v3.json</code>,
+SHA-256
+<code>79e9f8c1d17ec6fa36e3d035cf620d0468462b8190628bc4cd6383733f185bbb</code>.
+The 37-row scalar inventory SHA-256 is
+<code>111b11ea70c85ccaa8f68744aad17ffcfed5ce8205b0f35be82f1aeb35c3166e</code>.
+The exact fit-driver SHA-256 is
+<code>f054bdb70447d5e8432384de8793ef5e4e22c7af3eba0afaad067576d82e384b</code>;
+the post-freeze continuation SHA-256 is
+<code>0bb4f0e26e1d64ec4f13987fc2a8c3c54ea3e996fc4435b4ec196b5d08e43388</code>.</li>
+<li>The embeddings, 37-scalar, and 33-scalar freeze-manifest SHA-256 values are,
+respectively,
+<code>cb2006ae3d51b860fefdfa6c7391085a1f9b428e1a4c1a66826bc3452a556925</code>,
+<code>a91a46abfa298bd667c46c30224e2c9c4f1b6015d4d6088e64611d40cb5edf95</code>,
+and <code>70a4e9c1892bb1fd5b50a931be01924ea9e8cb7c163ba5527cecec2584e1524f</code>.
+Each binds five model-member digests and the exact feature-name projection.</li>
+<li>External protocol facts come from the retained direct PDF extraction
+<code>evidence/planning-fair-ellipse-benchmark/choi-2026-protocol.md</code> and the
+primary public-release reconciliation
+<code>ellipse-official-split-external-sources.md</code>. The public ELLIPSE CSVs contain
+3,911 train rows and 2,571 test rows. The papers state that they use the
+official test set but do not print the numeric split sizes; matching their
+test population to 2,571 is therefore a well-supported inference from the
+exact 6,482-row corpus match and official-split statement.</li>
+</ul>
+<p><span id="findings-and-interpretation"></span></p>
+<h2>Findings And Interpretation</h2>
+<p><span id="benchmark-claim"></span></p>
+<h3>Benchmark claim</h3>
+<p>On the declared 2,567-row construct-admitted projection, raw-inclusive hybrid
+QWK was <code>0.7563</code>, compared with the Choi et al. ELLIPSE Overall cell <code>0.726</code>.
+The numerical difference is <code>0.0303</code>. It is a descriptive comparison, not a
+superiority, significance, or protocol-identical claim. This experiment
+excludes four sub-50-token source rows and differs in training population,
+target structure, model architecture, refitting, and input handling. The
+fixed equal-weight fusion had full-population QWK <code>0.7118</code> for raw base and
+<code>0.7235</code> for raw inclusive.</p>
+<p><span id="raw-inclusive-hybrid-architecture-and-provenance"></span></p>
+<h3>Raw-inclusive hybrid architecture and provenance</h3>
+<p><code>Raw-inclusive</code> names the training arm, not an embedding adaptation. Its
+fitting population is the 3,479-row base population plus 1,563 recovered
+candidate essays, for 5,042 final-fit rows. The base-only arm uses the same
+architecture on 3,479 rows. Both arms use the same unadapted pretrained
+<code>microsoft/deberta-v3-base</code> encoder at model and tokenizer revision
+<code>8ccc9b6f36199bec6961081d44eb72fb3f7353f3</code>. The current path has no LoRA,
+supervised transformer fine-tuning, cross-fitted encoder, or chunk-embedding
+aggregation.</p>
+<p>The encoder receives normalized source text, truncates one model input to 512
+tokens, averages the final four hidden layers, and then takes an
+attention-mask-weighted token mean. It emits 768 float32 coordinates. This is
+the raw pretrained encoder path; it is distinct from the historical Story 07
+LoRA-adapted, cross-fitted DeBERTa representations.</p>
+<p>The <code>combined.current.v1</code> source matrix contains those 768 coordinates followed
+by 38 scalar features. Four suffix scalars also derive from the accepted
+DeBERTa runtime: sentence-similarity variance, essay/prompt similarity,
+intro/prompt similarity, and minimum paragraph relevance. The other scalar
+families use their declared text-analysis paths. Task 43 fitted the frozen
+hybrid on its recorded 805-column research projection: 768 embedding
+coordinates plus 37 scalar columns. That projection omitted
+<code>l2_dictionary_corrections_per_100_words</code> for the historical experiment; it
+does not remove the feature from the 806-column accepted source registry or
+from future scorer work.</p>
+<p>The fitted head is one early-fusion XGBoost regression ensemble, not a mean of
+separately trained embedding and linguistic scorers. Its recipe is
+<code>reg:squarederror</code>, depth 4, learning rate <code>0.03</code>, minimum child weight 20,
+L2 regularization 2, no L1 regularization, full row and column sampling, at
+most 1,500 rounds, and 100-round early stopping. Five fixed prompt-holdout
+folds validate only the 3,479 base rows; eligible candidate rows augment fold
+training by prompt. Square-root inverse-frequency grade weights are capped at
+3. Final fitting uses seeds 42-46 and 235 rounds, derived from the five fold
+best iterations.</p>
+<p>The ensemble mean is the raw prediction. The frozen split-tail calibration
+then clips to 1-5, bins against its OOF-derived cutpoints, and emits one of the
+nine half-grade values. The two 50/50 fusion cells are different: they average
+the whitebox and hybrid raw predictions, then apply nearest-half mapping once.
+No official-test result selected or adjusted either mapping.</p>
+<p><span id="training-and-test-separation"></span></p>
+<h3>Training and test separation</h3>
+<p>The 3,479 base rows come from the retained training-side accepted generation.
+The 1,563 recovered candidates are training augmentation only. Their producer
+excluded normalized-text matches against all 2,571 raw official-test rows, so
+exact content overlap under that normalization is ruled out. Candidate rows
+enter an OOF fold only when their prompt is not the held-out prompt. Final
+Task 43 fitting froze model membership, rounds, and calibration before its
+official-test prediction step. Task 03 likewise fits and freezes all reduced
+heads before reading the Task 44 full-population matrices or targets.</p>
+<p>This supports train/test content separation and within-run freeze chronology.
+It does not establish that the official test was a pristine, globally
+single-use confirmation set. The test has been evaluated in earlier governed
+experiments, candidate IDs do not retain a complete source-row crosswalk, and
+the retained evidence cannot prove that every historical architecture choice
+was independent of prior test observations. No one-use or selection-
+independence claim is made here.</p>
+<p><span id="matched-raw-inclusive-component-diagnostics"></span></p>
+<h3>Matched raw-inclusive component diagnostics</h3>
+<p>Task 03 fitted three reduced heads after the six-cell benchmark was complete.
+Each uses the same 5,042 fitting rows, 3,479 base-row prompt-holdout OOF
+validation positions, training recipe, weights, five seeds, and split-tail
+mapping as the 805-column raw-inclusive hybrid. These are matched diagnostic
+refits, not additive submodels inside the hybrid.</p>
+<table>
+<thead>
+<tr>
+<th>Fitted head</th>
+<th align="right">Columns</th>
+<th align="right">OOF QWK</th>
+<th align="right">QWK delta</th>
+<th align="right">OOF MAE</th>
+<th align="right">MAE delta</th>
+<th align="right">&gt;=1</th>
+<th align="right">&gt;1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Full hybrid reference</td>
+<td align="right">805</td>
+<td align="right">0.7490</td>
+<td align="right">-</td>
+<td align="right">0.3211</td>
+<td align="right">-</td>
+<td align="right">283</td>
+<td align="right">17</td>
+</tr>
+<tr>
+<td>Embeddings only</td>
+<td align="right">768</td>
+<td align="right">0.7335</td>
+<td align="right">-0.0155</td>
+<td align="right">0.3352</td>
+<td align="right">+0.0141</td>
+<td align="right">308</td>
+<td align="right">25</td>
+</tr>
+<tr>
+<td>Complete no-L2 scalar suffix</td>
+<td align="right">37</td>
+<td align="right">0.6280</td>
+<td align="right">-0.1210</td>
+<td align="right">0.3971</td>
+<td align="right">+0.0760</td>
+<td align="right">534</td>
+<td align="right">83</td>
+</tr>
+<tr>
+<td>Non-embedding scalars</td>
+<td align="right">33</td>
+<td align="right">0.6309</td>
+<td align="right">-0.1181</td>
+<td align="right">0.3938</td>
+<td align="right">+0.0727</td>
+<td align="right">522</td>
+<td align="right">78</td>
+</tr>
+</tbody></table>
+<p>The following official-test view was opened only after all three reduced
+heads and their 15 model members were frozen. Because Task 03 was requested
+after the benchmark result existed, these values are descriptive and are not
+model-selection evidence.</p>
+<table>
+<thead>
+<tr>
+<th>Fitted head</th>
+<th align="right">Full QWK</th>
+<th align="right">QWK delta</th>
+<th align="right">Full MAE</th>
+<th align="right">MAE delta</th>
+<th align="right">Adjacent</th>
+<th align="right">&gt;=1</th>
+<th align="right">&gt;1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Full hybrid reference</td>
+<td align="right">0.7563</td>
+<td align="right">-</td>
+<td align="right">0.3041</td>
+<td align="right">-</td>
+<td align="right">91.7%</td>
+<td align="right">212</td>
+<td align="right">5</td>
+</tr>
+<tr>
+<td>Embeddings only</td>
+<td align="right">0.7474</td>
+<td align="right">-0.0090</td>
+<td align="right">0.3115</td>
+<td align="right">+0.0074</td>
+<td align="right">91.3%</td>
+<td align="right">223</td>
+<td align="right">7</td>
+</tr>
+<tr>
+<td>Complete no-L2 scalar suffix</td>
+<td align="right">0.6398</td>
+<td align="right">-0.1165</td>
+<td align="right">0.3983</td>
+<td align="right">+0.0943</td>
+<td align="right">84.4%</td>
+<td align="right">400</td>
+<td align="right">52</td>
+</tr>
+<tr>
+<td>Non-embedding scalars</td>
+<td align="right">0.6386</td>
+<td align="right">-0.1177</td>
+<td align="right">0.3944</td>
+<td align="right">+0.0904</td>
+<td align="right">85.2%</td>
+<td align="right">381</td>
+<td align="right">45</td>
+</tr>
+</tbody></table>
+<p>The embeddings-only head is <code>0.0155</code> OOF QWK and <code>0.0090</code> full-population
+QWK below the full hybrid. Both scalar-only heads are about <code>0.118</code> to
+<code>0.121</code> OOF QWK below it. Adding the four embedding-derived semantic scalars
+to the 33 other scalars changes OOF and full-population QWK in opposite
+directions. These refit differences do not assign causal or additive QWK
+credit to any feature set; XGBoost can use interactions and substitute among
+correlated inputs.</p>
+<p><span id="frozen-hybrid-attribution-families-and-overlap"></span></p>
+<h3>Frozen-hybrid attribution, families, and overlap</h3>
+<p>The existing five-member 805-column hybrid was evaluated on its 5,042-row
+training matrix with member-averaged TreeSHAP. Before attribution, all five
+ordered model paths, seeds, and file SHA-256 values were matched to
+<code>experiment-freeze.json</code>; each frozen member has SHA-256
+<code>d0ea0b7bfcf96fb9012ab2fd1dd560bb983a1d07054aab7441b8d2ec77c5912e</code>.
+The averaged contributions reconstruct the ensemble raw predictions with
+maximum absolute error <code>0.00000477</code>. The table sums mean absolute TreeSHAP
+within each accepted family. It measures model attribution on that matrix,
+not independent QWK contribution. Family widths differ, so the 768-coordinate
+embedding total is also not a per-feature comparison.</p>
+<table>
+<thead>
+<tr>
+<th>Accepted construct family</th>
+<th align="right">Features</th>
+<th align="right">Sum mean absolute TreeSHAP</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DeBERTa mean-last-four embedding</td>
+<td align="right">768</td>
+<td align="right">1.199600</td>
+</tr>
+<tr>
+<td>Frequency and sophistication</td>
+<td align="right">2</td>
+<td align="right">0.019017</td>
+</tr>
+<tr>
+<td>Moving-average lexical diversity</td>
+<td align="right">1</td>
+<td align="right">0.000000</td>
+</tr>
+<tr>
+<td>Concreteness norms</td>
+<td align="right">2</td>
+<td align="right">0.000901</td>
+</tr>
+<tr>
+<td>Lexical-decision norms</td>
+<td align="right">2</td>
+<td align="right">0.002890</td>
+</tr>
+<tr>
+<td>Word-prevalence norms</td>
+<td align="right">2</td>
+<td align="right">0.000738</td>
+</tr>
+<tr>
+<td>Correction and error rates</td>
+<td align="right">4</td>
+<td align="right">0.021273</td>
+</tr>
+<tr>
+<td>Length statistics</td>
+<td align="right">2</td>
+<td align="right">0.053890</td>
+</tr>
+<tr>
+<td>Lexical statistics</td>
+<td align="right">1</td>
+<td align="right">0.000103</td>
+</tr>
+<tr>
+<td>Readability and sentence length</td>
+<td align="right">4</td>
+<td align="right">0.006918</td>
+</tr>
+<tr>
+<td>Prompt relevance, embedding-derived</td>
+<td align="right">3</td>
+<td align="right">0.000926</td>
+</tr>
+<tr>
+<td>Semantic coherence, embedding-derived</td>
+<td align="right">1</td>
+<td align="right">0.000377</td>
+</tr>
+<tr>
+<td>Syntactic parse</td>
+<td align="right">3</td>
+<td align="right">0.001754</td>
+</tr>
+<tr>
+<td>Causal-predicate complex nominal</td>
+<td align="right">1</td>
+<td align="right">0.000376</td>
+</tr>
+<tr>
+<td>Complex nominal density</td>
+<td align="right">1</td>
+<td align="right">0.000095</td>
+</tr>
+<tr>
+<td>Clause rates</td>
+<td align="right">4</td>
+<td align="right">0.001334</td>
+</tr>
+<tr>
+<td>RST satellite relation</td>
+<td align="right">1</td>
+<td align="right">0.001632</td>
+</tr>
+<tr>
+<td>Word-range dispersion</td>
+<td align="right">3</td>
+<td align="right">0.000213</td>
+</tr>
+</tbody></table>
+<p>The embedding family accounts for <code>1.199600</code> of the <code>1.312038</code> summed mean
+absolute attribution (<code>91.43%</code>); all 37 scalar columns account for <code>8.57%</code>.
+This is the fitted model&#39;s attribution distribution, not an accuracy share.</p>
+<p>The complete 37-feature attribution table, scalar-to-embedding correlations,
+and high-correlation scalar pairs are retained in the governed
+<a href="/evidence/official-test-benchmark-feature-detail/">scalar attribution inventory</a>.
+That inventory also records embedding-derived lineage, constant-feature and
+exact-duplicate checks, and the limits of interpreting association as
+redundancy or causal contribution.</p>
+<p><span id="post-training-grade-band-mapping"></span></p>
+<h3>Post-training grade-band mapping</h3>
+<p>The retained raw-inclusive OOF contrast applies two mappings to identical raw
+predictions. Split-tail is the frozen selected mapping; sealed half-band is
+plain nearest-half rounding.</p>
+<table>
+<thead>
+<tr>
+<th>OOF mapping</th>
+<th align="right">QWK</th>
+<th align="right">MAE</th>
+<th align="right">&gt;=1</th>
+<th align="right">&gt;1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Split-tail</td>
+<td align="right">0.7490</td>
+<td align="right">0.3211</td>
+<td align="right">283</td>
+<td align="right">17</td>
+</tr>
+<tr>
+<td>Sealed half-band</td>
+<td align="right">0.7428</td>
+<td align="right">0.3094</td>
+<td align="right">240</td>
+<td align="right">15</td>
+</tr>
+<tr>
+<td>Split-tail minus half-band</td>
+<td align="right">+0.0062</td>
+<td align="right">+0.0116</td>
+<td align="right">+43</td>
+<td align="right">+2</td>
+</tr>
+</tbody></table>
+<p>On these 3,479 OOF rows, split-tail raises QWK by <code>0.006204</code> while increasing
+MAE by <code>0.011641</code>, errors of at least one grade by 43, and errors larger than
+one grade by two. This is a metric trade-off from terminal mapping only; the
+underlying raw predictions are unchanged, and no official-test value selected
+the cutpoints.</p>
+<p><span id="full-2-567-row-result"></span></p>
+<h3>Full 2,567-row result</h3>
+<p>Rates are percentages. <code>&gt;=1</code> counts mapped errors of at least one grade;
+<code>&gt;1</code> counts errors larger than one grade.</p>
+<table>
+<thead>
+<tr>
+<th>Declared cell</th>
+<th align="right">QWK</th>
+<th align="right">MAE</th>
+<th align="right">RMSE</th>
+<th align="right">Bias</th>
+<th align="right">Exact</th>
+<th align="right">Adjacent</th>
+<th align="right">&gt;=1</th>
+<th align="right">&gt;1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Base whitebox</td>
+<td align="right">0.6438</td>
+<td align="right">0.3855</td>
+<td align="right">0.5314</td>
+<td align="right">0.0614</td>
+<td align="right">39.0%</td>
+<td align="right">85.6%</td>
+<td align="right">370</td>
+<td align="right">42</td>
+</tr>
+<tr>
+<td>Base hybrid</td>
+<td align="right">0.7435</td>
+<td align="right">0.3103</td>
+<td align="right">0.4458</td>
+<td align="right">0.0092</td>
+<td align="right">46.4%</td>
+<td align="right">91.8%</td>
+<td align="right">210</td>
+<td align="right">7</td>
+</tr>
+<tr>
+<td>Base 50/50 fusion</td>
+<td align="right">0.7118</td>
+<td align="right">0.3070</td>
+<td align="right">0.4385</td>
+<td align="right">0.0199</td>
+<td align="right">46.1%</td>
+<td align="right">92.8%</td>
+<td align="right">185</td>
+<td align="right">7</td>
+</tr>
+<tr>
+<td>Inclusive whitebox</td>
+<td align="right">0.6524</td>
+<td align="right">0.3792</td>
+<td align="right">0.5232</td>
+<td align="right">0.0438</td>
+<td align="right">39.3%</td>
+<td align="right">86.4%</td>
+<td align="right">348</td>
+<td align="right">39</td>
+</tr>
+<tr>
+<td>Inclusive hybrid</td>
+<td align="right">0.7563</td>
+<td align="right">0.3041</td>
+<td align="right">0.4419</td>
+<td align="right">0.0197</td>
+<td align="right">47.6%</td>
+<td align="right">91.7%</td>
+<td align="right">212</td>
+<td align="right">5</td>
+</tr>
+<tr>
+<td>Inclusive 50/50 fusion</td>
+<td align="right">0.7235</td>
+<td align="right">0.3062</td>
+<td align="right">0.4391</td>
+<td align="right">0.0316</td>
+<td align="right">46.4%</td>
+<td align="right">92.6%</td>
+<td align="right">190</td>
+<td align="right">7</td>
+</tr>
+</tbody></table>
+<p><span id="sealed-2-259-row-continuity-view"></span></p>
+<h3>Sealed 2,259-row continuity view</h3>
+<table>
+<thead>
+<tr>
+<th>Declared cell</th>
+<th align="right">QWK</th>
+<th align="right">MAE</th>
+<th align="right">RMSE</th>
+<th align="right">Bias</th>
+<th align="right">Exact</th>
+<th align="right">Adjacent</th>
+<th align="right">&gt;=1</th>
+<th align="right">&gt;1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Base whitebox</td>
+<td align="right">0.6461</td>
+<td align="right">0.3869</td>
+<td align="right">0.5321</td>
+<td align="right">0.0664</td>
+<td align="right">38.9%</td>
+<td align="right">85.3%</td>
+<td align="right">331</td>
+<td align="right">34</td>
+</tr>
+<tr>
+<td>Base hybrid</td>
+<td align="right">0.7474</td>
+<td align="right">0.3072</td>
+<td align="right">0.4433</td>
+<td align="right">0.0151</td>
+<td align="right">46.8%</td>
+<td align="right">92.0%</td>
+<td align="right">180</td>
+<td align="right">7</td>
+</tr>
+<tr>
+<td>Base 50/50 fusion</td>
+<td align="right">0.7139</td>
+<td align="right">0.3070</td>
+<td align="right">0.4377</td>
+<td align="right">0.0224</td>
+<td align="right">46.0%</td>
+<td align="right">92.8%</td>
+<td align="right">162</td>
+<td align="right">5</td>
+</tr>
+<tr>
+<td>Inclusive whitebox</td>
+<td align="right">0.6545</td>
+<td align="right">0.3792</td>
+<td align="right">0.5231</td>
+<td align="right">0.0511</td>
+<td align="right">39.4%</td>
+<td align="right">86.3%</td>
+<td align="right">310</td>
+<td align="right">32</td>
+</tr>
+<tr>
+<td>Inclusive hybrid</td>
+<td align="right">0.7570</td>
+<td align="right">0.3035</td>
+<td align="right">0.4417</td>
+<td align="right">0.0250</td>
+<td align="right">47.8%</td>
+<td align="right">91.8%</td>
+<td align="right">186</td>
+<td align="right">5</td>
+</tr>
+<tr>
+<td>Inclusive 50/50 fusion</td>
+<td align="right">0.7244</td>
+<td align="right">0.3066</td>
+<td align="right">0.4384</td>
+<td align="right">0.0347</td>
+<td align="right">46.3%</td>
+<td align="right">92.7%</td>
+<td align="right">166</td>
+<td align="right">5</td>
+</tr>
+</tbody></table>
+<p>All four non-fusion cells matched their retained Task 43 QWK, MAE, and
+adjacent-agreement values exactly. The fusion cells were computed in this run
+from the same sealed rows under the predeclared rule.</p>
+<p><span id="raw-inclusive-hybrid-population-stability"></span></p>
+<h3>Raw-inclusive hybrid population stability</h3>
+<p>The 308 restored rows changed the inclusive-hybrid aggregate only slightly.
+The restored-only QWK is computed directly on those rows; it is not the
+difference between the sealed and full QWKs, because QWK is non-additive.</p>
+<table>
+<thead>
+<tr>
+<th>View</th>
+<th align="right">n</th>
+<th align="right">QWK</th>
+<th align="right">MAE</th>
+<th align="right">RMSE</th>
+<th align="right">Bias</th>
+<th align="right">Exact</th>
+<th align="right">Adjacent</th>
+<th align="right">&gt;=1</th>
+<th align="right">&gt;1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Sealed</td>
+<td align="right">2,259</td>
+<td align="right">0.7570</td>
+<td align="right">0.3035</td>
+<td align="right">0.4417</td>
+<td align="right">0.0250</td>
+<td align="right">47.8%</td>
+<td align="right">91.8%</td>
+<td align="right">186</td>
+<td align="right">5</td>
+</tr>
+<tr>
+<td>Full</td>
+<td align="right">2,567</td>
+<td align="right">0.7563</td>
+<td align="right">0.3041</td>
+<td align="right">0.4419</td>
+<td align="right">0.0197</td>
+<td align="right">47.6%</td>
+<td align="right">91.7%</td>
+<td align="right">212</td>
+<td align="right">5</td>
+</tr>
+<tr>
+<td>Restored only</td>
+<td align="right">308</td>
+<td align="right">0.7102</td>
+<td align="right">0.3084</td>
+<td align="right">0.4432</td>
+<td align="right">-0.0195</td>
+<td align="right">46.8%</td>
+<td align="right">91.6%</td>
+<td align="right">26</td>
+<td align="right">0</td>
+</tr>
+</tbody></table>
+<p>Full minus sealed was QWK <code>-0.0006588</code>, MAE <code>+0.0005986</code>, RMSE
+<code>+0.0001793</code>, exact agreement <code>-0.1213</code> percentage points, and adjacent
+agreement <code>-0.0249</code> points. Errors larger than one grade remained at five.
+The result therefore supports near-flat aggregate performance under this
+population extension. It does not imply that every restored subgroup has the
+same error distribution as the sealed rows.</p>
+<p><span id="restored-population-decomposition"></span></p>
+<h3>Restored-population decomposition</h3>
+<table>
+<thead>
+<tr>
+<th>Declared cell</th>
+<th>Subgroup</th>
+<th align="right">n</th>
+<th align="right">QWK</th>
+<th align="right">MAE</th>
+<th align="right">RMSE</th>
+<th align="right">Bias</th>
+<th align="right">Exact</th>
+<th align="right">Adjacent</th>
+<th align="right">&gt;=1</th>
+<th align="right">&gt;1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Base whitebox</td>
+<td>Excluded prompt</td>
+<td align="right">138</td>
+<td align="right">0.4719</td>
+<td align="right">0.3623</td>
+<td align="right">0.5178</td>
+<td align="right">-0.1304</td>
+<td align="right">42.0%</td>
+<td align="right">88.4%</td>
+<td align="right">16</td>
+<td align="right">4</td>
+</tr>
+<tr>
+<td>Base whitebox</td>
+<td>Short</td>
+<td align="right">120</td>
+<td align="right">0.4012</td>
+<td align="right">0.4125</td>
+<td align="right">0.5496</td>
+<td align="right">0.1458</td>
+<td align="right">35.0%</td>
+<td align="right">84.2%</td>
+<td align="right">19</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td>Base whitebox</td>
+<td>Long</td>
+<td align="right">50</td>
+<td align="right">0.7232</td>
+<td align="right">0.3200</td>
+<td align="right">0.4899</td>
+<td align="right">0.1600</td>
+<td align="right">48.0%</td>
+<td align="right">92.0%</td>
+<td align="right">4</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td>Base hybrid</td>
+<td>Excluded prompt</td>
+<td align="right">138</td>
+<td align="right">0.5571</td>
+<td align="right">0.3297</td>
+<td align="right">0.4682</td>
+<td align="right">-0.1268</td>
+<td align="right">44.9%</td>
+<td align="right">89.1%</td>
+<td align="right">15</td>
+<td align="right">0</td>
+</tr>
+<tr>
+<td>Base hybrid</td>
+<td>Short</td>
+<td align="right">120</td>
+<td align="right">0.6505</td>
+<td align="right">0.3208</td>
+<td align="right">0.4449</td>
+<td align="right">0.0625</td>
+<td align="right">43.3%</td>
+<td align="right">92.5%</td>
+<td align="right">9</td>
+<td align="right">0</td>
+</tr>
+<tr>
+<td>Base hybrid</td>
+<td>Long</td>
+<td align="right">50</td>
+<td align="right">0.6963</td>
+<td align="right">0.3700</td>
+<td align="right">0.4950</td>
+<td align="right">-0.0100</td>
+<td align="right">38.0%</td>
+<td align="right">88.0%</td>
+<td align="right">6</td>
+<td align="right">0</td>
+</tr>
+<tr>
+<td>Base 50/50 fusion</td>
+<td>Excluded prompt</td>
+<td align="right">138</td>
+<td align="right">0.5444</td>
+<td align="right">0.2971</td>
+<td align="right">0.4504</td>
+<td align="right">-0.1087</td>
+<td align="right">50.0%</td>
+<td align="right">92.0%</td>
+<td align="right">11</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td>Base 50/50 fusion</td>
+<td>Short</td>
+<td align="right">120</td>
+<td align="right">0.6092</td>
+<td align="right">0.3000</td>
+<td align="right">0.4233</td>
+<td align="right">0.1250</td>
+<td align="right">45.8%</td>
+<td align="right">94.2%</td>
+<td align="right">7</td>
+<td align="right">0</td>
+</tr>
+<tr>
+<td>Base 50/50 fusion</td>
+<td>Long</td>
+<td align="right">50</td>
+<td align="right">0.6734</td>
+<td align="right">0.3500</td>
+<td align="right">0.4743</td>
+<td align="right">0.0100</td>
+<td align="right">40.0%</td>
+<td align="right">90.0%</td>
+<td align="right">5</td>
+<td align="right">0</td>
+</tr>
+<tr>
+<td>Inclusive whitebox</td>
+<td>Excluded prompt</td>
+<td align="right">138</td>
+<td align="right">0.4988</td>
+<td align="right">0.3514</td>
+<td align="right">0.4982</td>
+<td align="right">-0.1341</td>
+<td align="right">42.0%</td>
+<td align="right">89.9%</td>
+<td align="right">14</td>
+<td align="right">3</td>
+</tr>
+<tr>
+<td>Inclusive whitebox</td>
+<td>Short</td>
+<td align="right">120</td>
+<td align="right">0.4076</td>
+<td align="right">0.4208</td>
+<td align="right">0.5572</td>
+<td align="right">0.0792</td>
+<td align="right">33.3%</td>
+<td align="right">85.0%</td>
+<td align="right">18</td>
+<td align="right">3</td>
+</tr>
+<tr>
+<td>Inclusive whitebox</td>
+<td>Long</td>
+<td align="right">50</td>
+<td align="right">0.6913</td>
+<td align="right">0.3600</td>
+<td align="right">0.5099</td>
+<td align="right">0.1200</td>
+<td align="right">42.0%</td>
+<td align="right">88.0%</td>
+<td align="right">6</td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td>Inclusive hybrid</td>
+<td>Excluded prompt</td>
+<td align="right">138</td>
+<td align="right">0.6387</td>
+<td align="right">0.2935</td>
+<td align="right">0.4361</td>
+<td align="right">-0.0978</td>
+<td align="right">50.0%</td>
+<td align="right">91.3%</td>
+<td align="right">12</td>
+<td align="right">0</td>
+</tr>
+<tr>
+<td>Inclusive hybrid</td>
+<td>Short</td>
+<td align="right">120</td>
+<td align="right">0.6510</td>
+<td align="right">0.3333</td>
+<td align="right">0.4610</td>
+<td align="right">0.0667</td>
+<td align="right">42.5%</td>
+<td align="right">90.8%</td>
+<td align="right">11</td>
+<td align="right">0</td>
+</tr>
+<tr>
+<td>Inclusive hybrid</td>
+<td>Long</td>
+<td align="right">50</td>
+<td align="right">0.7957</td>
+<td align="right">0.2900</td>
+<td align="right">0.4183</td>
+<td align="right">-0.0100</td>
+<td align="right">48.0%</td>
+<td align="right">94.0%</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+<tr>
+<td>Inclusive 50/50 fusion</td>
+<td>Excluded prompt</td>
+<td align="right">138</td>
+<td align="right">0.5850</td>
+<td align="right">0.2899</td>
+<td align="right">0.4299</td>
+<td align="right">-0.1087</td>
+<td align="right">49.3%</td>
+<td align="right">93.5%</td>
+<td align="right">9</td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td>Inclusive 50/50 fusion</td>
+<td>Short</td>
+<td align="right">120</td>
+<td align="right">0.5875</td>
+<td align="right">0.3208</td>
+<td align="right">0.4587</td>
+<td align="right">0.1125</td>
+<td align="right">45.0%</td>
+<td align="right">91.7%</td>
+<td align="right">10</td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td>Inclusive 50/50 fusion</td>
+<td>Long</td>
+<td align="right">50</td>
+<td align="right">0.7492</td>
+<td align="right">0.3000</td>
+<td align="right">0.4472</td>
+<td align="right">0.0800</td>
+<td align="right">50.0%</td>
+<td align="right">90.0%</td>
+<td align="right">5</td>
+<td align="right">0</td>
+</tr>
+</tbody></table>
+<p>For the raw-inclusive hybrid cell, the excluded-prompt and short groups
+have lower within-group QWK than the sealed view, while the long group does
+not. Short rows have the largest subgroup MAE (<code>0.3333</code>). Excluded-prompt
+rows show a negative bias (<code>-0.0978</code>); short rows show a positive bias
+(<code>0.0667</code>). QWK is not additive across subgroups, so these values explain the
+error shape but cannot be treated as weighted contributions to the full QWK.</p>
+<p><span id="full-population-target-bands"></span></p>
+<h3>Full-population target bands</h3>
+<p>Low means targets 1.0-2.0 (<code>n=225</code>), broad high means 4.0-5.0 (<code>n=425</code>),
+and exact high means 4.5-5.0 (<code>n=68</code>). Broad high contains exact high.</p>
+<table>
+<thead>
+<tr>
+<th>Declared cell</th>
+<th>Band</th>
+<th align="right">MAE</th>
+<th align="right">Bias</th>
+<th align="right">&gt;=1</th>
+<th align="right">&gt;1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Base whitebox</td>
+<td>Low</td>
+<td align="right">0.5333</td>
+<td align="right">0.4711</td>
+<td align="right">67</td>
+<td align="right">10</td>
+</tr>
+<tr>
+<td>Base whitebox</td>
+<td>Broad high</td>
+<td align="right">0.4318</td>
+<td align="right">-0.3000</td>
+<td align="right">78</td>
+<td align="right">11</td>
+</tr>
+<tr>
+<td>Base whitebox</td>
+<td>Exact high</td>
+<td align="right">0.4853</td>
+<td align="right">-0.4412</td>
+<td align="right">14</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td>Base hybrid</td>
+<td>Low</td>
+<td align="right">0.3689</td>
+<td align="right">0.2933</td>
+<td align="right">32</td>
+<td align="right">0</td>
+</tr>
+<tr>
+<td>Base hybrid</td>
+<td>Broad high</td>
+<td align="right">0.3882</td>
+<td align="right">-0.2776</td>
+<td align="right">56</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td>Base hybrid</td>
+<td>Exact high</td>
+<td align="right">0.4118</td>
+<td align="right">-0.3382</td>
+<td align="right">9</td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td>Base 50/50 fusion</td>
+<td>Low</td>
+<td align="right">0.4844</td>
+<td align="right">0.4711</td>
+<td align="right">42</td>
+<td align="right">3</td>
+</tr>
+<tr>
+<td>Base 50/50 fusion</td>
+<td>Broad high</td>
+<td align="right">0.4141</td>
+<td align="right">-0.3953</td>
+<td align="right">58</td>
+<td align="right">4</td>
+</tr>
+<tr>
+<td>Base 50/50 fusion</td>
+<td>Exact high</td>
+<td align="right">0.5735</td>
+<td align="right">-0.5735</td>
+<td align="right">16</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td>Inclusive whitebox</td>
+<td>Low</td>
+<td align="right">0.5044</td>
+<td align="right">0.4289</td>
+<td align="right">61</td>
+<td align="right">9</td>
+</tr>
+<tr>
+<td>Inclusive whitebox</td>
+<td>Broad high</td>
+<td align="right">0.4529</td>
+<td align="right">-0.3141</td>
+<td align="right">74</td>
+<td align="right">12</td>
+</tr>
+<tr>
+<td>Inclusive whitebox</td>
+<td>Exact high</td>
+<td align="right">0.4706</td>
+<td align="right">-0.4265</td>
+<td align="right">17</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td>Inclusive hybrid</td>
+<td>Low</td>
+<td align="right">0.3333</td>
+<td align="right">0.2400</td>
+<td align="right">28</td>
+<td align="right">0</td>
+</tr>
+<tr>
+<td>Inclusive hybrid</td>
+<td>Broad high</td>
+<td align="right">0.3212</td>
+<td align="right">-0.2435</td>
+<td align="right">48</td>
+<td align="right">2</td>
+</tr>
+<tr>
+<td>Inclusive hybrid</td>
+<td>Exact high</td>
+<td align="right">0.4632</td>
+<td align="right">-0.3897</td>
+<td align="right">8</td>
+<td align="right">1</td>
+</tr>
+<tr>
+<td>Inclusive 50/50 fusion</td>
+<td>Low</td>
+<td align="right">0.4533</td>
+<td align="right">0.4222</td>
+<td align="right">38</td>
+<td align="right">4</td>
+</tr>
+<tr>
+<td>Inclusive 50/50 fusion</td>
+<td>Broad high</td>
+<td align="right">0.3788</td>
+<td align="right">-0.3435</td>
+<td align="right">55</td>
+<td align="right">3</td>
+</tr>
+<tr>
+<td>Inclusive 50/50 fusion</td>
+<td>Exact high</td>
+<td align="right">0.5368</td>
+<td align="right">-0.5368</td>
+<td align="right">13</td>
+<td align="right">2</td>
+</tr>
+</tbody></table>
+<p>The inclusive hybrid has the lowest low- and broad-high MAE, but the base
+hybrid has lower exact-high MAE. This is descriptive tail evidence; it does
+not alter the declared scorer set or frozen mapping.</p>
+<p><span id="protocol-difference-ledger"></span></p>
+<h3>Protocol-difference ledger</h3>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Choi et al. 2026</th>
+<th>Story 20-44 evaluation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Test population</td>
+<td>Fixed official ELLIPSE test set; 2,571 rows inferred from the verified public split</td>
+<td>2,567 construct-admitted rows from that source; four rows below 50 alphabetic tokens excluded</td>
+</tr>
+<tr>
+<td>Test targets</td>
+<td>Official ELLIPSE Overall target used as one jointly modeled trait</td>
+<td>ADR-HULE-0046 two-rater Overall mean; one admitted extension target differs from the source split&#39;s <code>Overall</code></td>
+</tr>
+<tr>
+<td>Training population</td>
+<td>Official 3,911-row train pool, repeatedly divided into train/dev</td>
+<td>Frozen raw base: 3,479 rows; frozen raw inclusive: 5,042 rows, including 1,563 recovered essays outside the official 3,911-row training release</td>
+</tr>
+<tr>
+<td>Training objective</td>
+<td>Overall plus six analytic traits jointly; the Overall head consumes other trait representations</td>
+<td>Overall only</td>
+</tr>
+<tr>
+<td>Aggregation</td>
+<td>Mean test result over ten train/dev refits; no Overall-cell SD published</td>
+<td>One frozen scorer per cell, internally a fixed five-seed ensemble; one evaluation pass</td>
+</tr>
+<tr>
+<td>Input handling</td>
+<td>BERT-CNN truncated to 512 tokens and BERT-TransEnc capped at 60 sentences</td>
+<td>Full source text enters the feature pipeline; the DeBERTa embedding branch and four embedding-derived scalars use a 512-token model input, while other scalar families use their declared text paths</td>
+</tr>
+<tr>
+<td>Mapping and QWK</td>
+<td>Inverse-normalize, round to nearest valid 1-5 score, quadratic QWK</td>
+<td>Frozen scorer cells use OOF-derived split-tail half-grade calibration; fusion averages raw predictions then maps to the nearest half grade; quadratic QWK uses nine categories</td>
+</tr>
+<tr>
+<td>Compared number</td>
+<td>Table 8 <code>Ovrl</code> cell <code>0.726</code> for <code>+LoRA+SA</code>; the prose highlights the seven-trait average <code>0.664</code></td>
+<td>Raw-inclusive hybrid QWK <code>0.7563</code>; the predeclared equal fusion is <code>0.7235</code></td>
+</tr>
+</tbody></table>
+<p>The ledger explains why the numeric comparison is informative but not a
+controlled replication. In particular, the four-row construct exclusion and
+different training targets prevent an identical-protocol claim.</p>
+<p><span id="evidence-gaps-and-follow-up"></span></p>
+<h2>Evidence Gaps And Follow-Up</h2>
+<ul>
+<li>Choi et al. do not publish an Overall-cell standard deviation, and this work
+evaluates one frozen scorer per cell. No inferential significance claim can
+be made for the <code>0.0303</code> QWK difference.</li>
+<li>The papers do not print the ELLIPSE train/test counts. The 3,911/2,571 split
+is verified from the primary public release and inferred to be their split
+from their exact 6,482-row corpus match and explicit official-test statement.</li>
+<li>The four excluded rows prevent a result for the literal full 2,571-row
+source. Supporting those fragments would require changing the frozen
+MATTR-50 feature construct and is outside this story.</li>
+<li>Subgroup supports are small and subgroup QWK is non-additive. The subgroup
+tables describe where errors occur; they do not establish causal prompt- or
+length-specific effects.</li>
+<li>Story 44&#39;s six-cell results did not change model membership, calibration,
+retraining, registry promotion, or production use. The later reduced-head
+fits are explicitly labeled post-benchmark diagnostics rather than new
+benchmark cells. Any promotion or production use requires a separately
+governed decision and evidence base.</li>
+</ul>
+</article>
+  </main>
+</body>
+</html>

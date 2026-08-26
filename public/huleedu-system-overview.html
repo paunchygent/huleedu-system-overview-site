@@ -390,8 +390,8 @@
         becomes the benchmark against which the system's agreement must be read, and I
         return to it in the section on evaluation.</p>
 
-        <p>The second collection is Swedish. The current scored research set holds 281
-        prompt-resolvable essays written by my own upper-secondary students across the
+        <p>The second collection is Swedish. The current scored research set holds <a href="/evidence/cohort-overlap/#where-each-swedish-course-s-center-mass-sits">281
+        prompt-resolvable essays</a> written by my own upper-secondary students across the
         three course levels referred to here by their familiar names: English 5,
         English 6, and English 7. The current course names are English 1, English 2,
         and English 3, respectively. Both naming systems occur in the retained data
@@ -463,7 +463,7 @@
                     <text x="210" y="229" font-size="12" fill="#555555" text-anchor="middle">768 numbers (embedding)</text>
 
                     <rect x="120" y="252" width="180" height="30" rx="0" fill="#ffffff" stroke="#bbbbbb" stroke-width="1.5"/>
-                    <text x="210" y="272" font-size="12" fill="#111111" text-anchor="middle">+ the 31 measures</text>
+                    <text x="210" y="272" font-size="12" fill="#111111" text-anchor="middle">+ 38 scalar measures</text>
 
                     <path d="M 300 216 L 306 216 L 306 236 L 312 236" fill="none" stroke="#1f77b4" stroke-width="1.5"/>
                     <path d="M 300 267 L 306 267 L 306 236" fill="none" stroke="#1f77b4" stroke-width="1.5"/>
@@ -530,7 +530,7 @@
         <p>The first is the transparent lane. My working name for it is the
         white-box lane. Here the computer counts and measures properties of the
         essay text. The properties are ones that writing research has long linked to
-        proficiency. It uses 31 such measures. They fall into a few families. One
+        proficiency. It uses <a href="/evidence/scorer-feature-inventory/#production-feature-inventory">31 such measures</a>. They fall into a few families. One
         family counts spelling, grammar, and punctuation errors and expresses them as
         rates per hundred words, using an error-checking program. Another family measures
         sentence structure. It relies on a <a class="term" href="#glossary-parser" data-definition="A program that works out the grammatical structure of a sentence.">parser</a>, which is a program that works out the
@@ -568,7 +568,7 @@
         the 768 numbers capture patterns of meaning, phrasing, and fluency that the 31
         counted measures do not reach. A regression model of the same kind as in the
         transparent lane then learns, again from the human-scored ELLIPSE essays, how to
-        combine the 768 numbers with the transparent measures into one score.</p>
+        combine the 768 numbers with <a href="/evidence/scorer-feature-inventory/#production-feature-inventory">38 scalar measures</a> into one score.</p>
 
         <p>The hybrid lane agrees with human raters more closely than the transparent
         lane does. It is also less inspectable, because no one of the 768 numbers can be
@@ -591,7 +591,7 @@
         uses no counted measures and no embeddings, and it is never trained on the
         ELLIPSE scores. It arrives at its ranking from pairwise decisions alone.</p>
 
-        <p>The comparative-judgment literature argues that deciding which of two texts
+        <p><a class="external-link" href="https://doi.org/10.3758/s13428-025-02744-w" target="_blank" rel="noopener noreferrer">The comparative-judgment literature</a> argues that deciding which of two texts
         is better is an easier and more consistent act than placing one text on an
         absolute scale, and that reliability comes from accumulating many such
         decisions. The practical obstacle
@@ -622,7 +622,7 @@
         <p>The three lanes disagree with each other in informative ways, and the pattern
         of agreement and disagreement is a research object in its own right. The research
         proposal calls this a hybrid evidence structure. The lanes are also combined. In
-        experiments run on one ELLIPSE writing task as of mid-2026, adding the
+        <a href="/evidence/comparative-judgment-fusion/#results">experiments run on one ELLIPSE writing task as of mid-2026</a>, adding the
         comparative-judgment ranking to either scorer raised agreement with the human
         raters, and a simple average of all three lanes agreed with the human raters more
         closely than any single lane. The combination happens only after each lane has
@@ -667,15 +667,15 @@
         model's score and the human score, because the two measures can move apart and a
         change is trusted more when both improve.</p>
 
-        <p>The two trained ELLIPSE raters agree with each other only moderately. Measured over thousands of
-        double-rated essays, their agreement lands near 0.58 on that scale. This does not
+        <p>The two trained ELLIPSE raters agree with each other only moderately. <a href="/evidence/human-rater-agreement/#test-and-human-reference-roles">Measured over thousands of
+        double-rated essays, their agreement lands near 0.58 on that scale.</a> This does not
         set a hard ceiling for a model, because a model is compared with the raters'
         combined score rather than with a single rater. When trained human raters
         agree at 0.58, no model's agreement figure can be read as a measure of truth.
         Instead, it indicates how closely the model matches human judgments that are
         themselves variable.</p>
 
-        <p>Very few ELLIPSE essays sit at the extremes of the scale, so the models have
+        <p><a href="/evidence/length-inclusion/#findings-and-interpretation">Very few ELLIPSE essays sit at the extremes of the scale</a>, so the models have
         the least material to learn from at the ends of the scale. As a result, the models are most reliable in
         the middle of the scale and compress their estimates toward the middle at the
         ends. Diagnostics on the sealed material, as of mid-2026, show that this
@@ -687,23 +687,16 @@
         report their results on the official test essays, so results computed on that
         material can be compared across research groups. The sealed portion described
         above is drawn from this official test material. In August 2026 I evaluated
-        the scorers on the complete official test set in one declared pass. The
+        the scorers on the official test partition in one declared pass. The
         scorers were frozen, which means that their training and settings were fixed
-        before the evaluation and nothing was changed afterwards. The official test
-        set holds 2,571 essays, and the evaluation covered 2,567 of them, because
-        four fragments shorter than fifty words were excluded. On the agreement
-        statistic described above, the hybrid scorer reached 0.756 when trained with
-        the re-admitted essays described later in this document, and 0.744 without
-        them. Its average distance from the human score was 0.30 scale points.</p>
+        before the evaluation and nothing was changed afterwards. <a href="/evidence/official-test-benchmark/#full-2-567-row-result">The evaluation admitted 2,567 of the partition's 2,571 essays.</a>
+        On the agreement statistic described above, the hybrid scorer reached 0.756
+        with the broader training set described later in this document and 0.744
+        without it. Its average distance from the human score was 0.30 scale points.</p>
 
-        <p>Using the complete official test set also makes a direct comparison with
-        published work possible. Choi et al. (2026) report an agreement of 0.726 on
-        the same official test essays. The comparison is fair because both figures
-        come from the same complete official test material rather than from a reduced
-        or private portion of it. Results computed on one writing task, or on splits
-        that keep most of the data for training, are common in the field, but such
-        results are not comparable to results on the complete official test set. The
-        two systems differ in their training data and in what they model, so I read
+        <p>The official partition also provides a point of comparison with published
+        work. Choi et al. (2026) report an agreement of 0.726 on that partition. My
+        evaluation admitted 2,567 of its 2,571 essays. <a href="/evidence/official-test-benchmark/#raw-inclusive-hybrid-architecture-and-provenance">The systems also differ in their training data and in what they model</a>, so I read
         the comparison as descriptive rather than as proof that one system is better.
         This result comes from the regression scorer alone and uses no comparative
         judgment. The hypothesis for comparative judgment therefore concerns more
@@ -736,22 +729,13 @@
         ends with an evaluation on the sealed material, and includes a human usefulness
         decision before any of it enters routine use.</p>
 
-        <h3>Re-Admitting Excluded Essays</h3>
+        <h3>Broadening the Training Set</h3>
 
-        <p>The authors of ELLIPSE excluded a set of essays whose rubric profiles were
-        uneven, and this exclusion thinned the already thin ends of the scale. The
-        excluded essays were not removed because their overall scores were unusable. They
-        were removed because their scores across the separate rubric dimensions did not
-        form the even pattern the authors' scaling procedure expected. An essay that is
-        strong in some dimensions and weak in others is exactly the kind of uneven
-        performance the assessment literature calls a discordant text, so removing such
-        essays may have made the corpus tidier than real student writing is. The
-        hypothesis is that many of these essays are usable and that re-admitting them
-        gives the models more to learn from at the extremes. The method is to qualify the
-        excluded essays and add them back under controlled retraining. Results so far
-        point to improvement, including at both ends of the scale, but the retraining
-        comparisons are still running and the gain is not settled. I treat this as
-        open research with early directional evidence.</p>
+        <p>An earlier training generation used 3,479 essays. A later, broader training
+        set recovered 1,563 additional eligible essays while keeping the official test
+        partition separate. <a href="/evidence/official-test-benchmark/#full-2-567-row-result">In the August benchmark, the hybrid scorer's agreement rose from 0.744 to 0.756.</a>
+        Subgroup results were mixed, so the broader training set helped overall but did
+        not solve every weakness across the scale.</p>
 
         <h3>Comparative Judgment as a Source of Relative Quality</h3>
 
@@ -775,18 +759,18 @@
 
         <p>ELLIPSE scores are defined for one population of learners in the United
         States. Whether they order Swedish upper-secondary essays sensibly is an open
-        question, and it is the question the 281 scored Swedish essays exist to probe.
+        question, and it is the question the <a href="/evidence/cohort-overlap/#where-each-swedish-course-s-center-mass-sits">281 scored Swedish essays</a> exist to probe.
         The retained experiment places the anonymous classroom essays described earlier
-        on ELLIPSE's 1-to-5 scale. The ELLIPSE midpoint is 3. English 5 cohort medians
+        on ELLIPSE's 1-to-5 scale. The ELLIPSE midpoint is 3. <a href="/evidence/cohort-overlap/#where-each-swedish-course-s-center-mass-sits">English 5 cohort medians
         sit roughly between 3.2 and 3.5, English 6 around 3.9 to 4.1, and the usable
-        English 7 cohort around 4.3. Most of the separation therefore appears between
+        English 7 cohort around 4.3.</a> Most of the separation therefore appears between
         English 5 and English 6, followed by a smaller further step to English 7. These
         are classroom cohorts, not the separate official anchor essays. This public
         comparison uses English 7 VT2017; the later sample is too small.</p>
 
-        <p>The English 7 distance is substantial on this scale. Only about one in twenty
+        <p>The English 7 distance is substantial on this scale. <a href="/evidence/cohort-overlap/#where-each-swedish-course-s-center-mass-sits">Only about one in twenty
         ELLIPSE predictions reach 4 or higher, compared with about two in three to
-        three in four predictions for English 7 VT2017. This is why a difference of
+        three in four predictions for English 7 VT2017.</a> This is why a difference of
         about 1.3 scale points matters: the English 7 cohort is concentrated in a region
         that is only the thin upper tail of the ELLIPSE predictions.</p>
 
@@ -895,22 +879,21 @@
         <p>Where student text goes depends on how the model is used.</p>
 
         <p>A chat interface is a consumer product in which a person types or uploads
-        text into a conversation window. The provider of
-        the product may store that text, and under common consumer terms the provider may
-        use it to improve or train future models. This is the mode of use in which
-        uploaded student texts can end up in a provider's training data.</p>
+        text into a conversation window. Whether that content may be used to improve
+        models depends on the service and the user's data controls. <a class="external-link"
+        href="https://help.openai.com/en/articles/8983130-how-does-chatgpt-use-my-data"
+        target="_blank" rel="noopener noreferrer">OpenAI describes those controls here</a>.</p>
 
         <p>An <a class="term" href="#glossary-api" data-definition="An arrangement in which one program answers controlled requests from another, without a conversation window or chat history.">API</a> differs from a chat interface in the way that decides where text
         goes. It is an arrangement in which one program answers requests from another
         program. A request carries exactly the text the
         sending program puts in it, the answer comes back to the sending program, and
         there is no conversation window and no chat history. API use is governed by
-        business contract terms rather than consumer product terms, and under those
-        terms the provider does not use what is sent to train future models. The
-        sending side controls precisely what is transmitted. Research pipelines of the kind described
-        in this document can only work this way, because a program that must make
-        thousands of controlled, logged, and repeatable requests cannot type into a
-        conversation window. I do not use chat interfaces for any part of this work.</p>
+        business terms rather than consumer product terms. <a class="external-link"
+        href="https://openai.com/business-data/" target="_blank"
+        rel="noopener noreferrer">OpenAI states that API inputs and outputs are not used
+        to train its models by default</a>. The sending program controls what is
+        transmitted, and the external requests described here use this route.</p>
 
         <p>A <a class="term" href="#glossary-self-hosted-model" data-definition="A model that runs on my home server, so the text it processes never leaves the building.">self-hosted model</a> runs on my home server. The text is processed
         there and never leaves the building.</p>
@@ -922,10 +905,9 @@
         scoring models themselves are the small regression models described earlier. They
         run locally on ordinary hardware and could run on a phone.</p>
 
-        <p>Exactly two categories of text have been sent to external providers. One is
+        <p>The retained research records document two categories of text sent to external providers. One is
         essay text from the public, anonymized ELLIPSE corpus. The pairwise comparative-judgment experiment
-        sent ELLIPSE essay pairs to a provider-hosted OpenAI model for about 7,500
-        comparisons in mid-2026. The correction work sends ELLIPSE text to
+        sent ELLIPSE essay pairs to a provider-hosted OpenAI model in mid-2026. The correction work sends ELLIPSE text to
         provider-hosted models that propose and adjudicate corrections. It has run on
         ELLIPSE text only.</p>
 
@@ -940,20 +922,10 @@
         through them the model, in the shared understanding of the test domain that
         the teachers who assess in it hold. For that work, Swedish student
         essays and anchor essays have been sent to the same provider-hosted OpenAI
-        model through the same pipeline as the ELLIPSE experiment. Each essay travels
-        as text under an anonymous identifier. A request contains the judging
-        instructions, the writing task, and the essay texts, and nothing else. No name,
-        class, school, or other personal detail is present in any request. The mapping
-        between identifier and student exists only in a separate offline record on my
-        own machine, and that record is never transmitted. The receiving party
-        therefore has no way to connect an essay to a student's identity.</p>
+        model through the same pipeline as the ELLIPSE experiment. <a href="/evidence/comparative-judgment-request-shape/#prompt-sections-cj-assessment-service">Each request contains the judging instructions, the writing task, and essay text under anonymous identifiers.</a>
+        <a href="/evidence/student-identity-separation/#retained-contract">The identifier-to-student record is kept separately and is not part of the request.</a></p>
 
-        <p>Identity information has never left my hardware. Every outward
-        request passes through a single internal gateway component that validates what
-        may be sent and to where. The programs that handle real essay text write only
-        sanitized records of their work, such as content digests and counts, never the
-        text itself. Figure 2 shows these boundaries and the single path that crosses
-        them.</p>
+        <p>Figure 2 shows that retained data-flow contract.</p>
 
         <div class="figure">
             <svg viewBox="0 0 760 540" width="760" height="540" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Boundary diagram of where essay text travels">
@@ -1035,8 +1007,7 @@
         <p>I want to reduce external use further. Open-weight models now exist that could serve as the comparative
         judge on Hemma. An <a class="term" href="#glossary-open-weight-model" data-definition="A model whose full internals are published, so that anyone can run it on their own hardware.">open-weight model</a> is one whose full internals are published,
         so that anyone can run it on their own hardware. Models small enough to run on
-        hardware like Hemma trade capability for that locality; the strongest of them
-        now reach roughly where the leading closed models stood a year ago. Whether such a model can serve as a durable judge on my own
+        hardware like Hemma trade capability for that locality. Whether such a model can serve as a durable judge on my own
         hardware is therefore an open question, and I do not present it as a settled
         plan. The ranking signal does not need to be perfect. It needs to be strong
         enough to provide the information the instrument uses, and where that
@@ -1049,7 +1020,7 @@
         <p>The system can produce essay-quality estimates from three partly independent
             methods, and combining them has agreed with trained human raters more closely
             than any single method in held-out experiments as of mid-2026. On the
-            complete official ELLIPSE test set, the hybrid scorer has also agreed with
+            official ELLIPSE test partition, the hybrid scorer has also agreed with
             the human raters more closely than a published comparison system (Choi et
             al., 2026), under the descriptive comparison stated in the section on
             evaluation. The system's estimates are
@@ -1067,6 +1038,14 @@
         <a class="external-link" href="https://doi.org/10.1109/ACCESS.2026.3718177" target="_blank" rel="noopener noreferrer"><cite>Enhancing Automated Essay Scoring With Three Techniques: Two-Stage
         Fine-Tuning, Score Alignment, and Self-Training</cite></a>. <cite>IEEE Access</cite>, 14,
         117193-117208. <a class="external-link read-more" href="https://doi.org/10.1109/ACCESS.2026.3718177" target="_blank" rel="noopener noreferrer">Open article</a>.</p>
+
+        <p>Kinnear, G., Jones, I., and Davies, B. (2025).
+        <a class="external-link" href="https://doi.org/10.3758/s13428-025-02744-w" target="_blank" rel="noopener noreferrer"><cite>A systematic review and meta-analysis of comparative judgment</cite></a>.
+        <cite>Behavior Research Methods</cite>.</p>
+
+        <p>Pollitt, A. (2012).
+        <a class="external-link" href="https://doi.org/10.1007/s10798-011-9189-x" target="_blank" rel="noopener noreferrer"><cite>The method of adaptive comparative judgement</cite></a>.
+        <cite>Assessment in Education: Principles, Policy &amp; Practice</cite>.</p>
 
         <h2 id="glossary">Glossary</h2>
 

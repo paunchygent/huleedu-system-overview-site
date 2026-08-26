@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Comparative-judgment request shape | HuleEdu</title>
+  <link rel="icon" href="/favicon.svg">
+  <link rel="stylesheet" href="/evidence/evidence.css">
+  <link rel="canonical" href="https://research.hule.education/evidence/comparative-judgment-request-shape/">
+</head>
+<body>
+  <header class="page-header">
+    <a class="back-link" href="/huleedu-system-overview/">HuleEdu system overview</a>
+    <h1>Comparative-judgment request shape</h1>
+    <p class="source-line"><a href="/evidence/source/comparative-judgment-request-shape.md">Markdown source</a> · <code>docs/reference/ref-hule-general-cj-to-llm-prompt-contract-cj-to-llm-prompt-contract.md</code> · <code>c9d8b6ef60c19bbbdb17b9b46243ab4abfce35bb</code></p>
+  </header>
+  <main>
+    <article class="markdown-body"><p><span id="overview"></span></p>
+<h2>Overview</h2>
+<p>State the subject, why it is useful, and the boundary of the retained context.</p>
+<p><span id="facts-and-semantics"></span></p>
+<h2>Facts And Semantics</h2>
+<p>Define terms and record durable facts, ownership, relationships, and evidence
+interpretation. Distinguish confirmed facts from mutable interpretation. Link
+to a runbook for ordered execution and to backlog items for work state.</p>
+<p><span id="decisions-and-interpretation"></span></p>
+<h2>Decisions And Interpretation</h2>
+<p>Record current interpretation and its practical consequences. Route accepted
+architecture or governance rationale to an ADR, material planning choices to a
+<code>decisions</code> reference, and implementation authority to the backlog.</p>
+<p><span id="preserved-source-content"></span></p>
+<h3>Preserved source content</h3>
+<p><span id="purpose"></span></p>
+<h3>Purpose</h3>
+<p>Provide a canonical map for where CJ prompt text is assembled and which files
+own the system prompt and per-event overrides, so prompt edits remain intentional
+and auditable.</p>
+<p>This is a reference document. The canonical behavior is defined by code and
+shared contracts in <code>libs/common_core/</code>.</p>
+<p><span id="canonical-rule-surface"></span></p>
+<h3>Canonical Rule Surface</h3>
+<ul>
+<li>Invariants and boundary mandates:<ul>
+<li><code>.codex/rules/020-architectural-mandates.md</code></li>
+</ul>
+</li>
+</ul>
+<p><span id="prompt-sections-cj-assessment-service"></span></p>
+<h3>Prompt Sections (CJ Assessment Service)</h3>
+<p>The CJ Assessment service builds the final user prompt from multiple sources.
+This section is a pointer map to the authoritative composition points.</p>
+<ul>
+<li>Student assignment:<ul>
+<li>Hydrated in <code>services/cj_assessment_service/event_processor.py</code> and carried as
+<code>converted_request_data[&quot;student_prompt_text&quot;]</code>.</li>
+<li>Rendered by <code>_build_comparison_prompt()</code> in
+<code>services/cj_assessment_service/cj_core_logic/pair_generation.py</code> as the
+<code>**Student Assignment:**</code> block.</li>
+</ul>
+</li>
+<li>Assessment criteria:<ul>
+<li>Sourced from <code>assessment_instructions.instructions_text</code>.</li>
+<li>Fetched in <code>_fetch_assessment_context()</code> in
+<code>services/cj_assessment_service/cj_core_logic/pair_generation.py</code>.</li>
+<li>Rendered by <code>_build_comparison_prompt()</code> as the <code>**Assessment Criteria:**</code> block.</li>
+</ul>
+</li>
+<li>Judge instructions / rubric:<ul>
+<li>Sourced from <code>processing_metadata[&quot;judge_rubric_text&quot;]</code> or hydrated via File Service content API
+by <code>_fetch_assessment_context()</code> in <code>services/cj_assessment_service/cj_core_logic/pair_generation.py</code>.</li>
+<li>Rendered by <code>_build_comparison_prompt()</code>.</li>
+</ul>
+</li>
+<li>Essays A/B:<ul>
+<li>Contract: <code>EssayForComparison</code> in <code>services/cj_assessment_service/models_api.py</code>.</li>
+<li>Rendered by <code>_build_comparison_prompt()</code> under <code>**Essay A (ID: ...)**</code> / <code>**Essay B (ID: ...)**</code>.</li>
+</ul>
+</li>
+<li>Response instructions (structured output contract):<ul>
+<li>The final paragraph inside <code>_build_comparison_prompt()</code> describes the JSON output shape
+(winner/justification/confidence) expected from downstream providers.</li>
+</ul>
+</li>
+</ul>
+<p><span id="system-prompt-hierarchy"></span></p>
+<h3>System Prompt Hierarchy</h3>
+<p>System prompt selection is intended to be predictable and layered:</p>
+<ol>
+<li>Event-level override (highest priority)</li>
+</ol>
+<ul>
+<li>Supplied via <code>llm_config_overrides.system_prompt_override</code> in the Kafka event payload.</li>
+</ul>
+<ol>
+<li>CJ Assessment default (middle priority)</li>
+</ol>
+<ul>
+<li>Canonical default lives in <code>services/cj_assessment_service/config.py</code> (<code>SYSTEM_PROMPT</code>).</li>
+<li>Applied by CJ workflows unless explicitly overridden by the event.</li>
+</ul>
+<ol>
+<li>LLM Provider fallback (lowest priority)</li>
+</ol>
+<ul>
+<li>Provider-side minimal fallback prompt. For CJ workflows this should be effectively
+unreachable because CJ supplies a prompt.</li>
+</ul>
+<p><span id="eng5-runner-override-behavior-cj-comparative-judgement-experiments"></span></p>
+<h3>ENG5 Runner Override Behavior (CJ comparative judgement experiments)</h3>
+<p>The ENG5 runner can override the CJ system prompt and other LLM settings.</p>
+<ul>
+<li>With <code>--cj-system-prompt</code> (default behavior):<ul>
+<li>ENG runner custom prompt from
+<code>scripts/cj_experiments_runners/eng_np/system_prompt.py</code> overrides the CJ
+default.</li>
+<li>The current artifact authority is centralized in
+<code>scripts/cj_experiments_runners/eng_np/prompt_defaults.py</code>.</li>
+</ul>
+</li>
+<li>With <code>--no-cj-system-prompt</code>:<ul>
+<li>Falls back to CJ Assessment default prompt (not the provider fallback).</li>
+</ul>
+</li>
+<li>Overrides are built in:<ul>
+<li><code>scripts/cj_experiments_runners/eng_np/cli_runner_orchestration.py</code></li>
+</ul>
+</li>
+<li>Overrides flow through the shared event schema:<ul>
+<li><code>libs/common_core/src/common_core/events/cj_assessment_events.py</code></li>
+</ul>
+</li>
+</ul>
+<p>Operational execution guidance for ENG5 belongs in:</p>
+<ul>
+<li><code>docs/runbooks/eng-np-runbook.md</code></li>
+</ul>
+<p><span id="examples"></span></p>
+<h3>Examples</h3>
+<p>Typical prompt-change workflow:</p>
+<ol>
+<li>Identify which layer you are changing (event override vs CJ default vs runner prompt).</li>
+<li>Confirm the structured output requirements in <code>_build_comparison_prompt()</code> still match
+downstream provider enforcement.</li>
+<li>Update any task/ADR that governs the prompt change (psychometric validity concerns).</li>
+</ol>
+</article>
+  </main>
+</body>
+</html>
