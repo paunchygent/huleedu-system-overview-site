@@ -134,6 +134,36 @@
       color: #555555;
     }
 
+    .table-scroll {
+      overflow-x: auto;
+    }
+
+    .cohort-evidence-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: Verdana, Arial, sans-serif;
+      font-size: 0.86rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .cohort-evidence-table th,
+    .cohort-evidence-table td {
+      padding: 0.7rem 0.75rem;
+      border-bottom: 1px solid #c8c8c8;
+      text-align: right;
+      vertical-align: top;
+    }
+
+    .cohort-evidence-table th:first-child,
+    .cohort-evidence-table td:first-child {
+      text-align: left;
+    }
+
+    .cohort-evidence-table thead th {
+      border-top: 1px solid #111111;
+      border-bottom: 1px solid #111111;
+    }
+
     @media screen {
       html {
         background: #efeee9;
@@ -201,6 +231,94 @@
         line-height: 1.55;
         margin-top: 1rem;
       }
+
+      a {
+        color: #173e70;
+        text-decoration-thickness: 0.08em;
+        text-underline-offset: 0.16em;
+      }
+
+      a:hover {
+        color: #0b2545;
+      }
+
+      .term {
+        position: relative;
+        color: inherit;
+        text-decoration-line: underline;
+        text-decoration-style: dotted;
+        text-decoration-color: #66788c;
+        cursor: help;
+      }
+
+      .term::after {
+        content: attr(data-definition);
+        position: absolute;
+        z-index: 10;
+        left: 50%;
+        bottom: calc(100% + 12px);
+        width: min(330px, calc(100vw - 48px));
+        padding: 0.8rem 0.95rem;
+        border: 1px solid #b9c1c9;
+        border-radius: 4px;
+        background: #111820;
+        color: #ffffff;
+        box-shadow: 0 12px 32px rgb(17 24 32 / 22%);
+        font-family: Verdana, Arial, sans-serif;
+        font-size: 0.82rem;
+        font-weight: 400;
+        line-height: 1.45;
+        letter-spacing: 0;
+        text-align: left;
+        text-decoration: none;
+        opacity: 0;
+        pointer-events: none;
+        transform: translate(-50%, 5px);
+        transition: opacity 120ms ease, transform 120ms ease;
+      }
+
+      .term:hover::after,
+      .term:focus-visible::after {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+
+      .term:focus-visible {
+        border-radius: 2px;
+        outline: 2px solid #173e70;
+        outline-offset: 3px;
+      }
+
+      .external-link::after {
+        content: ' \2197';
+        font-family: Verdana, Arial, sans-serif;
+        font-size: 0.78em;
+        text-decoration: none;
+      }
+
+      #glossary li {
+        scroll-margin-top: 2rem;
+      }
+
+      #glossary li:target {
+        margin-inline: -0.75rem;
+        padding: 0.55rem 0.75rem;
+        border-left: 3px solid #173e70;
+        background: #edf3f8;
+      }
+
+      .read-more {
+        white-space: nowrap;
+      }
+
+      .interaction-note {
+        padding: 0.8rem 1rem;
+        border-left: 3px solid #173e70;
+        background: #f4f7f9;
+        color: #344454;
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
     }
 
     @media screen and (max-width: 640px) {
@@ -216,6 +334,10 @@
 
       h2 {
         margin-top: 3rem;
+      }
+
+      .term::after {
+        display: none;
       }
     }
   </style>
@@ -235,6 +357,9 @@
         the end collects the technical terms. The results it mentions are current at
         the last-updated date shown above, and none of them is final.</p>
 
+        <p class="interaction-note">Dotted-underlined terms reveal a short definition
+        on hover or keyboard focus. Select one to open its glossary entry or source.</p>
+
         <h2>What the System Is</h2>
 
         <p>The system is a research instrument that produces estimates of essay quality.
@@ -251,7 +376,7 @@
         scores, and it needs many of them. The system works with two collections of
         essays.</p>
 
-        <p>The first collection is ELLIPSE, a public research corpus. A corpus is a
+        <p>The first collection is <a class="term" href="https://github.com/scrosseye/ELLIPSE-Corpus" target="_blank" rel="noopener noreferrer" data-definition="A public, anonymized corpus of roughly 6,500 essays by school-age English learners, each scored by two trained human raters. Follow this link to visit the dataset.">ELLIPSE</a><span class="external-marker" aria-hidden="true">&#8599;</span>, a public research <a class="term" href="#glossary-corpus" data-definition="A collection of texts assembled for study.">corpus</a>. A corpus is a
         collection of texts assembled for study. ELLIPSE contains roughly 6,500 essays
         written by school-age learners of English in the United States. Trained human
         raters scored each essay on a scale from 1 to 5, in half-point steps, and every
@@ -263,16 +388,19 @@
         becomes the benchmark against which the system's agreement must be read, and I
         return to it in the section on evaluation.</p>
 
-        <p>The second collection is Swedish. It holds 281 essays written by my own
-        upper-secondary students across the courses English 5, English 6, and English 7.
-        Each essay is stored under an anonymous identifier. No path leads from an essay
+        <p>The second collection is Swedish. The current scored research set holds 281
+        prompt-resolvable essays written by my own upper-secondary students across the
+        three course levels referred to here by their familiar names: English 5,
+        English 6, and English 7. The current course names are English 1, English 2,
+        and English 3, respectively. Both naming systems occur in the retained data
+        because the essays span the reform. Each essay is stored under an anonymous identifier. No path leads from an essay
         to a student's identity for any party outside my own records.</p>
 
         <p>ELLIPSE provides thousands of essays, each rated twice
         by trained raters, so it is the material the methods learn from. The Swedish
         essays carry no comparable double-rated reference scores, and 281 essays are far
         too few to learn from. The Swedish essays therefore serve a different purpose.
-        They provide transfer evidence, which means evidence about how well something
+        They provide <a class="term" href="#glossary-transfer-evidence" data-definition="Evidence about how well something learned from one population of writers carries over to another.">transfer evidence</a>, which means evidence about how well something
         learned from one population of writers carries over to another. The system
         learns nothing from the Swedish essays.</p>
 
@@ -403,7 +531,7 @@
         proficiency. It uses 31 such measures. They fall into a few families. One
         family counts spelling, grammar, and punctuation errors and expresses them as
         rates per hundred words, using an error-checking program. Another family measures
-        sentence structure. It relies on a parser, which is a program that works out the
+        sentence structure. It relies on a <a class="term" href="#glossary-parser" data-definition="A program that works out the grammatical structure of a sentence.">parser</a>, which is a program that works out the
         grammatical structure of each sentence, so that depth and complexity of that
         structure can be measured. A third family measures variety of vocabulary, for
         example how much of the essay repeats the same words and how much of it draws on
@@ -424,7 +552,7 @@
         human score for that essay. Across thousands of essays, it adjusts how much
         weight each measure deserves, so that its combined estimate lands as close as
         possible to the human scores. A model that learns to predict a number in this way
-        is called a regression model. The regression model used here is small. It could
+        is called a <a class="term" href="#glossary-regression-model" data-definition="A model that learns from examples to predict a number, here an essay score.">regression model</a>. The regression model used here is small. It could
         run on a phone. It contains no language ability of its own. It only weighs the 31
         measurements it is given.</p>
 
@@ -434,7 +562,7 @@
         language model is a program trained on very large amounts of text until it can
         process and produce language. Here, a language model reads the whole
         essay and condenses its reading into a list of 768 numbers. Such a list is called
-        an embedding. The numbers have no individual meaning that a person can read off,
+        an <a class="term" href="#glossary-embedding" data-definition="A list of 768 numbers into which a language model condenses its reading of a whole text.">embedding</a>. The numbers have no individual meaning that a person can read off,
         but together they capture patterns of meaning, phrasing, and fluency that the 31
         counted measures do not reach. A regression model of the same kind as in the
         transparent lane then learns, again from the human-scored ELLIPSE essays, how to
@@ -451,12 +579,12 @@
 
         <h3>The Comparative-Judgment Lane</h3>
 
-        <p>The third uses comparative judgment, the method established in the
+        <p>The third uses <a class="term" href="#glossary-comparative-judgment" data-definition="A method in which a judge decides which of two texts is better instead of scoring one text on a scale.">comparative judgment</a>, the method established in the
         assessment literature, with a language model as the judge. Instead of scoring one
         essay on a scale, a large language model is shown two essays and asked which one
         is better. This is repeated many times over many pairs. A long-established
         statistical method then turns the wins and losses into a ranking of all the
-        essays. The method is the Bradley-Terry model, which comes from psychometrics and
+        essays. The method is the <a class="term" href="#glossary-bradley-terry" data-definition="A statistical method that turns the outcomes of many pairwise comparisons into a ranking.">Bradley-Terry model</a>, which comes from psychometrics and
         is the same machinery that underlies human comparative judgment studies. It
         uses no counted measures and no embeddings, and it is never trained on the
         ELLIPSE scores. It arrives at its ranking from pairwise decisions alone.</p>
@@ -497,7 +625,7 @@
         raters, and a simple average of all three lanes agreed with the human raters more
         closely than any single lane. The combination happens only after each lane has
         produced its output. The comparative-judgment results never enter the training of
-        the scorers. The purpose of the combination is triangulation, meaning that partly
+        the scorers. The purpose of the combination is <a class="term" href="#glossary-triangulation" data-definition="Using partly independent methods on the same question so that they constrain each other's errors.">triangulation</a>, meaning that partly
         independent methods constrain each other's errors. Independence is what makes the
         combination informative. The transparent lane sees counted properties, the hybrid
         lane sees a language model's reading, and the comparative-judgment lane sees only
@@ -512,7 +640,7 @@
         <p>A scoring method must never be judged on the essays it learned from. A model
         tested on its own training material looks better than it is, in the same way that
         a student who has seen the answer key looks better than they are. The basic
-        safeguard is held-out testing. Some essays are set aside before training begins,
+        safeguard is <a class="term" href="#glossary-held-out-testing" data-definition="Evaluating a model only on material set aside before training and never shown to the model.">held-out testing</a>. Some essays are set aside before training begins,
         and the model never sees them until it is evaluated.</p>
 
         <p>The primary test goes further than holding out essays. Essays are written in
@@ -522,14 +650,14 @@
         instead of writing quality. The test therefore holds out whole tasks: the
         model is evaluated on essays written for tasks it has never seen, the
         closest available rehearsal of meeting new material in practice. A
-        portion of ELLIPSE is also kept sealed. It is opened only at declared checkpoints, so
+        portion of ELLIPSE is also kept as a <a class="term" href="#glossary-sealed-test-set" data-definition="A portion of the data locked away and opened only at declared checkpoints.">sealed test set</a>. It is opened only at declared checkpoints, so
         that repeated peeking cannot gradually inflate the results. Between checkpoints,
         all development runs against the ordinary held-out material, and the sealed
         portion answers only the question of whether a declared stage of the work holds
         up.</p>
 
-        <p>Agreement with human raters is measured with a statistic called quadratic
-        weighted kappa. In plain terms, it rewards close agreement and penalizes distant
+        <p>Agreement with human raters is measured with a statistic called <a class="term" href="#glossary-quadratic-weighted-kappa" data-definition="An agreement statistic from 0 to 1 that rewards close agreement and penalizes distant disagreement more heavily.">quadratic
+        weighted kappa</a>. In plain terms, it rewards close agreement and penalizes distant
         disagreement more heavily. Being half a point away from the human score costs
         little. Being two points away costs a great deal. The statistic runs from 0,
         meaning agreement no better than chance, to 1, meaning perfect agreement. A
@@ -644,15 +772,33 @@
 
         <p>ELLIPSE scores are defined for one population of learners in the United
         States. Whether they order Swedish upper-secondary essays sensibly is an open
-        question, and it is the question the 281 Swedish essays exist to probe. So
-        far, when the two scoring lanes score the Swedish essays, the average rises
-        step by step with course level, without inversions. The
-        lowest cohort, a vocational English 5 group, lands slightly above the ELLIPSE
-        scale midpoint, and the English 7 cohort lands roughly 1.3 scale points above it.
-        Figure 3 shows the two populations placed on the same scale.</p>
+        question, and it is the question the 281 scored Swedish essays exist to probe.
+        The retained overlap experiment compares each cohort's median prediction with
+        the ELLIPSE training-label median of 3.000. The medians rise from the English 5
+        level through English 6 to English 7 VT2017 in both scoring lanes. At the
+        English 5 level, the VT2026 cohort registered under the current name English 1
+        is the lowest scored cohort at +0.246 and +0.379 above the ELLIPSE median; the
+        older English 5 VT2017 cohort is +0.523 and +0.512 above it. English 7 VT2017, not English 7
+        in general, is +1.264 and +1.335 above it. A separate English 7 VT2018 sample has
+        only seven essays and sits at +1.147 and +1.124, so it is reported as low-n
+        evidence rather than folded into the VT2017 claim. Figure 3 reports the exact
+        cohort medians.</p>
 
         <div class="figure">
-            <svg viewBox="0 0 760 400" width="760" height="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Schematic of the ELLIPSE score distribution and Swedish cohort positions on one scale">
+            <div class="table-scroll">
+              <table class="cohort-evidence-table">
+                <thead><tr><th>Course level and cohort</th><th>Essays</th><th>Transparent median</th><th>Hybrid median</th></tr></thead>
+                <tbody>
+                  <tr><td>English 5 level, VT2026 (registered as English 1)</td><td>22</td><td>3.246</td><td>3.379</td></tr>
+                  <tr><td>English 5 level, VT2017</td><td>46</td><td>3.523</td><td>3.512</td></tr>
+                  <tr><td>English 6 level, VT2023 A</td><td>60</td><td>3.917</td><td>3.960</td></tr>
+                  <tr><td>English 6 level, VT2023 B</td><td>62</td><td>4.125</td><td>4.141</td></tr>
+                  <tr><td>English 7 level, VT2017</td><td>24</td><td>4.264</td><td>4.335</td></tr>
+                  <tr><td>English 7 level, VT2018</td><td>7 (low n)</td><td>4.147</td><td>4.124</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <svg hidden viewBox="0 0 760 400" width="760" height="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Superseded schematic of the ELLIPSE score distribution and Swedish cohort positions on one scale">
                 <g font-family="Verdana, 'DejaVu Sans', sans-serif">
                     <!-- Reliability band (mid-scale) -->
                     <rect x="260" y="88" width="240" height="162" fill="#f1f1f1"/>
@@ -701,7 +847,7 @@
                 </g>
             </svg>
             <div class="figure-caption">
-                <strong>Figure 3. Two populations on one scale.</strong> The figure is schematic. The curve sketches where ELLIPSE essays sit on the 1-to-5 scale, with thin ends, and the shaded band marks the mid-scale region where the models are most reliable, because the thin ends leave them the least material to learn from. The Swedish cohorts are shown as ranges rather than points; only the placement of English 5 slightly above the midpoint and the English 7 position of roughly 1.3 points above it are stated results.
+                <strong>Figure 3. Swedish cohort medians on the ELLIPSE 1-to-5 axis.</strong> The values are median raw predictions from the two accepted scoring lanes. Offsets are measured against the ELLIPSE training-label median of 3.000. English 7 VT2018 is retained as low-n evidence. English 6 VT2026 is omitted because 59 of its 60 rows duplicate registrations in English 6 VT2023 B.
             </div>
         </div>
 
@@ -746,7 +892,7 @@
         use it to improve or train future models. This is the mode of use in which
         uploaded student texts can end up in a provider's training data.</p>
 
-        <p>An API differs from a chat interface in the way that decides where text
+        <p>An <a class="term" href="#glossary-api" data-definition="An arrangement in which one program answers controlled requests from another, without a conversation window or chat history.">API</a> differs from a chat interface in the way that decides where text
         goes. It is an arrangement in which one program answers requests from another
         program. A request carries exactly the text the
         sending program puts in it, the answer comes back to the sending program, and
@@ -758,11 +904,11 @@
         thousands of controlled, logged, and repeatable requests cannot type into a
         conversation window. I do not use chat interfaces for any part of this work.</p>
 
-        <p>A self-hosted model runs on hardware the researcher owns. The text is processed
+        <p>A <a class="term" href="#glossary-self-hosted-model" data-definition="A model that runs on hardware the researcher owns, so the text it processes never leaves the building.">self-hosted model</a> runs on hardware the researcher owns. The text is processed
         on that machine and never leaves the building.</p>
 
         <p>The system runs almost entirely in the self-hosted mode. I built a server at home
-        for this project. Its name is Hemma. Hemma runs the language model that produces
+        for this project. Its name is <a class="term" href="#glossary-hemma" data-definition="The researcher's home server, where local language models, parsing, error checks, and embedding extraction run.">Hemma</a>. Hemma runs the language model that produces
         embeddings, the parser, the error-checking programs, and the local language
         models, and all large-scale processing of essay text happens on it. The two
         scoring models themselves are the small regression models described earlier. They
@@ -777,7 +923,7 @@
 
         <p>The other is de-identified Swedish essay text. The
         comparative-judgment lane has also judged Swedish student essays against anchor
-        essays. An anchor essay is an essay selected as a fixed reference point, so
+        essays. An <a class="term" href="#glossary-anchor-essay" data-definition="An assessment exemplar used as a fixed reference point against which other essays are compared.">anchor essay</a> is an essay selected as a fixed reference point, so
         that other essays can be compared against it. In how it is produced, an anchor
         essay is an assessment exemplar. Its score does not come from one rater.
         Several raters assess it and mediate their judgments until they converge, so
@@ -881,7 +1027,7 @@
         </div>
 
         <p>I want to reduce external use further. Open-weight models now exist that could serve as the comparative
-        judge on Hemma. An open-weight model is one whose full internals are published,
+        judge on Hemma. An <a class="term" href="#glossary-open-weight-model" data-definition="A model whose full internals are published, so that anyone can run it on their own hardware.">open-weight model</a> is one whose full internals are published,
         so that anyone can run it on their own hardware. Models small enough to run on
         hardware like Hemma trade capability for that locality; the strongest of them
         now reach roughly where the leading closed models stood a year ago. Whether such a model can serve as a durable judge on my own
@@ -912,39 +1058,39 @@
         <h2>Cited Work</h2>
 
         <p>Choi, H., Kim, S., Liermann, W., Seong, J., and Huang, J.-X. (2026).
-        Enhancing Automated Essay Scoring With Three Techniques: Two-Stage
-        Fine-Tuning, Score Alignment, and Self-Training. IEEE Access, 14,
-        117193-117208. https://doi.org/10.1109/ACCESS.2026.3718177</p>
+        <a class="external-link" href="https://doi.org/10.1109/ACCESS.2026.3718177" target="_blank" rel="noopener noreferrer"><cite>Enhancing Automated Essay Scoring With Three Techniques: Two-Stage
+        Fine-Tuning, Score Alignment, and Self-Training</cite></a>. <cite>IEEE Access</cite>, 14,
+        117193-117208. <a class="external-link read-more" href="https://doi.org/10.1109/ACCESS.2026.3718177" target="_blank" rel="noopener noreferrer">Open article</a>.</p>
 
-        <h2>Glossary</h2>
+        <h2 id="glossary">Glossary</h2>
 
         <ul>
-                <li><strong>Anchor essay.</strong> An assessment exemplar used as a fixed reference point against which other essays are compared. Several raters assess it and mediate their judgments until they converge, so its score carries low measurement error and small rater effects.</li>
-                <li><strong>API.</strong> An arrangement in which one program answers requests from another program, with no conversation window and no chat history.</li>
-                <li><strong>Bradley-Terry model.</strong> A statistical method from psychometrics that turns the outcomes of many pairwise comparisons into a ranking.</li>
-                <li><strong>Chat interface.</strong> A consumer product in which a person types or uploads text into a conversation window, where the provider may store the text and may use it for training.</li>
-                <li><strong>Comparative judgment.</strong> An assessment method in which a judge decides which of two texts is better, instead of scoring one text on a scale.</li>
-                <li><strong>Corpus.</strong> A collection of texts assembled for study.</li>
-                <li><strong>Discordant text.</strong> A student text whose qualities pull in different directions across assessment dimensions, producing rater disagreement.</li>
-                <li><strong>ELLIPSE.</strong> A public, anonymized research corpus of roughly 6,500 essays by school-age English learners in the United States, each scored 1 to 5 by two trained human raters.</li>
-                <li><strong>Embedding.</strong> A list of numbers, here 768 of them, into which a language model condenses its reading of a whole text.</li>
-                <li><strong>Frozen scorer.</strong> A scorer whose training and settings were fixed before an evaluation and were not changed afterwards.</li>
-                <li><strong>Held-out testing.</strong> Evaluating a model only on material that was set aside before training and that the model has never seen.</li>
-                <li><strong>Hemma.</strong> The server I built and run at home, on which the language models, the parser, the error checkers, and the embedding extraction run.</li>
-                <li><strong>Hybrid lane.</strong> The scoring method that combines the embedding with the transparent measures in one regression model.</li>
-                <li><strong>Language model.</strong> A program trained on very large amounts of text until it can process and produce language.</li>
-                <li><strong>Model.</strong> A computer program that has learned a rule from examples instead of being given the rule directly.</li>
-                <li><strong>Official test set.</strong> The set of ELLIPSE test essays published with the corpus, on which published systems report their results.</li>
-                <li><strong>Open-weight model.</strong> A model whose full internals are published, so that anyone can run it on their own hardware.</li>
-                <li><strong>Parser.</strong> A program that works out the grammatical structure of a sentence.</li>
-                <li><strong>Quadratic weighted kappa.</strong> An agreement statistic that rewards close agreement and penalizes distant disagreement more heavily, running from 0 for chance-level agreement to 1 for perfect agreement.</li>
-                <li><strong>Regression model.</strong> A model that learns from examples to predict a number, here an essay score.</li>
-                <li><strong>Sealed test set.</strong> A portion of the data locked away and opened only at declared checkpoints, so that repeated evaluation cannot inflate results.</li>
-                <li><strong>Self-hosted model.</strong> A model that runs on hardware the researcher owns, so the text it processes never leaves the building.</li>
-                <li><strong>Transfer evidence.</strong> Evidence about how well something learned from one population of writers carries over to another.</li>
-                <li><strong>Transparent lane.</strong> The scoring method built on 31 inspectable text measures, also called the white-box lane.</li>
-                <li><strong>Triangulation.</strong> Using partly independent methods on the same question so that they constrain each other's errors.</li>
-                <li><strong>Writing task.</strong> The assignment and topic an essay responds to, also called a writing prompt.</li>
+                <li id="glossary-anchor-essay"><strong>Anchor essay.</strong> An assessment exemplar used as a fixed reference point against which other essays are compared. Several raters assess it and mediate their judgments until they converge, so its score carries low measurement error and small rater effects.</li>
+                <li id="glossary-api"><strong>API.</strong> An arrangement in which one program answers requests from another program, with no conversation window and no chat history.</li>
+                <li id="glossary-bradley-terry"><strong>Bradley-Terry model.</strong> A statistical method from psychometrics that turns the outcomes of many pairwise comparisons into a ranking.</li>
+                <li id="glossary-chat-interface"><strong>Chat interface.</strong> A consumer product in which a person types or uploads text into a conversation window, where the provider may store the text and may use it for training.</li>
+                <li id="glossary-comparative-judgment"><strong>Comparative judgment.</strong> An assessment method in which a judge decides which of two texts is better, instead of scoring one text on a scale.</li>
+                <li id="glossary-corpus"><strong>Corpus.</strong> A collection of texts assembled for study.</li>
+                <li id="glossary-discordant-text"><strong>Discordant text.</strong> A student text whose qualities pull in different directions across assessment dimensions, producing rater disagreement.</li>
+                <li id="glossary-ellipse"><strong>ELLIPSE.</strong> A public, anonymized research corpus of roughly 6,500 essays by school-age English learners in the United States, each scored 1 to 5 by two trained human raters. <a class="external-link read-more" href="https://github.com/scrosseye/ELLIPSE-Corpus" target="_blank" rel="noopener noreferrer">Explore the dataset</a> or <a class="external-link read-more" href="https://www.benjamins.com/catalog/ijlcr.22026.cro" target="_blank" rel="noopener noreferrer">read the corpus paper</a>.</li>
+                <li id="glossary-embedding"><strong>Embedding.</strong> A list of numbers, here 768 of them, into which a language model condenses its reading of a whole text.</li>
+                <li id="glossary-frozen-scorer"><strong>Frozen scorer.</strong> A scorer whose training and settings were fixed before an evaluation and were not changed afterwards.</li>
+                <li id="glossary-held-out-testing"><strong>Held-out testing.</strong> Evaluating a model only on material that was set aside before training and that the model has never seen.</li>
+                <li id="glossary-hemma"><strong>Hemma.</strong> The server I built and run at home, on which the language models, the parser, the error checkers, and the embedding extraction run.</li>
+                <li id="glossary-hybrid-lane"><strong>Hybrid lane.</strong> The scoring method that combines the embedding with the transparent measures in one regression model.</li>
+                <li id="glossary-language-model"><strong>Language model.</strong> A program trained on very large amounts of text until it can process and produce language.</li>
+                <li id="glossary-model"><strong>Model.</strong> A computer program that has learned a rule from examples instead of being given the rule directly.</li>
+                <li id="glossary-official-test-set"><strong>Official test set.</strong> The set of ELLIPSE test essays published with the corpus, on which published systems report their results.</li>
+                <li id="glossary-open-weight-model"><strong>Open-weight model.</strong> A model whose full internals are published, so that anyone can run it on their own hardware.</li>
+                <li id="glossary-parser"><strong>Parser.</strong> A program that works out the grammatical structure of a sentence.</li>
+                <li id="glossary-quadratic-weighted-kappa"><strong>Quadratic weighted kappa.</strong> An agreement statistic that rewards close agreement and penalizes distant disagreement more heavily, running from 0 for chance-level agreement to 1 for perfect agreement.</li>
+                <li id="glossary-regression-model"><strong>Regression model.</strong> A model that learns from examples to predict a number, here an essay score.</li>
+                <li id="glossary-sealed-test-set"><strong>Sealed test set.</strong> A portion of the data locked away and opened only at declared checkpoints, so that repeated evaluation cannot inflate results.</li>
+                <li id="glossary-self-hosted-model"><strong>Self-hosted model.</strong> A model that runs on hardware the researcher owns, so the text it processes never leaves the building.</li>
+                <li id="glossary-transfer-evidence"><strong>Transfer evidence.</strong> Evidence about how well something learned from one population of writers carries over to another.</li>
+                <li id="glossary-transparent-lane"><strong>Transparent lane.</strong> The scoring method built on 31 inspectable text measures, also called the white-box lane.</li>
+                <li id="glossary-triangulation"><strong>Triangulation.</strong> Using partly independent methods on the same question so that they constrain each other's errors.</li>
+                <li id="glossary-writing-task"><strong>Writing task.</strong> The assignment and topic an essay responds to, also called a writing prompt.</li>
         </ul>
   <script>
     const lastUpdated = document.querySelector('#last-updated');
