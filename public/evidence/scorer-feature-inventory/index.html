@@ -12,7 +12,7 @@
   <header class="page-header">
     <a class="back-link" href="/huleedu-system-overview/">HuleEdu system overview</a>
     <h1>Scorer features and remaining errors</h1>
-    <p class="source-line"><a href="/evidence/source/scorer-feature-inventory.md">Markdown source</a> · evidence revision <code>608cbe87cc3a</code></p>
+    <p class="source-line"><a href="/evidence/source/scorer-feature-inventory.md">Markdown source</a> · evidence revision <code>2b53923fc4cc</code></p>
   </header>
   <main>
     <article class="markdown-body"><p><span id="production-scorer-features"></span></p>
@@ -433,22 +433,29 @@ low.</p>
 predictions are too low. The error is strongest for the 68 essays scored 4.5
 or 5.0. The <a href="/evidence/official-test-benchmark/#full-population-target-bands">complete target-band table</a>
 shows the corresponding results for every scorer arm.</p>
-<p>The feature results do not yet establish the cause of this pattern. They show
-that length has the largest scalar attribution, that lexical sophistication
-and spelling-error rates are also used strongly, and that the three prompt-
-relevance scalars receive little global attribution. A separate
-<a href="/evidence/length-inclusion/#findings-and-interpretation">length-inclusion experiment</a>
-also found mixed effects and worsened low-band error on the unchanged official
-test. None of these analyses compares signed feature contributions within the
-low and high bands.</p>
-<p>The present interpretation is therefore a hypothesis: some high-scoring
-essays may be underpredicted because sophisticated, accurate language and
-divergence from common prompt responses are valued too weakly, while some
-long, error-dense low-scoring essays may receive too much credit for length.
-To test that explanation, the next analysis must compare signed contributions
-on held-out essays within each score band and test length jointly with error
-rates. Until then, the direction and size of the errors are established, but
-the proposed feature mechanism is not.</p>
+<p><span id="what-the-counterfactual-tests-add"></span></p>
+<h2>What the counterfactual tests add</h2>
+<p>The signed analysis found no general low-band mechanism in which length pushes
+weak essays upward. Length&#39;s average contribution there was downward. A small
+long, high-error subgroup did show local upward length pressure partly offset
+by error evidence, so that pattern exists locally rather than as the general
+cause of low-band overprediction. At the upper end, embeddings supplied the
+main upward pressure, while error and correctness evidence was positive but
+too small to close the remaining gap. Frequency, sophistication, and prompt
+relevance did not explain the underprediction.</p>
+<p>The counterfactual tests used held-out prompt folds. The embedding block
+increased broad-high-versus-middle separation by <code>0.033</code> (95% interval
+<code>[+0.014, +0.055]</code>) and exact-high separation by <code>0.079</code> (<code>[+0.031, +0.133]</code>).
+Error and correctness evidence increased broad-high separation by <code>0.0030</code>
+(<code>[+0.0008, +0.0055]</code>). Jointly changing the effective influence of all feature
+families also improved high-band separation. None of these tests established
+better overall RMSE or agreement.</p>
+<p>Useful upper-end information therefore remains in the scorer&#39;s inputs, and
+their current influence is not optimal for separating high-scoring essays from
+the middle. Because the families changed jointly, the tests do not identify
+one family as the cause. They also do not establish that length suppresses
+error evidence or that lexical sophistication, correctness, or prompt
+divergence individually causes the high-band underprediction.</p>
 </article>
   </main>
 </body>

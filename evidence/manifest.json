@@ -5,9 +5,14 @@
       "title": "Scorer features and remaining errors",
       "import": false,
       "sourceRepo": "huleedu",
-      "sourceRevision": "608cbe87cc3a5ddb266c02e2983d9279c2ae24b3",
-      "sourcePath": "docs/reference/ref-hule-general-task-0810-production-essay-scoring-feature-state-task-0810-production-essay-scoring-feature-state.md",
+      "sourceRevision": "2b53923fc4cc6ffb8f96703c92a0cf2dbfce275b",
+      "sourcePath": "docs/reference/ref-hule-research-ellipse-frozen-scorer-benchmark-against-choi-et-al-2026-ellipse-frozen-scorer-benchmark-against-choi-et-al-2026.md",
       "supportingSources": [
+        {
+          "sourceRepo": "huleedu",
+          "sourceRevision": "608cbe87cc3a5ddb266c02e2983d9279c2ae24b3",
+          "sourcePath": "docs/reference/ref-hule-general-task-0810-production-essay-scoring-feature-state-task-0810-production-essay-scoring-feature-state.md"
+        },
         {
           "sourceRepo": "huleeduBenchmark",
           "sourceRevision": "310ab8d4cb80f5fcde2f0c75e1e141366f7a991c",

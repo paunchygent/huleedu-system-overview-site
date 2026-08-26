@@ -117,20 +117,28 @@ predictions are too low. The error is strongest for the 68 essays scored 4.5
 or 5.0. The [complete target-band table](/evidence/official-test-benchmark/#full-population-target-bands)
 shows the corresponding results for every scorer arm.
 
-The feature results do not yet establish the cause of this pattern. They show
-that length has the largest scalar attribution, that lexical sophistication
-and spelling-error rates are also used strongly, and that the three prompt-
-relevance scalars receive little global attribution. A separate
-[length-inclusion experiment](/evidence/length-inclusion/#findings-and-interpretation)
-also found mixed effects and worsened low-band error on the unchanged official
-test. None of these analyses compares signed feature contributions within the
-low and high bands.
+## What the counterfactual tests add
 
-The present interpretation is therefore a hypothesis: some high-scoring
-essays may be underpredicted because sophisticated, accurate language and
-divergence from common prompt responses are valued too weakly, while some
-long, error-dense low-scoring essays may receive too much credit for length.
-To test that explanation, the next analysis must compare signed contributions
-on held-out essays within each score band and test length jointly with error
-rates. Until then, the direction and size of the errors are established, but
-the proposed feature mechanism is not.
+The signed analysis found no general low-band mechanism in which length pushes
+weak essays upward. Length's average contribution there was downward. A small
+long, high-error subgroup did show local upward length pressure partly offset
+by error evidence, so that pattern exists locally rather than as the general
+cause of low-band overprediction. At the upper end, embeddings supplied the
+main upward pressure, while error and correctness evidence was positive but
+too small to close the remaining gap. Frequency, sophistication, and prompt
+relevance did not explain the underprediction.
+
+The counterfactual tests used held-out prompt folds. The embedding block
+increased broad-high-versus-middle separation by `0.033` (95% interval
+`[+0.014, +0.055]`) and exact-high separation by `0.079` (`[+0.031, +0.133]`).
+Error and correctness evidence increased broad-high separation by `0.0030`
+(`[+0.0008, +0.0055]`). Jointly changing the effective influence of all feature
+families also improved high-band separation. None of these tests established
+better overall RMSE or agreement.
+
+Useful upper-end information therefore remains in the scorer's inputs, and
+their current influence is not optimal for separating high-scoring essays from
+the middle. Because the families changed jointly, the tests do not identify
+one family as the cause. They also do not establish that length suppresses
+error evidence or that lexical sophistication, correctness, or prompt
+divergence individually causes the high-band underprediction.
