@@ -261,12 +261,12 @@
       }
 
       .term:hover::after,
-      .term:focus-visible::after {
+      .term:focus::after {
         opacity: 1;
         transform: translate(-50%, 0);
       }
 
-      .term:focus-visible {
+      .term:focus {
         border-radius: 2px;
         outline: 2px solid #173e70;
         outline-offset: 3px;
@@ -277,34 +277,6 @@
         font-family: Verdana, Arial, sans-serif;
         font-size: 0.78em;
         text-decoration: none;
-      }
-
-      .glossary-list {
-        display: grid;
-        gap: 1.25rem;
-        padding-left: 0;
-        list-style: none;
-      }
-
-      .glossary-entry {
-        margin: 0;
-        scroll-margin-top: 2rem;
-      }
-
-      .glossary-entry > strong {
-        display: block;
-        margin-bottom: 0.18rem;
-      }
-
-      .glossary-entry:target {
-        margin-inline: -0.75rem;
-        padding: 0.55rem 0.75rem;
-        border-left: 3px solid #173e70;
-        background: #edf3f8;
-      }
-
-      .read-more {
-        white-space: nowrap;
       }
 
     }
