@@ -65,8 +65,7 @@ const rewritePublishedLinks = (markdown) => {
 
 const renderPage = (document, body) => {
   const title = escapeHtml(document.title);
-  const sourcePath = escapeHtml(document.sourcePath);
-  const sourceRevision = escapeHtml(document.sourceRevision);
+  const sourceRevision = escapeHtml(document.sourceRevision.slice(0, 12));
   const slug = escapeHtml(document.slug);
   return `<!doctype html>
 <html lang="en">
@@ -82,7 +81,7 @@ const renderPage = (document, body) => {
   <header class="page-header">
     <a class="back-link" href="/huleedu-system-overview/">HuleEdu system overview</a>
     <h1>${title}</h1>
-    <p class="source-line"><a href="/evidence/source/${slug}.md">Markdown source</a> · <code>${sourcePath}</code> · <code>${sourceRevision}</code></p>
+    <p class="source-line"><a href="/evidence/source/${slug}.md">Markdown source</a> · evidence revision <code>${sourceRevision}</code></p>
   </header>
   <main>
     <article class="markdown-body">${body}</article>
