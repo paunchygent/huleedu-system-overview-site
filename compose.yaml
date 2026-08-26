@@ -1,0 +1,29 @@
+name: huleedu-research-site
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: huleedu-research-site:local
+    container_name: huleedu-research-site
+    restart: unless-stopped
+    expose:
+      - "80"
+    environment:
+      VIRTUAL_HOST: research.hule.education
+      VIRTUAL_PORT: "80"
+      LETSENCRYPT_HOST: research.hule.education
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    networks:
+      - hule-network
+
+networks:
+  hule-network:
+    external: true
+
