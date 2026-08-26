@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     image: huleedu-research-site:local
     container_name: huleedu-research-site
-    restart: unless-stopped
+    restart: always
     expose:
       - "80"
     environment:
@@ -26,4 +26,3 @@ services:
 networks:
   hule-network:
     external: true
-
