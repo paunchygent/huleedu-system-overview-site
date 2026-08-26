@@ -912,8 +912,8 @@
         thousands of controlled, logged, and repeatable requests cannot type into a
         conversation window. I do not use chat interfaces for any part of this work.</p>
 
-        <p>A <a class="term" href="#glossary-self-hosted-model" data-definition="A model that runs on hardware the researcher owns, so the text it processes never leaves the building.">self-hosted model</a> runs on hardware the researcher owns. The text is processed
-        on that machine and never leaves the building.</p>
+        <p>A <a class="term" href="#glossary-self-hosted-model" data-definition="A model that runs on my home server, so the text it processes never leaves the building.">self-hosted model</a> runs on my home server. The text is processed
+        there and never leaves the building.</p>
 
         <p>The system runs almost entirely in the self-hosted mode. I built a server at home
         for this project. Its name is <a class="term" href="#glossary-hemma" data-definition="The researcher's home server, where local language models, parsing, error checks, and embedding extraction run.">Hemma</a>. Hemma runs the language model that produces
@@ -958,10 +958,8 @@
         <div class="figure">
             <svg viewBox="0 0 760 540" width="760" height="540" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Boundary diagram of where essay text travels">
                 <g font-family="Verdana, 'DejaVu Sans', sans-serif">
-                    <!-- Outer boundary: researcher's own hardware -->
+                    <!-- Outer boundary: home server -->
                     <rect x="12" y="20" width="568" height="490" rx="0" fill="none" stroke="#555555" stroke-width="1.5" stroke-dasharray="7 5"/>
-                    <text x="24" y="44" font-size="13" font-weight="700" fill="#555555">the researcher's own hardware</text>
-
                     <!-- Hemma box -->
                     <rect x="32" y="58" width="428" height="350" rx="0" fill="#f1f1f1" stroke="#111111" stroke-width="2"/>
                     <text x="44" y="82" font-size="13" font-weight="700" fill="#111111">Hemma (home server)</text>
@@ -1030,7 +1028,7 @@
                 </g>
             </svg>
             <div class="figure-caption">
-                <strong>Figure 2. Where text travels when the system runs.</strong> All processing of essay text happens on Hemma, inside the researcher's own hardware. One path crosses the boundary, and it passes through a single gateway that checks every request in code. The path carries essay text under anonymous identifiers. For comparative judgment this covers ELLIPSE pairs and de-identified Swedish student and anchor essays, and correction candidates come from ELLIPSE only. The identifier-to-student record stays offline on the researcher's own hardware and is never transmitted, so no request can connect an essay to a student.
+                <strong>Figure 2. Where text travels when the system runs.</strong> All processing of essay text happens on Hemma, my home server. One path crosses the boundary, and it passes through a single gateway that checks every request in code. The path carries essay text under anonymous identifiers. For comparative judgment this covers ELLIPSE pairs and de-identified Swedish student and anchor essays, and correction candidates come from ELLIPSE only. The identifier-to-student record stays offline on my home server and is never transmitted, so no request can connect an essay to a student.
             </div>
         </div>
 
@@ -1094,7 +1092,7 @@
                 <li id="glossary-quadratic-weighted-kappa"><strong>Quadratic weighted kappa.</strong> An agreement statistic that rewards close agreement and penalizes distant disagreement more heavily, running from 0 for chance-level agreement to 1 for perfect agreement.</li>
                 <li id="glossary-regression-model"><strong>Regression model.</strong> A model that learns from examples to predict a number, here an essay score.</li>
                 <li id="glossary-sealed-test-set"><strong>Sealed test set.</strong> A portion of the data locked away and opened only at declared checkpoints, so that repeated evaluation cannot inflate results.</li>
-                <li id="glossary-self-hosted-model"><strong>Self-hosted model.</strong> A model that runs on hardware the researcher owns, so the text it processes never leaves the building.</li>
+                <li id="glossary-self-hosted-model"><strong>Self-hosted model.</strong> A model that runs on my home server, so the text it processes never leaves the building.</li>
                 <li id="glossary-transfer-evidence"><strong>Transfer evidence.</strong> Evidence about how well something learned from one population of writers carries over to another.</li>
                 <li id="glossary-transparent-lane"><strong>Transparent lane.</strong> The scoring method built on 31 inspectable text measures, also called the white-box lane.</li>
                 <li id="glossary-triangulation"><strong>Triangulation.</strong> Using partly independent methods on the same question so that they constrain each other's errors.</li>
