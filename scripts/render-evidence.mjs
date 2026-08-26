@@ -51,6 +51,9 @@ const addHeadingAnchors = (markdown) => {
 const stripFrontmatter = (markdown) =>
   markdown.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, "");
 
+const publicExtract = (markdown) =>
+  `${stripFrontmatter(markdown).split("\n<!-- public-extract-end -->\n", 1)[0].trimEnd()}\n`;
+
 const sourceLinks = new Map(
   manifest.documents.map((document) => [path.basename(document.sourcePath), document.slug]),
 );
@@ -99,12 +102,13 @@ await cp(path.join(evidenceRoot, "assets"), outputRoot, { recursive: true, force
 for (const document of manifest.documents) {
   const sourcePath = path.join(evidenceRoot, "source", `${document.slug}.md`);
   const source = await readFile(sourcePath, "utf8");
-  const markdown = addHeadingAnchors(rewritePublishedLinks(stripFrontmatter(source)));
+  const publishedSource = publicExtract(source);
+  const markdown = addHeadingAnchors(rewritePublishedLinks(publishedSource));
   const body = await marked.parse(markdown, { gfm: true, breaks: false });
   const destination = path.join(outputRoot, document.slug);
   await mkdir(destination, { recursive: true });
   await writeFile(path.join(destination, "index.html"), renderPage(document, body));
-  await copyFile(sourcePath, path.join(outputRoot, "source", `${document.slug}.md`));
+  await writeFile(path.join(outputRoot, "source", `${document.slug}.md`), publishedSource);
 }
 
 console.log(`Rendered ${manifest.documents.length} evidence pages.`);

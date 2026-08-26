@@ -1,16 +1,3 @@
----
-type: reference
-id: REF-HULE-RESEARCH-task-43-05-unrestricted-length-ellipse-experiment-results
-title: Task 43-05 unrestricted-length ELLIPSE experiment results
-repository: huleedu
-owners:
-  - kind: service
-    id: huleedu
-created: '2026-08-25'
-status: active
-reference_kind: research
-summary: Results and interpretation for adding the 256 otherwise-admissible ELLIPSE essays excluded solely by the former word-count rule.
----
 
 ## Research Purpose And Boundary
 

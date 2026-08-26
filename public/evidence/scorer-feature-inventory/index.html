@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Production scorer feature inventory | HuleEdu</title>
+  <title>Scorer features and remaining errors | HuleEdu</title>
   <link rel="icon" href="/favicon.svg">
   <link rel="stylesheet" href="/evidence/evidence.css">
   <link rel="canonical" href="https://research.hule.education/evidence/scorer-feature-inventory/">
@@ -11,54 +11,444 @@
 <body>
   <header class="page-header">
     <a class="back-link" href="/huleedu-system-overview/">HuleEdu system overview</a>
-    <h1>Production scorer feature inventory</h1>
+    <h1>Scorer features and remaining errors</h1>
     <p class="source-line"><a href="/evidence/source/scorer-feature-inventory.md">Markdown source</a> · evidence revision <code>608cbe87cc3a</code></p>
   </header>
   <main>
-    <article class="markdown-body"><p><span id="production-scorer-feature-inventory"></span></p>
-<h1>Production scorer feature inventory</h1>
-<p>Source record:
-<code>docs/reference/ref-hule-general-task-0810-production-essay-scoring-feature-state-task-0810-production-essay-scoring-feature-state.md</code>
-at HuleEdu revision <code>c9d8b6ef60c19bbbdb17b9b46243ab4abfce35bb</code>.</p>
+    <article class="markdown-body"><p><span id="production-scorer-features"></span></p>
+<h1>Production scorer features</h1>
+<p>The production registry defines two scalar recipes. The transparent scorer uses
+31 named scalar values. The hybrid scorer uses 38 named scalar values together
+with 768 embedding coordinates. Twenty-seven scalars are common to both
+recipes; four occur only in the transparent scorer and eleven only in the
+hybrid scorer.</p>
 <p><span id="production-feature-inventory"></span></p>
-<h2>Production Feature Inventory</h2>
-<p>The accepted scorer registry records three different feature surfaces. The
-transparent and hybrid scorers do not use the same scalar set.</p>
+<h2>Production feature inventory</h2>
 <table>
 <thead>
 <tr>
-<th>surface</th>
+<th>scorer</th>
 <th>accepted identity</th>
-<th align="right">scalar count</th>
-<th align="right">embedding count</th>
-<th>current composition</th>
+<th align="right">scalar values</th>
+<th align="right">embedding coordinates</th>
+<th align="right">total inputs</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>pure feature scorer</td>
+<td>transparent</td>
 <td><code>handcrafted.current.v1</code></td>
 <td align="right">31</td>
 <td align="right">0</td>
-<td>Includes both accepted RST rates and the three selected T-unit metrics.</td>
+<td align="right">31</td>
 </tr>
 <tr>
-<td>embeddings scorer</td>
+<td>embeddings only</td>
 <td><code>embeddings.primary.v1</code></td>
 <td align="right">0</td>
 <td align="right">768</td>
-<td>Contains no linguistic scalar features.</td>
+<td align="right">768</td>
 </tr>
 <tr>
-<td>hybrid scorer</td>
+<td>hybrid</td>
 <td><code>combined.current.v1</code></td>
 <td align="right">38</td>
 <td align="right">768</td>
-<td>Includes the satellite-relation rate and four selected parser-clause rates in its scalar component.</td>
+<td align="right">806</td>
 </tr>
 </tbody></table>
-<p>The source record resolves schema identity and membership from the accepted
-registry. The counts describe the production feature surfaces, not a claim
-that every feature contributes equally to a prediction.</p>
+<p>Four named scalars use the same language-model runtime that produces the
+embedding: sentence-similarity variance and the three prompt-relevance
+measures. They remain scalar values with stated meanings. The other scalar
+families use error ledgers, lexical statistics, parsers, discourse analysis,
+and published word norms.</p>
+<p><span id="the-current-scalar-values"></span></p>
+<h2>The current scalar values</h2>
+<table>
+<thead>
+<tr>
+<th>Evidence family</th>
+<th>What the scalar measures</th>
+<th>Registry name</th>
+<th align="center">Transparent</th>
+<th align="center">Hybrid</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Correction and error</td>
+<td>Grammar errors per 100 words</td>
+<td><code>grammar_errors_per_100_words</code></td>
+<td align="center">yes</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Correction and error</td>
+<td>LanguageTool spelling errors per 100 words</td>
+<td><code>language_tool_spelling_errors_per_100_words</code></td>
+<td align="center">yes</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Correction and error</td>
+<td>Verified second-language dictionary corrections per 100 words</td>
+<td><code>l2_dictionary_corrections_per_100_words</code></td>
+<td align="center">yes</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Correction and error</td>
+<td>Final spelling issues per 100 words</td>
+<td><code>final_spelling_issues_per_100_words</code></td>
+<td align="center">yes</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Correction and error</td>
+<td>Punctuation errors per 100 words</td>
+<td><code>punctuation_errors_per_100_words</code></td>
+<td align="center">yes</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Readability</td>
+<td>SMOG readability</td>
+<td><code>smog</code></td>
+<td align="center">yes</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Readability</td>
+<td>Coleman–Liau readability</td>
+<td><code>coleman_liau</code></td>
+<td align="center">yes</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Readability</td>
+<td>Automated Readability Index</td>
+<td><code>ari</code></td>
+<td align="center">yes</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Readability</td>
+<td>Average sentence length</td>
+<td><code>avg_sentence_length</code></td>
+<td align="center">yes</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Lexical diversity</td>
+<td>Type-token ratio</td>
+<td><code>ttr</code></td>
+<td align="center">yes</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Length</td>
+<td>Word count</td>
+<td><code>word_count</code></td>
+<td align="center">yes</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Length</td>
+<td>Average word length</td>
+<td><code>avg_word_length</code></td>
+<td align="center">yes</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Syntax</td>
+<td>Average parse-tree depth</td>
+<td><code>parse_tree_depth</code></td>
+<td align="center">yes</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Syntax</td>
+<td>Passive construction rate</td>
+<td><code>passive_ratio</code></td>
+<td align="center">yes</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Syntax</td>
+<td>Average dependency distance</td>
+<td><code>dep_distance</code></td>
+<td align="center">yes</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Semantic coherence</td>
+<td>Variation in similarity between sentences</td>
+<td><code>sent_similarity_variance</code></td>
+<td align="center">yes</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Prompt relevance</td>
+<td>Similarity between the essay and its prompt</td>
+<td><code>prompt_similarity</code></td>
+<td align="center">yes</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Prompt relevance</td>
+<td>Similarity between the introduction and the prompt</td>
+<td><code>intro_prompt_sim</code></td>
+<td align="center">yes</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Prompt relevance</td>
+<td>Lowest paragraph relevance to the prompt</td>
+<td><code>min_para_relevance</code></td>
+<td align="center">yes</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Complex noun phrases</td>
+<td>Procedural or event-headed complex noun phrases</td>
+<td><code>procedural_or_event_head_complex_np_density_log1p</code></td>
+<td align="center">yes</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Discourse structure</td>
+<td>Internal same-unit relations in the discourse tree</td>
+<td><code>tier3_rst_gum_primary_tree_same_unit_internal_rate</code></td>
+<td align="center">yes</td>
+<td align="center">—</td>
+</tr>
+<tr>
+<td>Discourse structure</td>
+<td>Satellite relations in the discourse tree</td>
+<td><code>tier3_rst_gum_primary_tree_satellite_relation_rate</code></td>
+<td align="center">yes</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Clause complexity</td>
+<td>Dependent clauses per T-unit</td>
+<td><code>dependent_clauses_per_t_unit</code></td>
+<td align="center">yes</td>
+<td align="center">—</td>
+</tr>
+<tr>
+<td>Clause complexity</td>
+<td>Clauses per T-unit</td>
+<td><code>clauses_per_t_unit</code></td>
+<td align="center">yes</td>
+<td align="center">—</td>
+</tr>
+<tr>
+<td>Clause complexity</td>
+<td>Words per T-unit</td>
+<td><code>words_per_t_unit</code></td>
+<td align="center">yes</td>
+<td align="center">—</td>
+</tr>
+<tr>
+<td>Clause complexity</td>
+<td>Finite adverbial clauses per 100 words</td>
+<td><code>finite_advcl_per_100w</code></td>
+<td align="center">—</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Clause complexity</td>
+<td>Finite relative clauses per 100 words</td>
+<td><code>finite_relative_clause_per_100w</code></td>
+<td align="center">—</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Clause complexity</td>
+<td>Non-finite participial adverbial clauses per 100 words</td>
+<td><code>nonfinite_participial_advcl_per_100w</code></td>
+<td align="center">—</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Clause complexity</td>
+<td>Non-finite participial modifier clauses per 100 words</td>
+<td><code>nonfinite_participial_acl_per_100w</code></td>
+<td align="center">—</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Lexical sophistication</td>
+<td>P_Lex lambda</td>
+<td><code>p_lex_lambda</code></td>
+<td align="center">yes</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Lexical sophistication</td>
+<td>Advanced Guiraud index</td>
+<td><code>advanced_guiraud</code></td>
+<td align="center">yes</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Word range</td>
+<td>Mean log contextual diversity</td>
+<td><code>mean_log_contextual_diversity</code></td>
+<td align="center">yes</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Word range</td>
+<td>Mean contextual-diversity percentile</td>
+<td><code>mean_contextual_diversity_percent</code></td>
+<td align="center">yes</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Word range</td>
+<td>Coverage of the contextual-diversity norm</td>
+<td><code>contextual_diversity_coverage</code></td>
+<td align="center">yes</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Lexical diversity</td>
+<td>Moving-average type-token ratio, 50-word window</td>
+<td><code>mattr_50</code></td>
+<td align="center">yes</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Word norms</td>
+<td>Mean concreteness</td>
+<td><code>mean_concreteness</code></td>
+<td align="center">—</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Word norms</td>
+<td>Coverage of the concreteness norm</td>
+<td><code>concreteness_coverage</code></td>
+<td align="center">—</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Word norms</td>
+<td>Mean word prevalence</td>
+<td><code>mean_word_prevalence</code></td>
+<td align="center">—</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Word norms</td>
+<td>Coverage of the word-prevalence norm</td>
+<td><code>word_prevalence_coverage</code></td>
+<td align="center">—</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Word norms</td>
+<td>Mean lexical-decision response time</td>
+<td><code>mean_lexical_decision_rt_ms</code></td>
+<td align="center">—</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Word norms</td>
+<td>Coverage of the lexical-decision norm</td>
+<td><code>lexical_decision_rt_coverage</code></td>
+<td align="center">—</td>
+<td align="center">yes</td>
+</tr>
+<tr>
+<td>Complex noun phrases</td>
+<td>Abstract noun phrases with a causal predicate</td>
+<td><code>abstract_np_with_causal_predicate</code></td>
+<td align="center">—</td>
+<td align="center">yes</td>
+</tr>
+</tbody></table>
+<p>The two prompt-relevance recipes use the same three scalar names but calculate
+them differently. The transparent scorer uses a mean-centred comparison with
+other prompts. The hybrid scorer retains the earlier raw contrastive version.</p>
+<p><span id="how-the-most-recent-frozen-hybrid-used-its-inputs"></span></p>
+<h2>How the most recent frozen hybrid used its inputs</h2>
+<p>The newest complete per-scalar analysis examines the frozen research hybrid
+used in the August 2026 official-test study. That model has 805 inputs: 768
+embedding coordinates and 37 scalars. It is the immediate predecessor of the
+current 806-input hybrid and omits only
+<code>l2_dictionary_corrections_per_100_words</code> from the scalar recipe.</p>
+<p>The analysis is not an XGBoost split-count table. It uses mean absolute
+TreeSHAP, which measures how strongly the fitted five-model ensemble used each
+input across its 5,042 training essays. TreeSHAP does not state how much
+accuracy a feature caused or what would happen if the feature were removed.
+The <a href="/evidence/official-test-benchmark-feature-detail/#findings-and-interpretation">complete 37-scalar table</a>
+reports every value.</p>
+<p>Across all inputs, the 768 embedding coordinates account for 91.43% of summed
+absolute attribution and the 37 scalars for 8.57%. Among the scalars,
+<code>word_count</code> has the largest attribution (<code>0.052873</code>), followed by
+<code>advanced_guiraud</code> (<code>0.018843</code>) and
+<code>language_tool_spelling_errors_per_100_words</code> (<code>0.017286</code>). The prompt-
+relevance family totals <code>0.000926</code>. These values describe that fitted model;
+they are not a general ranking of what matters in writing.</p>
+<p>No current 806-input split-count, gain, permutation, removal, or TreeSHAP table
+has been produced. An older split-count table exists for a 68-essay Swedish
+cohort and a 788-input historical model. Its population and recipe differ too
+much for it to describe the current scorers.</p>
+<p><span id="where-the-current-errors-are"></span></p>
+<h2>Where the current errors are</h2>
+<p>The official-test analysis directly measures the direction of the remaining
+errors. Bias is prediction minus human score, so a positive value means that
+the model predicted too high and a negative value means that it predicted too
+low.</p>
+<table>
+<thead>
+<tr>
+<th>Human-score band</th>
+<th align="right">Essays</th>
+<th align="right">Mean absolute error</th>
+<th align="right">Bias</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1.0–2.0</td>
+<td align="right">225</td>
+<td align="right">0.3333</td>
+<td align="right">+0.2400</td>
+</tr>
+<tr>
+<td>4.0–5.0</td>
+<td align="right">425</td>
+<td align="right">0.3212</td>
+<td align="right">-0.2435</td>
+</tr>
+<tr>
+<td>4.5–5.0</td>
+<td align="right">68</td>
+<td align="right">0.4632</td>
+<td align="right">-0.3897</td>
+</tr>
+</tbody></table>
+<p>The low-band predictions are therefore too high, and the high-band
+predictions are too low. The error is strongest for the 68 essays scored 4.5
+or 5.0. The <a href="/evidence/official-test-benchmark/#full-population-target-bands">complete target-band table</a>
+shows the corresponding results for every scorer arm.</p>
+<p>The feature results do not yet establish the cause of this pattern. They show
+that length has the largest scalar attribution, that lexical sophistication
+and spelling-error rates are also used strongly, and that the three prompt-
+relevance scalars receive little global attribution. A separate
+<a href="/evidence/length-inclusion/#findings-and-interpretation">length-inclusion experiment</a>
+also found mixed effects and worsened low-band error on the unchanged official
+test. None of these analyses compares signed feature contributions within the
+low and high bands.</p>
+<p>The present interpretation is therefore a hypothesis: some high-scoring
+essays may be underpredicted because sophisticated, accurate language and
+divergence from common prompt responses are valued too weakly, while some
+long, error-dense low-scoring essays may receive too much credit for length.
+To test that explanation, the next analysis must compare signed contributions
+on held-out essays within each score band and test length jointly with error
+rates. Until then, the direction and size of the errors are established, but
+the proposed feature mechanism is not.</p>
 </article>
   </main>
 </body>

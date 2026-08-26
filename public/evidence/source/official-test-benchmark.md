@@ -1,16 +1,3 @@
----
-type: reference
-id: REF-HULE-RESEARCH-ellipse-frozen-scorer-benchmark-against-choi-et-al-2026
-title: ELLIPSE frozen scorer benchmark against Choi et al. 2026
-repository: huleedu
-owners:
-  - kind: service
-    id: huleedu
-created: '2026-08-25'
-status: active
-reference_kind: research
-summary: Full-population frozen-scorer results with sealed continuity, subgroup decomposition, and an explicit protocol-difference ledger against Choi et al. 2026.
----
 
 ## Research Purpose And Boundary
 

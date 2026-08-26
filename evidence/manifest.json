@@ -2,11 +2,28 @@
   "documents": [
     {
       "slug": "scorer-feature-inventory",
-      "title": "Production scorer feature inventory",
+      "title": "Scorer features and remaining errors",
       "import": false,
       "sourceRepo": "huleedu",
       "sourceRevision": "608cbe87cc3a5ddb266c02e2983d9279c2ae24b3",
-      "sourcePath": "docs/reference/ref-hule-general-task-0810-production-essay-scoring-feature-state-task-0810-production-essay-scoring-feature-state.md"
+      "sourcePath": "docs/reference/ref-hule-general-task-0810-production-essay-scoring-feature-state-task-0810-production-essay-scoring-feature-state.md",
+      "supportingSources": [
+        {
+          "sourceRepo": "huleeduBenchmark",
+          "sourceRevision": "310ab8d4cb80f5fcde2f0c75e1e141366f7a991c",
+          "sourcePath": "docs/reference/ref-hule-research-ellipse-frozen-scorer-benchmark-against-choi-et-al-2026-ellipse-frozen-scorer-benchmark-against-choi-et-al-2026.md"
+        },
+        {
+          "sourceRepo": "huleeduBenchmark",
+          "sourceRevision": "310ab8d4cb80f5fcde2f0c75e1e141366f7a991c",
+          "sourcePath": "docs/reference/ref-hule-research-ellipse-frozen-scorer-benchmark-against-choi-et-al-2026-ellipse-frozen-scorer-benchmark-against-choi-et-al-2026-part-01.md"
+        },
+        {
+          "sourceRepo": "huleedu",
+          "sourceRevision": "608cbe87cc3a5ddb266c02e2983d9279c2ae24b3",
+          "sourcePath": "docs/reference/ref-hule-research-task-43-05-unrestricted-length-ellipse-experiment-results-task-43-05-unrestricted-length-ellipse-experiment-results.md"
+        }
+      ]
     },
     {
       "slug": "cohort-overlap",

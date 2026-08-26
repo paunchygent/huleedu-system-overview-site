@@ -1,18 +1,3 @@
----
-type: reference
-id: REF-HULE-GENERAL-cj-to-llm-prompt-contract
-title: CJ to LLM prompt contract
-repository: huleedu
-owners:
-  - kind: service
-    id: huleedu
-created: '2026-07-30'
-status: active
-reference_kind: general
-retired_ids:
-  - REF-cj-to-llm-prompt-contract
-summary: CJ to LLM prompt contract
----
 
 ## Overview
 

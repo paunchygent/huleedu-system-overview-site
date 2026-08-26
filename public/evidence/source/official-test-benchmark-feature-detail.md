@@ -1,15 +1,3 @@
----
-type: reference
-id: REF-HULE-RESEARCH-ellipse-frozen-scorer-benchmark-against-choi-et-al-2026-PART-01
-title: Raw-inclusive hybrid scalar attribution inventory
-repository: huleedu
-owners:
-  - kind: service
-    id: huleedu
-created: '2026-08-26'
-root: REF-HULE-RESEARCH-ellipse-frozen-scorer-benchmark-against-choi-et-al-2026
-part: 1
----
 
 ## Research Purpose And Boundary
 
