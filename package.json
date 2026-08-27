@@ -9,10 +9,14 @@
     "overview:import": "node scripts/import-overview.mjs",
     "evidence:import": "node scripts/import-evidence.mjs",
     "evidence:render": "node scripts/render-evidence.mjs",
-    "build": "npm run evidence:render",
-    "lint": "node --check scripts/import-overview.mjs && node --check scripts/import-evidence.mjs && node --check scripts/render-evidence.mjs"
+    "code:render": "node scripts/render-code-reader.mjs",
+    "code:test": "node --test tests/render-code-reader.test.mjs",
+    "code:validate": "node scripts/validate-code-reader.mjs",
+    "build": "npm run evidence:render && npm run code:validate",
+    "lint": "node --check scripts/import-overview.mjs && node --check scripts/import-evidence.mjs && node --check scripts/render-evidence.mjs && node --check scripts/render-code-reader.mjs && node --check scripts/validate-code-reader.mjs && node --check tests/render-code-reader.test.mjs"
   },
   "dependencies": {
+    "highlight.js": "^11.11.1",
     "marked": "^17.0.5"
   },
   "type": "module"
