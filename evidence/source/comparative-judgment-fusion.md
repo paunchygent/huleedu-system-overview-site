@@ -117,3 +117,13 @@ The corrected evidence therefore supports continued study of comparative
 judgment as an additional source of information. It does not establish that
 fusion is generally better than the combined scorer. The experiment concerns
 one writing task, and any broader claim requires replication across tasks.
+
+At public code revision
+[`eebc7379b1396572739d2f81851856df010c0024`](https://research.hule.education/code/eebc7379b1396572739d2f81851856df010c0024/),
+the implementation exposes both the
+[comparison-submission path](https://research.hule.education/code/eebc7379b1396572739d2f81851856df010c0024/source/services/cj_assessment_service/cj_core_logic/comparison_processing.py.html#L80)
+and the function that
+[turns pairwise outcomes into Bradley--Terry scores](https://research.hule.education/code/eebc7379b1396572739d2f81851856df010c0024/source/services/cj_assessment_service/cj_core_logic/bt_scoring.py.html#L39).
+Those links document the comparative-judgment implementation. The numerical
+results above remain supported by the experiment records described on this
+page rather than by the source listing alone.
