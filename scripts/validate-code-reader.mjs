@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 const repositoryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const outputRoot = path.join(repositoryRoot, "public", "code");
 const fullRevision = /^[0-9a-f]{40}$/;
+const safePathPart = /^[A-Za-z0-9_.-]+$/;
 
 const manifest = JSON.parse(await readFile(path.join(outputRoot, "reader-manifest.json"), "utf8"));
 if (!fullRevision.test(manifest.revision) || !Array.isArray(manifest.files) || manifest.files.length === 0) {
@@ -18,7 +19,12 @@ if (!index.includes(manifest.revision) || !index.includes("Repository tree")) {
 
 for (const sourcePath of manifest.files) {
   const parts = sourcePath.split("/");
-  if (parts.some((part) => !/^[A-Za-z0-9][A-Za-z0-9._-]*$/.test(part))) {
+  if (
+    parts.some(
+      (part) =>
+        !safePathPart.test(part) || part === "." || part === ".." || part === ".git",
+    )
+  ) {
     throw new Error(`Generated code reader contains an unsafe source path: ${sourcePath}`);
   }
   const sourcePage = path.join(outputRoot, manifest.revision, "source", ...parts) + ".html";

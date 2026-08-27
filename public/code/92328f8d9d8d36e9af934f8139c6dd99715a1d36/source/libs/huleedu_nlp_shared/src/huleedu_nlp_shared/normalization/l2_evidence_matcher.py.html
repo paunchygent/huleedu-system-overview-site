@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>libs/huleedu_nlp_shared/src/huleedu_nlp_shared/normalization/l2_evidence_matcher.py | HuleEdu research code</title>
+  <link rel="icon" href="/favicon.svg">
+  <link rel="stylesheet" href="/code/code.css">
+</head>
+<body>
+  <header class="site-header"><a href="/huleedu-system-overview/">HuleEdu research</a><a href="https://codeberg.org/paunchygent/huleedu-research-code">Codeberg</a></header>
+  <main class="reader-layout">
+    <aside class="revision-rail" aria-label="Public revision">
+      <span>Revision</span>
+      <a href="https://codeberg.org/paunchygent/huleedu-research-code/commit/92328f8d9d8d36e9af934f8139c6dd99715a1d36">92328f8d9d8d36e9af934f8139c6dd99715a1d36</a>
+      <time datetime="2026-08-27T21:38:56.000Z">Published 27 August 2026</time>
+    </aside>
+    <section class="reader-content"><p class="eyebrow"><a href="/code/">Code</a> / libs/huleedu_nlp_shared/src/huleedu_nlp_shared/normalization/l2_evidence_matcher.py</p>
+    <h1>libs/huleedu_nlp_shared/src/huleedu_nlp_shared/normalization/l2_evidence_matcher.py</h1>
+    <p class="provenance"><a href="https://codeberg.org/paunchygent/huleedu-research-code/src/commit/92328f8d9d8d36e9af934f8139c6dd99715a1d36/libs/huleedu_nlp_shared/src/huleedu_nlp_shared/normalization/l2_evidence_matcher.py">View this file on Codeberg</a></p>
+    <pre class="source-code"><code><span class="code-line" id="L1">
+  <a class="line-number" href="#L1" aria-label="Line 1">1</a>
+  <span class="source-text"><span class="hljs-string">&quot;&quot;&quot;Indexed literal matching for L2 dictionary evidence.</span></span>
+</span>
+<span class="code-line" id="L2">
+  <a class="line-number" href="#L2" aria-label="Line 2">2</a>
+  <span class="source-text"><span class="hljs-string"></span></span>
+</span>
+<span class="code-line" id="L3">
+  <a class="line-number" href="#L3" aria-label="Line 3">3</a>
+  <span class="source-text"><span class="hljs-string">Purpose:</span></span>
+</span>
+<span class="code-line" id="L4">
+  <a class="line-number" href="#L4" aria-label="Line 4">4</a>
+  <span class="source-text"><span class="hljs-string">    Find every case-insensitive dictionary literal with the same word-boundary,</span></span>
+</span>
+<span class="code-line" id="L5">
+  <a class="line-number" href="#L5" aria-label="Line 5">5</a>
+  <span class="source-text"><span class="hljs-string">    per-entry non-overlap, and dictionary-order behavior as the former regex</span></span>
+</span>
+<span class="code-line" id="L6">
+  <a class="line-number" href="#L6" aria-label="Line 6">6</a>
+  <span class="source-text"><span class="hljs-string">    scan without compiling and searching one pattern per essay and entry.</span></span>
+</span>
+<span class="code-line" id="L7">
+  <a class="line-number" href="#L7" aria-label="Line 7">7</a>
+  <span class="source-text"><span class="hljs-string">&quot;&quot;&quot;</span></span>
+</span>
+<span class="code-line" id="L8">
+  <a class="line-number" href="#L8" aria-label="Line 8">8</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L9">
+  <a class="line-number" href="#L9" aria-label="Line 9">9</a>
+  <span class="source-text"><span class="hljs-keyword">from</span> __future__ <span class="hljs-keyword">import</span> annotations</span>
+</span>
+<span class="code-line" id="L10">
+  <a class="line-number" href="#L10" aria-label="Line 10">10</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L11">
+  <a class="line-number" href="#L11" aria-label="Line 11">11</a>
+  <span class="source-text"><span class="hljs-keyword">from</span> dataclasses <span class="hljs-keyword">import</span> dataclass</span>
+</span>
+<span class="code-line" id="L12">
+  <a class="line-number" href="#L12" aria-label="Line 12">12</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L13">
+  <a class="line-number" href="#L13" aria-label="Line 13">13</a>
+  <span class="source-text">_PYTHON_IGNORECASE_EQUIVALENTS = {</span>
+</span>
+<span class="code-line" id="L14">
+  <a class="line-number" href="#L14" aria-label="Line 14">14</a>
+  <span class="source-text">    <span class="hljs-string">&quot;İ&quot;</span>: <span class="hljs-string">&quot;i&quot;</span>,</span>
+</span>
+<span class="code-line" id="L15">
+  <a class="line-number" href="#L15" aria-label="Line 15">15</a>
+  <span class="source-text">    <span class="hljs-string">&quot;ı&quot;</span>: <span class="hljs-string">&quot;i&quot;</span>,</span>
+</span>
+<span class="code-line" id="L16">
+  <a class="line-number" href="#L16" aria-label="Line 16">16</a>
+  <span class="source-text">    <span class="hljs-string">&quot;ſ&quot;</span>: <span class="hljs-string">&quot;s&quot;</span>,</span>
+</span>
+<span class="code-line" id="L17">
+  <a class="line-number" href="#L17" aria-label="Line 17">17</a>
+  <span class="source-text">    <span class="hljs-string">&quot;K&quot;</span>: <span class="hljs-string">&quot;k&quot;</span>,</span>
+</span>
+<span class="code-line" id="L18">
+  <a class="line-number" href="#L18" aria-label="Line 18">18</a>
+  <span class="source-text">}</span>
+</span>
+<span class="code-line" id="L19">
+  <a class="line-number" href="#L19" aria-label="Line 19">19</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L20">
+  <a class="line-number" href="#L20" aria-label="Line 20">20</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L21">
+  <a class="line-number" href="#L21" aria-label="Line 21">21</a>
+  <span class="source-text"><span class="hljs-meta">@dataclass(<span class="hljs-params">frozen=<span class="hljs-literal">True</span></span>)</span></span>
+</span>
+<span class="code-line" id="L22">
+  <a class="line-number" href="#L22" aria-label="Line 22">22</a>
+  <span class="source-text"><span class="hljs-keyword">class</span> <span class="hljs-title class_">L2DictionaryLiteral</span>:</span>
+</span>
+<span class="code-line" id="L23">
+  <a class="line-number" href="#L23" aria-label="Line 23">23</a>
+  <span class="source-text">    <span class="hljs-string">&quot;&quot;&quot;One dictionary entry with its observable insertion order.&quot;&quot;&quot;</span></span>
+</span>
+<span class="code-line" id="L24">
+  <a class="line-number" href="#L24" aria-label="Line 24">24</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L25">
+  <a class="line-number" href="#L25" aria-label="Line 25">25</a>
+  <span class="source-text">    index: <span class="hljs-built_in">int</span></span>
+</span>
+<span class="code-line" id="L26">
+  <a class="line-number" href="#L26" aria-label="Line 26">26</a>
+  <span class="source-text">    error_word: <span class="hljs-built_in">str</span></span>
+</span>
+<span class="code-line" id="L27">
+  <a class="line-number" href="#L27" aria-label="Line 27">27</a>
+  <span class="source-text">    correction: <span class="hljs-built_in">str</span></span>
+</span>
+<span class="code-line" id="L28">
+  <a class="line-number" href="#L28" aria-label="Line 28">28</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L29">
+  <a class="line-number" href="#L29" aria-label="Line 29">29</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L30">
+  <a class="line-number" href="#L30" aria-label="Line 30">30</a>
+  <span class="source-text"><span class="hljs-meta">@dataclass(<span class="hljs-params">frozen=<span class="hljs-literal">True</span></span>)</span></span>
+</span>
+<span class="code-line" id="L31">
+  <a class="line-number" href="#L31" aria-label="Line 31">31</a>
+  <span class="source-text"><span class="hljs-keyword">class</span> <span class="hljs-title class_">L2LiteralMatch</span>:</span>
+</span>
+<span class="code-line" id="L32">
+  <a class="line-number" href="#L32" aria-label="Line 32">32</a>
+  <span class="source-text">    <span class="hljs-string">&quot;&quot;&quot;One literal occurrence over the immutable source text.&quot;&quot;&quot;</span></span>
+</span>
+<span class="code-line" id="L33">
+  <a class="line-number" href="#L33" aria-label="Line 33">33</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L34">
+  <a class="line-number" href="#L34" aria-label="Line 34">34</a>
+  <span class="source-text">    dictionary_index: <span class="hljs-built_in">int</span></span>
+</span>
+<span class="code-line" id="L35">
+  <a class="line-number" href="#L35" aria-label="Line 35">35</a>
+  <span class="source-text">    error_word: <span class="hljs-built_in">str</span></span>
+</span>
+<span class="code-line" id="L36">
+  <a class="line-number" href="#L36" aria-label="Line 36">36</a>
+  <span class="source-text">    correction: <span class="hljs-built_in">str</span></span>
+</span>
+<span class="code-line" id="L37">
+  <a class="line-number" href="#L37" aria-label="Line 37">37</a>
+  <span class="source-text">    offset: <span class="hljs-built_in">int</span></span>
+</span>
+<span class="code-line" id="L38">
+  <a class="line-number" href="#L38" aria-label="Line 38">38</a>
+  <span class="source-text">    end_offset: <span class="hljs-built_in">int</span></span>
+</span>
+<span class="code-line" id="L39">
+  <a class="line-number" href="#L39" aria-label="Line 39">39</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L40">
+  <a class="line-number" href="#L40" aria-label="Line 40">40</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L41">
+  <a class="line-number" href="#L41" aria-label="Line 41">41</a>
+  <span class="source-text"><span class="hljs-keyword">class</span> <span class="hljs-title class_">L2EvidenceMatcher</span>:</span>
+</span>
+<span class="code-line" id="L42">
+  <a class="line-number" href="#L42" aria-label="Line 42">42</a>
+  <span class="source-text">    <span class="hljs-string">&quot;&quot;&quot;Index L2 literals once and return regex-equivalent source matches.&quot;&quot;&quot;</span></span>
+</span>
+<span class="code-line" id="L43">
+  <a class="line-number" href="#L43" aria-label="Line 43">43</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L44">
+  <a class="line-number" href="#L44" aria-label="Line 44">44</a>
+  <span class="source-text">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, l2_errors: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">str</span>]</span>) -&gt; <span class="hljs-literal">None</span>:</span>
+</span>
+<span class="code-line" id="L45">
+  <a class="line-number" href="#L45" aria-label="Line 45">45</a>
+  <span class="source-text">        buckets: <span class="hljs-built_in">dict</span>[</span>
+</span>
+<span class="code-line" id="L46">
+  <a class="line-number" href="#L46" aria-label="Line 46">46</a>
+  <span class="source-text">            <span class="hljs-built_in">str</span>,</span>
+</span>
+<span class="code-line" id="L47">
+  <a class="line-number" href="#L47" aria-label="Line 47">47</a>
+  <span class="source-text">            <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">int</span>, <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, <span class="hljs-built_in">list</span>[L2DictionaryLiteral]]],</span>
+</span>
+<span class="code-line" id="L48">
+  <a class="line-number" href="#L48" aria-label="Line 48">48</a>
+  <span class="source-text">        ] = {}</span>
+</span>
+<span class="code-line" id="L49">
+  <a class="line-number" href="#L49" aria-label="Line 49">49</a>
+  <span class="source-text">        <span class="hljs-keyword">for</span> index, (error_word, correction) <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(l2_errors.items()):</span>
+</span>
+<span class="code-line" id="L50">
+  <a class="line-number" href="#L50" aria-label="Line 50">50</a>
+  <span class="source-text">            <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span> error_word:</span>
+</span>
+<span class="code-line" id="L51">
+  <a class="line-number" href="#L51" aria-label="Line 51">51</a>
+  <span class="source-text">                <span class="hljs-keyword">raise</span> ValueError(<span class="hljs-string">&quot;L2 dictionary error words must be non-empty.&quot;</span>)</span>
+</span>
+<span class="code-line" id="L52">
+  <a class="line-number" href="#L52" aria-label="Line 52">52</a>
+  <span class="source-text">            normalized = _ignorecase_literal(error_word)</span>
+</span>
+<span class="code-line" id="L53">
+  <a class="line-number" href="#L53" aria-label="Line 53">53</a>
+  <span class="source-text">            first_character = _ignorecase_character(error_word[<span class="hljs-number">0</span>])</span>
+</span>
+<span class="code-line" id="L54">
+  <a class="line-number" href="#L54" aria-label="Line 54">54</a>
+  <span class="source-text">            length_buckets = buckets.setdefault(first_character, {})</span>
+</span>
+<span class="code-line" id="L55">
+  <a class="line-number" href="#L55" aria-label="Line 55">55</a>
+  <span class="source-text">            literal_buckets = length_buckets.setdefault(<span class="hljs-built_in">len</span>(error_word), {})</span>
+</span>
+<span class="code-line" id="L56">
+  <a class="line-number" href="#L56" aria-label="Line 56">56</a>
+  <span class="source-text">            literal_buckets.setdefault(normalized, []).append(</span>
+</span>
+<span class="code-line" id="L57">
+  <a class="line-number" href="#L57" aria-label="Line 57">57</a>
+  <span class="source-text">                L2DictionaryLiteral(</span>
+</span>
+<span class="code-line" id="L58">
+  <a class="line-number" href="#L58" aria-label="Line 58">58</a>
+  <span class="source-text">                    index=index,</span>
+</span>
+<span class="code-line" id="L59">
+  <a class="line-number" href="#L59" aria-label="Line 59">59</a>
+  <span class="source-text">                    error_word=error_word,</span>
+</span>
+<span class="code-line" id="L60">
+  <a class="line-number" href="#L60" aria-label="Line 60">60</a>
+  <span class="source-text">                    correction=correction,</span>
+</span>
+<span class="code-line" id="L61">
+  <a class="line-number" href="#L61" aria-label="Line 61">61</a>
+  <span class="source-text">                )</span>
+</span>
+<span class="code-line" id="L62">
+  <a class="line-number" href="#L62" aria-label="Line 62">62</a>
+  <span class="source-text">            )</span>
+</span>
+<span class="code-line" id="L63">
+  <a class="line-number" href="#L63" aria-label="Line 63">63</a>
+  <span class="source-text">        <span class="hljs-variable language_">self</span>._buckets = {</span>
+</span>
+<span class="code-line" id="L64">
+  <a class="line-number" href="#L64" aria-label="Line 64">64</a>
+  <span class="source-text">            first_character: {</span>
+</span>
+<span class="code-line" id="L65">
+  <a class="line-number" href="#L65" aria-label="Line 65">65</a>
+  <span class="source-text">                length: {literal: <span class="hljs-built_in">tuple</span>(entries) <span class="hljs-keyword">for</span> literal, entries <span class="hljs-keyword">in</span> literal_buckets.items()}</span>
+</span>
+<span class="code-line" id="L66">
+  <a class="line-number" href="#L66" aria-label="Line 66">66</a>
+  <span class="source-text">                <span class="hljs-keyword">for</span> length, literal_buckets <span class="hljs-keyword">in</span> length_buckets.items()</span>
+</span>
+<span class="code-line" id="L67">
+  <a class="line-number" href="#L67" aria-label="Line 67">67</a>
+  <span class="source-text">            }</span>
+</span>
+<span class="code-line" id="L68">
+  <a class="line-number" href="#L68" aria-label="Line 68">68</a>
+  <span class="source-text">            <span class="hljs-keyword">for</span> first_character, length_buckets <span class="hljs-keyword">in</span> buckets.items()</span>
+</span>
+<span class="code-line" id="L69">
+  <a class="line-number" href="#L69" aria-label="Line 69">69</a>
+  <span class="source-text">        }</span>
+</span>
+<span class="code-line" id="L70">
+  <a class="line-number" href="#L70" aria-label="Line 70">70</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L71">
+  <a class="line-number" href="#L71" aria-label="Line 71">71</a>
+  <span class="source-text">    <span class="hljs-keyword">def</span> <span class="hljs-title function_">find</span>(<span class="hljs-params">self, text: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">list</span>[L2LiteralMatch]:</span>
+</span>
+<span class="code-line" id="L72">
+  <a class="line-number" href="#L72" aria-label="Line 72">72</a>
+  <span class="source-text">        <span class="hljs-string">&quot;&quot;&quot;Return matches in offset order with stable dictionary-order ties.&quot;&quot;&quot;</span></span>
+</span>
+<span class="code-line" id="L73">
+  <a class="line-number" href="#L73" aria-label="Line 73">73</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L74">
+  <a class="line-number" href="#L74" aria-label="Line 74">74</a>
+  <span class="source-text">        matches: <span class="hljs-built_in">list</span>[L2LiteralMatch] = []</span>
+</span>
+<span class="code-line" id="L75">
+  <a class="line-number" href="#L75" aria-label="Line 75">75</a>
+  <span class="source-text">        last_end_by_dictionary_index: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">int</span>, <span class="hljs-built_in">int</span>] = {}</span>
+</span>
+<span class="code-line" id="L76">
+  <a class="line-number" href="#L76" aria-label="Line 76">76</a>
+  <span class="source-text">        <span class="hljs-keyword">for</span> offset, character <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(text):</span>
+</span>
+<span class="code-line" id="L77">
+  <a class="line-number" href="#L77" aria-label="Line 77">77</a>
+  <span class="source-text">            length_buckets = <span class="hljs-variable language_">self</span>._buckets.get(_ignorecase_character(character))</span>
+</span>
+<span class="code-line" id="L78">
+  <a class="line-number" href="#L78" aria-label="Line 78">78</a>
+  <span class="source-text">            <span class="hljs-keyword">if</span> length_buckets <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> _has_word_boundary(text, offset):</span>
+</span>
+<span class="code-line" id="L79">
+  <a class="line-number" href="#L79" aria-label="Line 79">79</a>
+  <span class="source-text">                <span class="hljs-keyword">continue</span></span>
+</span>
+<span class="code-line" id="L80">
+  <a class="line-number" href="#L80" aria-label="Line 80">80</a>
+  <span class="source-text">            candidates: <span class="hljs-built_in">list</span>[<span class="hljs-built_in">tuple</span>[L2DictionaryLiteral, <span class="hljs-built_in">int</span>]] = []</span>
+</span>
+<span class="code-line" id="L81">
+  <a class="line-number" href="#L81" aria-label="Line 81">81</a>
+  <span class="source-text">            <span class="hljs-keyword">for</span> length, literal_buckets <span class="hljs-keyword">in</span> length_buckets.items():</span>
+</span>
+<span class="code-line" id="L82">
+  <a class="line-number" href="#L82" aria-label="Line 82">82</a>
+  <span class="source-text">                end_offset = offset + length</span>
+</span>
+<span class="code-line" id="L83">
+  <a class="line-number" href="#L83" aria-label="Line 83">83</a>
+  <span class="source-text">                <span class="hljs-keyword">if</span> end_offset &gt; <span class="hljs-built_in">len</span>(text) <span class="hljs-keyword">or</span> <span class="hljs-keyword">not</span> _has_word_boundary(text, end_offset):</span>
+</span>
+<span class="code-line" id="L84">
+  <a class="line-number" href="#L84" aria-label="Line 84">84</a>
+  <span class="source-text">                    <span class="hljs-keyword">continue</span></span>
+</span>
+<span class="code-line" id="L85">
+  <a class="line-number" href="#L85" aria-label="Line 85">85</a>
+  <span class="source-text">                <span class="hljs-keyword">if</span> _touches_apostrophe(text, offset=offset, end_offset=end_offset):</span>
+</span>
+<span class="code-line" id="L86">
+  <a class="line-number" href="#L86" aria-label="Line 86">86</a>
+  <span class="source-text">                    <span class="hljs-keyword">continue</span></span>
+</span>
+<span class="code-line" id="L87">
+  <a class="line-number" href="#L87" aria-label="Line 87">87</a>
+  <span class="source-text">                source_literal = _ignorecase_literal(text[offset:end_offset])</span>
+</span>
+<span class="code-line" id="L88">
+  <a class="line-number" href="#L88" aria-label="Line 88">88</a>
+  <span class="source-text">                <span class="hljs-keyword">for</span> entry <span class="hljs-keyword">in</span> literal_buckets.get(source_literal, ()):</span>
+</span>
+<span class="code-line" id="L89">
+  <a class="line-number" href="#L89" aria-label="Line 89">89</a>
+  <span class="source-text">                    candidates.append((entry, end_offset))</span>
+</span>
+<span class="code-line" id="L90">
+  <a class="line-number" href="#L90" aria-label="Line 90">90</a>
+  <span class="source-text">            <span class="hljs-keyword">for</span> entry, end_offset <span class="hljs-keyword">in</span> <span class="hljs-built_in">sorted</span>(</span>
+</span>
+<span class="code-line" id="L91">
+  <a class="line-number" href="#L91" aria-label="Line 91">91</a>
+  <span class="source-text">                candidates,</span>
+</span>
+<span class="code-line" id="L92">
+  <a class="line-number" href="#L92" aria-label="Line 92">92</a>
+  <span class="source-text">                key=<span class="hljs-keyword">lambda</span> candidate: candidate[<span class="hljs-number">0</span>].index,</span>
+</span>
+<span class="code-line" id="L93">
+  <a class="line-number" href="#L93" aria-label="Line 93">93</a>
+  <span class="source-text">            ):</span>
+</span>
+<span class="code-line" id="L94">
+  <a class="line-number" href="#L94" aria-label="Line 94">94</a>
+  <span class="source-text">                <span class="hljs-keyword">if</span> offset &lt; last_end_by_dictionary_index.get(entry.index, <span class="hljs-number">0</span>):</span>
+</span>
+<span class="code-line" id="L95">
+  <a class="line-number" href="#L95" aria-label="Line 95">95</a>
+  <span class="source-text">                    <span class="hljs-keyword">continue</span></span>
+</span>
+<span class="code-line" id="L96">
+  <a class="line-number" href="#L96" aria-label="Line 96">96</a>
+  <span class="source-text">                matches.append(</span>
+</span>
+<span class="code-line" id="L97">
+  <a class="line-number" href="#L97" aria-label="Line 97">97</a>
+  <span class="source-text">                    L2LiteralMatch(</span>
+</span>
+<span class="code-line" id="L98">
+  <a class="line-number" href="#L98" aria-label="Line 98">98</a>
+  <span class="source-text">                        dictionary_index=entry.index,</span>
+</span>
+<span class="code-line" id="L99">
+  <a class="line-number" href="#L99" aria-label="Line 99">99</a>
+  <span class="source-text">                        error_word=entry.error_word,</span>
+</span>
+<span class="code-line" id="L100">
+  <a class="line-number" href="#L100" aria-label="Line 100">100</a>
+  <span class="source-text">                        correction=entry.correction,</span>
+</span>
+<span class="code-line" id="L101">
+  <a class="line-number" href="#L101" aria-label="Line 101">101</a>
+  <span class="source-text">                        offset=offset,</span>
+</span>
+<span class="code-line" id="L102">
+  <a class="line-number" href="#L102" aria-label="Line 102">102</a>
+  <span class="source-text">                        end_offset=end_offset,</span>
+</span>
+<span class="code-line" id="L103">
+  <a class="line-number" href="#L103" aria-label="Line 103">103</a>
+  <span class="source-text">                    )</span>
+</span>
+<span class="code-line" id="L104">
+  <a class="line-number" href="#L104" aria-label="Line 104">104</a>
+  <span class="source-text">                )</span>
+</span>
+<span class="code-line" id="L105">
+  <a class="line-number" href="#L105" aria-label="Line 105">105</a>
+  <span class="source-text">                last_end_by_dictionary_index[entry.index] = end_offset</span>
+</span>
+<span class="code-line" id="L106">
+  <a class="line-number" href="#L106" aria-label="Line 106">106</a>
+  <span class="source-text">        <span class="hljs-keyword">return</span> matches</span>
+</span>
+<span class="code-line" id="L107">
+  <a class="line-number" href="#L107" aria-label="Line 107">107</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L108">
+  <a class="line-number" href="#L108" aria-label="Line 108">108</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L109">
+  <a class="line-number" href="#L109" aria-label="Line 109">109</a>
+  <span class="source-text"><span class="hljs-keyword">def</span> <span class="hljs-title function_">_ignorecase_literal</span>(<span class="hljs-params">value: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">str</span>:</span>
+</span>
+<span class="code-line" id="L110">
+  <a class="line-number" href="#L110" aria-label="Line 110">110</a>
+  <span class="source-text">    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;&quot;</span>.join(_ignorecase_character(character) <span class="hljs-keyword">for</span> character <span class="hljs-keyword">in</span> value)</span>
+</span>
+<span class="code-line" id="L111">
+  <a class="line-number" href="#L111" aria-label="Line 111">111</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L112">
+  <a class="line-number" href="#L112" aria-label="Line 112">112</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L113">
+  <a class="line-number" href="#L113" aria-label="Line 113">113</a>
+  <span class="source-text"><span class="hljs-keyword">def</span> <span class="hljs-title function_">_ignorecase_character</span>(<span class="hljs-params">character: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">str</span>:</span>
+</span>
+<span class="code-line" id="L114">
+  <a class="line-number" href="#L114" aria-label="Line 114">114</a>
+  <span class="source-text">    <span class="hljs-string">&quot;&quot;&quot;Return a regex-compatible case key for one source code point.&quot;&quot;&quot;</span></span>
+</span>
+<span class="code-line" id="L115">
+  <a class="line-number" href="#L115" aria-label="Line 115">115</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L116">
+  <a class="line-number" href="#L116" aria-label="Line 116">116</a>
+  <span class="source-text">    equivalent = _PYTHON_IGNORECASE_EQUIVALENTS.get(character)</span>
+</span>
+<span class="code-line" id="L117">
+  <a class="line-number" href="#L117" aria-label="Line 117">117</a>
+  <span class="source-text">    <span class="hljs-keyword">if</span> equivalent <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:</span>
+</span>
+<span class="code-line" id="L118">
+  <a class="line-number" href="#L118" aria-label="Line 118">118</a>
+  <span class="source-text">        <span class="hljs-keyword">return</span> equivalent</span>
+</span>
+<span class="code-line" id="L119">
+  <a class="line-number" href="#L119" aria-label="Line 119">119</a>
+  <span class="source-text">    <span class="hljs-keyword">return</span> character.casefold()</span>
+</span>
+<span class="code-line" id="L120">
+  <a class="line-number" href="#L120" aria-label="Line 120">120</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L121">
+  <a class="line-number" href="#L121" aria-label="Line 121">121</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L122">
+  <a class="line-number" href="#L122" aria-label="Line 122">122</a>
+  <span class="source-text"><span class="hljs-keyword">def</span> <span class="hljs-title function_">_has_word_boundary</span>(<span class="hljs-params">text: <span class="hljs-built_in">str</span>, offset: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">bool</span>:</span>
+</span>
+<span class="code-line" id="L123">
+  <a class="line-number" href="#L123" aria-label="Line 123">123</a>
+  <span class="source-text">    left_is_word = offset &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> _is_word_character(text[offset - <span class="hljs-number">1</span>])</span>
+</span>
+<span class="code-line" id="L124">
+  <a class="line-number" href="#L124" aria-label="Line 124">124</a>
+  <span class="source-text">    right_is_word = offset &lt; <span class="hljs-built_in">len</span>(text) <span class="hljs-keyword">and</span> _is_word_character(text[offset])</span>
+</span>
+<span class="code-line" id="L125">
+  <a class="line-number" href="#L125" aria-label="Line 125">125</a>
+  <span class="source-text">    <span class="hljs-keyword">return</span> left_is_word != right_is_word</span>
+</span>
+<span class="code-line" id="L126">
+  <a class="line-number" href="#L126" aria-label="Line 126">126</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L127">
+  <a class="line-number" href="#L127" aria-label="Line 127">127</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L128">
+  <a class="line-number" href="#L128" aria-label="Line 128">128</a>
+  <span class="source-text"><span class="hljs-keyword">def</span> <span class="hljs-title function_">_is_word_character</span>(<span class="hljs-params">character: <span class="hljs-built_in">str</span></span>) -&gt; <span class="hljs-built_in">bool</span>:</span>
+</span>
+<span class="code-line" id="L129">
+  <a class="line-number" href="#L129" aria-label="Line 129">129</a>
+  <span class="source-text">    <span class="hljs-keyword">return</span> character == <span class="hljs-string">&quot;_&quot;</span> <span class="hljs-keyword">or</span> character.isalnum()</span>
+</span>
+<span class="code-line" id="L130">
+  <a class="line-number" href="#L130" aria-label="Line 130">130</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L131">
+  <a class="line-number" href="#L131" aria-label="Line 131">131</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L132">
+  <a class="line-number" href="#L132" aria-label="Line 132">132</a>
+  <span class="source-text"><span class="hljs-keyword">def</span> <span class="hljs-title function_">_touches_apostrophe</span>(<span class="hljs-params">text: <span class="hljs-built_in">str</span>, *, offset: <span class="hljs-built_in">int</span>, end_offset: <span class="hljs-built_in">int</span></span>) -&gt; <span class="hljs-built_in">bool</span>:</span>
+</span>
+<span class="code-line" id="L133">
+  <a class="line-number" href="#L133" aria-label="Line 133">133</a>
+  <span class="source-text">    <span class="hljs-string">&quot;&quot;&quot;Return whether a literal is only part of an apostrophe-bound token.&quot;&quot;&quot;</span></span>
+</span>
+<span class="code-line" id="L134">
+  <a class="line-number" href="#L134" aria-label="Line 134">134</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L135">
+  <a class="line-number" href="#L135" aria-label="Line 135">135</a>
+  <span class="source-text">    apostrophes = {<span class="hljs-string">&quot;&#x27;&quot;</span>, <span class="hljs-string">&quot;’&quot;</span>}</span>
+</span>
+<span class="code-line" id="L136">
+  <a class="line-number" href="#L136" aria-label="Line 136">136</a>
+  <span class="source-text">    <span class="hljs-keyword">return</span> (offset &gt; <span class="hljs-number">0</span> <span class="hljs-keyword">and</span> text[offset - <span class="hljs-number">1</span>] <span class="hljs-keyword">in</span> apostrophes) <span class="hljs-keyword">or</span> (</span>
+</span>
+<span class="code-line" id="L137">
+  <a class="line-number" href="#L137" aria-label="Line 137">137</a>
+  <span class="source-text">        end_offset &lt; <span class="hljs-built_in">len</span>(text) <span class="hljs-keyword">and</span> text[end_offset] <span class="hljs-keyword">in</span> apostrophes</span>
+</span>
+<span class="code-line" id="L138">
+  <a class="line-number" href="#L138" aria-label="Line 138">138</a>
+  <span class="source-text">    )</span>
+</span></code></pre></section>
+  </main>
+</body>
+</html>

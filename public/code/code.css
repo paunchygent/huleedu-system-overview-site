@@ -6,8 +6,10 @@ a:focus-visible { outline: 3px solid #b35c17; outline-offset: 3px; }
 .site-header { display: flex; justify-content: space-between; gap: 1rem; max-width: 1120px; margin: 0 auto; padding: 1rem clamp(1.25rem, 5vw, 4rem); font-size: .9rem; }
 .reader-layout { display: grid; grid-template-columns: minmax(10rem, 14rem) minmax(0, 1fr); max-width: 1120px; min-height: calc(100vh - 3rem); margin: 0 auto; background: #fff; }
 .revision-rail { padding: 2rem 1rem; border-right: 1px solid #c8c8c8; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .72rem; line-height: 1.4; overflow-wrap: anywhere; }
+.revision-rail span, .revision-rail a, .revision-rail time { display: block; }
+.revision-rail time { margin-top: .75rem; color: #454545; }
 .reader-content { min-width: 0; padding: clamp(2rem, 5vw, 4.5rem); }
-h1 { max-width: 22ch; margin: 0 0 1rem; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.08; letter-spacing: -.025em; }
+h1 { max-width: 22ch; margin: 0 0 1rem; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.08; letter-spacing: -.025em; overflow-wrap: anywhere; }
 h2 { margin-top: 3rem; font-size: 1.25rem; }
 p, li { line-height: 1.65; }
 .eyebrow, .provenance { color: #454545; font-size: .92rem; }

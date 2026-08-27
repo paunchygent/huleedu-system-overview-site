@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>libs/huleedu_nlp_shared/src/huleedu_nlp_shared/feature_contracts/prompt_relevance_v3_candidate.py | HuleEdu research code</title>
+  <link rel="icon" href="/favicon.svg">
+  <link rel="stylesheet" href="/code/code.css">
+</head>
+<body>
+  <header class="site-header"><a href="/huleedu-system-overview/">HuleEdu research</a><a href="https://codeberg.org/paunchygent/huleedu-research-code">Codeberg</a></header>
+  <main class="reader-layout">
+    <aside class="revision-rail" aria-label="Public revision">
+      <span>Revision</span>
+      <a href="https://codeberg.org/paunchygent/huleedu-research-code/commit/92328f8d9d8d36e9af934f8139c6dd99715a1d36">92328f8d9d8d36e9af934f8139c6dd99715a1d36</a>
+      <time datetime="2026-08-27T21:38:56.000Z">Published 27 August 2026</time>
+    </aside>
+    <section class="reader-content"><p class="eyebrow"><a href="/code/">Code</a> / libs/huleedu_nlp_shared/src/huleedu_nlp_shared/feature_contracts/prompt_relevance_v3_candidate.py</p>
+    <h1>libs/huleedu_nlp_shared/src/huleedu_nlp_shared/feature_contracts/prompt_relevance_v3_candidate.py</h1>
+    <p class="provenance"><a href="https://codeberg.org/paunchygent/huleedu-research-code/src/commit/92328f8d9d8d36e9af934f8139c6dd99715a1d36/libs/huleedu_nlp_shared/src/huleedu_nlp_shared/feature_contracts/prompt_relevance_v3_candidate.py">View this file on Codeberg</a></p>
+    <pre class="source-code"><code><span class="code-line" id="L1">
+  <a class="line-number" href="#L1" aria-label="Line 1">1</a>
+  <span class="source-text"><span class="hljs-string">&quot;&quot;&quot;Research-only registry projection for mean-centered prompt relevance.</span></span>
+</span>
+<span class="code-line" id="L2">
+  <a class="line-number" href="#L2" aria-label="Line 2">2</a>
+  <span class="source-text"><span class="hljs-string"></span></span>
+</span>
+<span class="code-line" id="L3">
+  <a class="line-number" href="#L3" aria-label="Line 3">3</a>
+  <span class="source-text"><span class="hljs-string">The accepted scorer registry remains on raw-contrastive prompt relevance v2.</span></span>
+</span>
+<span class="code-line" id="L4">
+  <a class="line-number" href="#L4" aria-label="Line 4">4</a>
+  <span class="source-text"><span class="hljs-string">This module owns the v3 identity and derives a separate candidate snapshot</span></span>
+</span>
+<span class="code-line" id="L5">
+  <a class="line-number" href="#L5" aria-label="Line 5">5</a>
+  <span class="source-text"><span class="hljs-string">without reconstructing the accepted registry.</span></span>
+</span>
+<span class="code-line" id="L6">
+  <a class="line-number" href="#L6" aria-label="Line 6">6</a>
+  <span class="source-text"><span class="hljs-string">&quot;&quot;&quot;</span></span>
+</span>
+<span class="code-line" id="L7">
+  <a class="line-number" href="#L7" aria-label="Line 7">7</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L8">
+  <a class="line-number" href="#L8" aria-label="Line 8">8</a>
+  <span class="source-text"><span class="hljs-keyword">from</span> __future__ <span class="hljs-keyword">import</span> annotations</span>
+</span>
+<span class="code-line" id="L9">
+  <a class="line-number" href="#L9" aria-label="Line 9">9</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L10">
+  <a class="line-number" href="#L10" aria-label="Line 10">10</a>
+  <span class="source-text"><span class="hljs-keyword">from</span> typing <span class="hljs-keyword">import</span> Final</span>
+</span>
+<span class="code-line" id="L11">
+  <a class="line-number" href="#L11" aria-label="Line 11">11</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L12">
+  <a class="line-number" href="#L12" aria-label="Line 12">12</a>
+  <span class="source-text"><span class="hljs-keyword">from</span> huleedu_nlp_shared.feature_contracts.current <span class="hljs-keyword">import</span> (</span>
+</span>
+<span class="code-line" id="L13">
+  <a class="line-number" href="#L13" aria-label="Line 13">13</a>
+  <span class="source-text">    CURRENT_FEATURE_REGISTRY,</span>
+</span>
+<span class="code-line" id="L14">
+  <a class="line-number" href="#L14" aria-label="Line 14">14</a>
+  <span class="source-text">    TIER2_PROMPT_RELEVANCE_FEATURE_NAMES,</span>
+</span>
+<span class="code-line" id="L15">
+  <a class="line-number" href="#L15" aria-label="Line 15">15</a>
+  <span class="source-text">)</span>
+</span>
+<span class="code-line" id="L16">
+  <a class="line-number" href="#L16" aria-label="Line 16">16</a>
+  <span class="source-text"><span class="hljs-keyword">from</span> huleedu_nlp_shared.feature_contracts.models <span class="hljs-keyword">import</span> (</span>
+</span>
+<span class="code-line" id="L17">
+  <a class="line-number" href="#L17" aria-label="Line 17">17</a>
+  <span class="source-text">    FeatureLane,</span>
+</span>
+<span class="code-line" id="L18">
+  <a class="line-number" href="#L18" aria-label="Line 18">18</a>
+  <span class="source-text">    FeatureRegistryV1,</span>
+</span>
+<span class="code-line" id="L19">
+  <a class="line-number" href="#L19" aria-label="Line 19">19</a>
+  <span class="source-text">    FeatureSetSpecV1,</span>
+</span>
+<span class="code-line" id="L20">
+  <a class="line-number" href="#L20" aria-label="Line 20">20</a>
+  <span class="source-text">)</span>
+</span>
+<span class="code-line" id="L21">
+  <a class="line-number" href="#L21" aria-label="Line 21">21</a>
+  <span class="source-text"><span class="hljs-keyword">from</span> huleedu_nlp_shared.feature_contracts.prompt_relevance_v3 <span class="hljs-keyword">import</span> (</span>
+</span>
+<span class="code-line" id="L22">
+  <a class="line-number" href="#L22" aria-label="Line 22">22</a>
+  <span class="source-text">    PROMPT_RELEVANCE_V2_FAMILY_ID,</span>
+</span>
+<span class="code-line" id="L23">
+  <a class="line-number" href="#L23" aria-label="Line 23">23</a>
+  <span class="source-text">    PROMPT_RELEVANCE_V3_FAMILY_ID,</span>
+</span>
+<span class="code-line" id="L24">
+  <a class="line-number" href="#L24" aria-label="Line 24">24</a>
+  <span class="source-text">    prompt_relevance_v3_family,</span>
+</span>
+<span class="code-line" id="L25">
+  <a class="line-number" href="#L25" aria-label="Line 25">25</a>
+  <span class="source-text">)</span>
+</span>
+<span class="code-line" id="L26">
+  <a class="line-number" href="#L26" aria-label="Line 26">26</a>
+  <span class="source-text"><span class="hljs-keyword">from</span> huleedu_nlp_shared.feature_contracts.provenance <span class="hljs-keyword">import</span> (</span>
+</span>
+<span class="code-line" id="L27">
+  <a class="line-number" href="#L27" aria-label="Line 27">27</a>
+  <span class="source-text">    input_contract_hash_for_families,</span>
+</span>
+<span class="code-line" id="L28">
+  <a class="line-number" href="#L28" aria-label="Line 28">28</a>
+  <span class="source-text">    registry_schema_hash,</span>
+</span>
+<span class="code-line" id="L29">
+  <a class="line-number" href="#L29" aria-label="Line 29">29</a>
+  <span class="source-text">)</span>
+</span>
+<span class="code-line" id="L30">
+  <a class="line-number" href="#L30" aria-label="Line 30">30</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L31">
+  <a class="line-number" href="#L31" aria-label="Line 31">31</a>
+  <span class="source-text">PROMPT_RELEVANCE_V3_FEATURE_NAMES: Final = TIER2_PROMPT_RELEVANCE_FEATURE_NAMES</span>
+</span>
+<span class="code-line" id="L32">
+  <a class="line-number" href="#L32" aria-label="Line 32">32</a>
+  <span class="source-text">PROMPT_RELEVANCE_V3_CANDIDATE_REGISTRY_ID: Final = <span class="hljs-string">&quot;huleedu.scorer_features.prompt_relevance.v3&quot;</span></span>
+</span>
+<span class="code-line" id="L33">
+  <a class="line-number" href="#L33" aria-label="Line 33">33</a>
+  <span class="source-text">PROMPT_RELEVANCE_V3_CANDIDATE_REGISTRY_VERSION: Final = <span class="hljs-string">&quot;2026-08-18.task-hule-20-25-43&quot;</span></span>
+</span>
+<span class="code-line" id="L34">
+  <a class="line-number" href="#L34" aria-label="Line 34">34</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L35">
+  <a class="line-number" href="#L35" aria-label="Line 35">35</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L36">
+  <a class="line-number" href="#L36" aria-label="Line 36">36</a>
+  <span class="source-text"><span class="hljs-keyword">def</span> <span class="hljs-title function_">build_prompt_relevance_v3_candidate_registry</span>() -&gt; FeatureRegistryV1:</span>
+</span>
+<span class="code-line" id="L37">
+  <a class="line-number" href="#L37" aria-label="Line 37">37</a>
+  <span class="source-text">    <span class="hljs-string">&quot;&quot;&quot;Build the v3 research projection by replacing only the v2 family.&quot;&quot;&quot;</span></span>
+</span>
+<span class="code-line" id="L38">
+  <a class="line-number" href="#L38" aria-label="Line 38">38</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L39">
+  <a class="line-number" href="#L39" aria-label="Line 39">39</a>
+  <span class="source-text">    families = <span class="hljs-built_in">tuple</span>(</span>
+</span>
+<span class="code-line" id="L40">
+  <a class="line-number" href="#L40" aria-label="Line 40">40</a>
+  <span class="source-text">        prompt_relevance_v3_family(</span>
+</span>
+<span class="code-line" id="L41">
+  <a class="line-number" href="#L41" aria-label="Line 41">41</a>
+  <span class="source-text">            family,</span>
+</span>
+<span class="code-line" id="L42">
+  <a class="line-number" href="#L42" aria-label="Line 42">42</a>
+  <span class="source-text">            lane=FeatureLane.RESEARCH_EXPERIMENTAL,</span>
+</span>
+<span class="code-line" id="L43">
+  <a class="line-number" href="#L43" aria-label="Line 43">43</a>
+  <span class="source-text">            promotion_state=<span class="hljs-string">&quot;research_candidate&quot;</span>,</span>
+</span>
+<span class="code-line" id="L44">
+  <a class="line-number" href="#L44" aria-label="Line 44">44</a>
+  <span class="source-text">            runtime_description=(</span>
+</span>
+<span class="code-line" id="L45">
+  <a class="line-number" href="#L45" aria-label="Line 45">45</a>
+  <span class="source-text">                <span class="hljs-string">&quot;Research-only mean-centered contrastive prompt-relevance runtime &quot;</span></span>
+</span>
+<span class="code-line" id="L46">
+  <a class="line-number" href="#L46" aria-label="Line 46">46</a>
+  <span class="source-text">                <span class="hljs-string">&quot;over the governed prompt bank.&quot;</span></span>
+</span>
+<span class="code-line" id="L47">
+  <a class="line-number" href="#L47" aria-label="Line 47">47</a>
+  <span class="source-text">            ),</span>
+</span>
+<span class="code-line" id="L48">
+  <a class="line-number" href="#L48" aria-label="Line 48">48</a>
+  <span class="source-text">            description=(</span>
+</span>
+<span class="code-line" id="L49">
+  <a class="line-number" href="#L49" aria-label="Line 49">49</a>
+  <span class="source-text">                <span class="hljs-string">&quot;Research-only mean-centered contrastive relevance between an essay &quot;</span></span>
+</span>
+<span class="code-line" id="L50">
+  <a class="line-number" href="#L50" aria-label="Line 50">50</a>
+  <span class="source-text">                <span class="hljs-string">&quot;span and its governed prompt, minus mean relevance to the other 39 &quot;</span></span>
+</span>
+<span class="code-line" id="L51">
+  <a class="line-number" href="#L51" aria-label="Line 51">51</a>
+  <span class="source-text">                <span class="hljs-string">&quot;prompts.&quot;</span></span>
+</span>
+<span class="code-line" id="L52">
+  <a class="line-number" href="#L52" aria-label="Line 52">52</a>
+  <span class="source-text">            ),</span>
+</span>
+<span class="code-line" id="L53">
+  <a class="line-number" href="#L53" aria-label="Line 53">53</a>
+  <span class="source-text">        )</span>
+</span>
+<span class="code-line" id="L54">
+  <a class="line-number" href="#L54" aria-label="Line 54">54</a>
+  <span class="source-text">        <span class="hljs-keyword">if</span> family.family_id == PROMPT_RELEVANCE_V2_FAMILY_ID</span>
+</span>
+<span class="code-line" id="L55">
+  <a class="line-number" href="#L55" aria-label="Line 55">55</a>
+  <span class="source-text">        <span class="hljs-keyword">else</span> family</span>
+</span>
+<span class="code-line" id="L56">
+  <a class="line-number" href="#L56" aria-label="Line 56">56</a>
+  <span class="source-text">        <span class="hljs-keyword">for</span> family <span class="hljs-keyword">in</span> CURRENT_FEATURE_REGISTRY.families</span>
+</span>
+<span class="code-line" id="L57">
+  <a class="line-number" href="#L57" aria-label="Line 57">57</a>
+  <span class="source-text">    )</span>
+</span>
+<span class="code-line" id="L58">
+  <a class="line-number" href="#L58" aria-label="Line 58">58</a>
+  <span class="source-text">    feature_sets = <span class="hljs-built_in">tuple</span>(</span>
+</span>
+<span class="code-line" id="L59">
+  <a class="line-number" href="#L59" aria-label="Line 59">59</a>
+  <span class="source-text">        _v3_candidate_feature_set(feature_set)</span>
+</span>
+<span class="code-line" id="L60">
+  <a class="line-number" href="#L60" aria-label="Line 60">60</a>
+  <span class="source-text">        <span class="hljs-keyword">for</span> feature_set <span class="hljs-keyword">in</span> CURRENT_FEATURE_REGISTRY.feature_sets</span>
+</span>
+<span class="code-line" id="L61">
+  <a class="line-number" href="#L61" aria-label="Line 61">61</a>
+  <span class="source-text">    )</span>
+</span>
+<span class="code-line" id="L62">
+  <a class="line-number" href="#L62" aria-label="Line 62">62</a>
+  <span class="source-text">    <span class="hljs-keyword">return</span> FeatureRegistryV1(</span>
+</span>
+<span class="code-line" id="L63">
+  <a class="line-number" href="#L63" aria-label="Line 63">63</a>
+  <span class="source-text">        registry_id=PROMPT_RELEVANCE_V3_CANDIDATE_REGISTRY_ID,</span>
+</span>
+<span class="code-line" id="L64">
+  <a class="line-number" href="#L64" aria-label="Line 64">64</a>
+  <span class="source-text">        registry_version=PROMPT_RELEVANCE_V3_CANDIDATE_REGISTRY_VERSION,</span>
+</span>
+<span class="code-line" id="L65">
+  <a class="line-number" href="#L65" aria-label="Line 65">65</a>
+  <span class="source-text">        schema_hash=registry_schema_hash(feature_sets),</span>
+</span>
+<span class="code-line" id="L66">
+  <a class="line-number" href="#L66" aria-label="Line 66">66</a>
+  <span class="source-text">        input_contract_hash=input_contract_hash_for_families(families),</span>
+</span>
+<span class="code-line" id="L67">
+  <a class="line-number" href="#L67" aria-label="Line 67">67</a>
+  <span class="source-text">        families=families,</span>
+</span>
+<span class="code-line" id="L68">
+  <a class="line-number" href="#L68" aria-label="Line 68">68</a>
+  <span class="source-text">        feature_sets=feature_sets,</span>
+</span>
+<span class="code-line" id="L69">
+  <a class="line-number" href="#L69" aria-label="Line 69">69</a>
+  <span class="source-text">        diagnostic_boundaries=CURRENT_FEATURE_REGISTRY.diagnostic_boundaries,</span>
+</span>
+<span class="code-line" id="L70">
+  <a class="line-number" href="#L70" aria-label="Line 70">70</a>
+  <span class="source-text">    )</span>
+</span>
+<span class="code-line" id="L71">
+  <a class="line-number" href="#L71" aria-label="Line 71">71</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L72">
+  <a class="line-number" href="#L72" aria-label="Line 72">72</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L73">
+  <a class="line-number" href="#L73" aria-label="Line 73">73</a>
+  <span class="source-text"><span class="hljs-keyword">def</span> <span class="hljs-title function_">_v3_candidate_feature_set</span>(<span class="hljs-params">feature_set: FeatureSetSpecV1</span>) -&gt; FeatureSetSpecV1:</span>
+</span>
+<span class="code-line" id="L74">
+  <a class="line-number" href="#L74" aria-label="Line 74">74</a>
+  <span class="source-text">    <span class="hljs-keyword">if</span> PROMPT_RELEVANCE_V2_FAMILY_ID <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> feature_set.family_ids:</span>
+</span>
+<span class="code-line" id="L75">
+  <a class="line-number" href="#L75" aria-label="Line 75">75</a>
+  <span class="source-text">        <span class="hljs-keyword">return</span> feature_set</span>
+</span>
+<span class="code-line" id="L76">
+  <a class="line-number" href="#L76" aria-label="Line 76">76</a>
+  <span class="source-text">    <span class="hljs-keyword">return</span> feature_set.model_copy(</span>
+</span>
+<span class="code-line" id="L77">
+  <a class="line-number" href="#L77" aria-label="Line 77">77</a>
+  <span class="source-text">        update={</span>
+</span>
+<span class="code-line" id="L78">
+  <a class="line-number" href="#L78" aria-label="Line 78">78</a>
+  <span class="source-text">            <span class="hljs-string">&quot;family_ids&quot;</span>: <span class="hljs-built_in">tuple</span>(</span>
+</span>
+<span class="code-line" id="L79">
+  <a class="line-number" href="#L79" aria-label="Line 79">79</a>
+  <span class="source-text">                PROMPT_RELEVANCE_V3_FAMILY_ID</span>
+</span>
+<span class="code-line" id="L80">
+  <a class="line-number" href="#L80" aria-label="Line 80">80</a>
+  <span class="source-text">                <span class="hljs-keyword">if</span> family_id == PROMPT_RELEVANCE_V2_FAMILY_ID</span>
+</span>
+<span class="code-line" id="L81">
+  <a class="line-number" href="#L81" aria-label="Line 81">81</a>
+  <span class="source-text">                <span class="hljs-keyword">else</span> family_id</span>
+</span>
+<span class="code-line" id="L82">
+  <a class="line-number" href="#L82" aria-label="Line 82">82</a>
+  <span class="source-text">                <span class="hljs-keyword">for</span> family_id <span class="hljs-keyword">in</span> feature_set.family_ids</span>
+</span>
+<span class="code-line" id="L83">
+  <a class="line-number" href="#L83" aria-label="Line 83">83</a>
+  <span class="source-text">            ),</span>
+</span>
+<span class="code-line" id="L84">
+  <a class="line-number" href="#L84" aria-label="Line 84">84</a>
+  <span class="source-text">            <span class="hljs-string">&quot;lane&quot;</span>: FeatureLane.RESEARCH_EXPERIMENTAL,</span>
+</span>
+<span class="code-line" id="L85">
+  <a class="line-number" href="#L85" aria-label="Line 85">85</a>
+  <span class="source-text">            <span class="hljs-string">&quot;feature_set_version&quot;</span>: <span class="hljs-string">f&quot;<span class="hljs-subst">{feature_set.feature_set_version}</span>.prompt-relevance-v3&quot;</span>,</span>
+</span>
+<span class="code-line" id="L86">
+  <a class="line-number" href="#L86" aria-label="Line 86">86</a>
+  <span class="source-text">            <span class="hljs-string">&quot;description&quot;</span>: (</span>
+</span>
+<span class="code-line" id="L87">
+  <a class="line-number" href="#L87" aria-label="Line 87">87</a>
+  <span class="source-text">                <span class="hljs-string">&quot;Research-only candidate projection replacing raw-contrastive prompt &quot;</span></span>
+</span>
+<span class="code-line" id="L88">
+  <a class="line-number" href="#L88" aria-label="Line 88">88</a>
+  <span class="source-text">                <span class="hljs-string">&quot;relevance v2 with mean-centered prompt relevance v3.&quot;</span></span>
+</span>
+<span class="code-line" id="L89">
+  <a class="line-number" href="#L89" aria-label="Line 89">89</a>
+  <span class="source-text">            ),</span>
+</span>
+<span class="code-line" id="L90">
+  <a class="line-number" href="#L90" aria-label="Line 90">90</a>
+  <span class="source-text">        }</span>
+</span>
+<span class="code-line" id="L91">
+  <a class="line-number" href="#L91" aria-label="Line 91">91</a>
+  <span class="source-text">    )</span>
+</span>
+<span class="code-line" id="L92">
+  <a class="line-number" href="#L92" aria-label="Line 92">92</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L93">
+  <a class="line-number" href="#L93" aria-label="Line 93">93</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L94">
+  <a class="line-number" href="#L94" aria-label="Line 94">94</a>
+  <span class="source-text">__all__ = [</span>
+</span>
+<span class="code-line" id="L95">
+  <a class="line-number" href="#L95" aria-label="Line 95">95</a>
+  <span class="source-text">    <span class="hljs-string">&quot;PROMPT_RELEVANCE_V3_CANDIDATE_REGISTRY_ID&quot;</span>,</span>
+</span>
+<span class="code-line" id="L96">
+  <a class="line-number" href="#L96" aria-label="Line 96">96</a>
+  <span class="source-text">    <span class="hljs-string">&quot;PROMPT_RELEVANCE_V3_CANDIDATE_REGISTRY_VERSION&quot;</span>,</span>
+</span>
+<span class="code-line" id="L97">
+  <a class="line-number" href="#L97" aria-label="Line 97">97</a>
+  <span class="source-text">    <span class="hljs-string">&quot;PROMPT_RELEVANCE_V3_FEATURE_NAMES&quot;</span>,</span>
+</span>
+<span class="code-line" id="L98">
+  <a class="line-number" href="#L98" aria-label="Line 98">98</a>
+  <span class="source-text">    <span class="hljs-string">&quot;build_prompt_relevance_v3_candidate_registry&quot;</span>,</span>
+</span>
+<span class="code-line" id="L99">
+  <a class="line-number" href="#L99" aria-label="Line 99">99</a>
+  <span class="source-text">]</span>
+</span></code></pre></section>
+  </main>
+</body>
+</html>
