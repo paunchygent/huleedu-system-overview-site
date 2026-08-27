@@ -38,6 +38,7 @@ for `research.hule.education`.
 
 ## Validation
 
+- `npm test`
 - `npm run build`
 - `npm run lint`
 - `npm run evidence:import` when refreshing sources, followed by review of the

@@ -67,6 +67,10 @@ test("renders one exact public tree with revision, publication date, and line an
   const index = await readFile(path.join(output, "index.html"), "utf8");
   assert.match(index, new RegExp(fixture.revision));
   assert.match(index, new RegExp(`<time datetime="${fixture.publicationDate}">Published 26 August 2026</time>`));
+  assert.equal(
+    await readFile(path.join(output, fixture.revision, "index.html"), "utf8"),
+    index,
+  );
   const source = await readFile(path.join(output, fixture.revision, "source", "scripts", "example", "sample.py.html"), "utf8");
   assert.match(source, /id="L1"/);
   assert.match(source, /href="#L2"/);
@@ -75,12 +79,13 @@ test("renders one exact public tree with revision, publication date, and line an
   assert.match(source, new RegExp(fixture.revision));
 });
 
-test("nginx caches immutable revision source pages while current reader surfaces remain no-store", async () => {
+test("nginx serves retained revisions and caches only successful immutable responses", async () => {
   const configuration = await readFile(path.join(repositoryRoot, "nginx.conf"), "utf8");
-  assert.match(
-    configuration,
-    /location ~ "\^\/code\/\[0-9a-f\]\{40\}\/source\/" \{\s+add_header Cache-Control "public, max-age=31536000, immutable" always;/,
-  );
+  assert.match(configuration, /root \/srv\/huleedu-publication\/\$revision;/);
+  assert.match(configuration, /try_files \/code\/\$revision\/index\.html @code_revision_not_found;/);
+  assert.match(configuration, /try_files \$uri @code_revision_not_found;/);
+  assert.doesNotMatch(configuration, /max-age=31536000, immutable" always/);
+  assert.match(configuration, /location @code_revision_not_found \{\s+add_header Cache-Control "no-store" always;/);
   assert.match(configuration, /location \/code\/ \{\s+add_header Cache-Control "no-store" always;/);
 });
 
