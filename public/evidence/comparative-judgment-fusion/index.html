@@ -12,87 +12,73 @@
   <header class="page-header">
     <a class="back-link" href="/huleedu-system-overview/">HuleEdu system overview</a>
     <h1>Comparative judgment and scorer agreement</h1>
-    <p class="source-line"><a href="/evidence/source/comparative-judgment-fusion.md">Markdown source</a> · evidence revision <code>608cbe87cc3a</code></p>
+    <p class="source-line"><a href="/evidence/source/comparative-judgment-fusion.md">Markdown source</a> · evidence revision <code>409aab696da2</code></p>
   </header>
   <main>
-    <article class="markdown-body"><p><span id="experiment"></span></p>
+    <article class="markdown-body"><p><span id="why-the-earlier-result-was-replaced"></span></p>
+<h2>Why the earlier result was replaced</h2>
+<p>An earlier version of this page reported a fusion experiment whose
+handcrafted scorer did not represent the construct claimed for it. Three
+variables described as prompt similarity were raw cosine measurements in the
+same DeBERTa representation space used elsewhere in the system. They therefore
+measured broad position in that representation space as well as, and sometimes
+instead of, specific similarity to the assigned prompt. The old result cannot
+show what a distinct handcrafted lane contributes, so its tables and
+interpretation have been removed.</p>
+<p>The repaired prompt-relevance calculation first subtracts the cohort&#39;s mean
+representation. It then compares each essay with its assigned prompt relative
+to the other 39 prompts in the governed prompt collection. In the construct
+test, the selected whole-essay measure correlated with human score at 0.1830
+for the correct prompt, while the strongest result across 500 wrong-prompt
+assignments was 0.0351. By contrast, the earlier raw introduction measure
+failed the same principle: its correct-prompt correlation was 0.4240, while a
+wrong-prompt assignment reached 0.4281.</p>
+<p>The repair did not make the handcrafted scorer look better. In a separate
+prompt-holdout comparison, the repaired scorer reached 0.6332 QWK, compared
+with 0.6915 for the preceding version. The repaired measure was retained
+because its meaning was supported by the prompt controls. The scorer now uses
+named scalar measurements and contains no 768-number essay representation,
+although four scalar measurements, including prompt relevance, are calculated
+with a fixed locally hosted language model.</p>
+<p><span id="experiment"></span></p>
 <h2>Experiment</h2>
-<p>The experiment used one ELLIPSE writing task. It included 282 essays in the
-out-of-fold training comparison and 185 held-out essays in the test comparison.
-Every essay had a human score and three independently produced estimates:</p>
+<p>The corrected fusion experiment used one ELLIPSE writing task. It included 282
+essays in the out-of-fold training comparison and 185 held-out essays in the
+test comparison. Every essay had a human score and three separately produced
+estimates:</p>
 <ul>
-<li>the transparent scorer, also called the white-box scorer, which uses
-inspectable text measures;</li>
-<li>the hybrid scorer, which combines text measures with a language-model
-representation of the complete essay; and</li>
-<li>comparative judgment (CJ), which derives an ordering from repeated pairwise
-essay comparisons.</li>
+<li>the repaired handcrafted scorer;</li>
+<li>the combined scorer, which adds a 768-number representation of the complete
+essay to its scalar measurements; and</li>
+<li>comparative judgment, which derives an ordering from repeated pairwise essay
+comparisons.</li>
 </ul>
-<p>The transparent and hybrid scorers had already produced their estimates before
-comparative judgment was added. The experiment did not retrain either scorer
-and did not use comparative judgment during scorer training.</p>
-<p>Two comparisons were conducted. The first added the uncalibrated CJ result to
-each scorer separately. The second calibrated CJ to the essay-score scale and
-then averaged the transparent, hybrid, and CJ estimates with equal weight.</p>
+<p>The machine scorers produced their estimates without comparative judgment.
+Comparative judgment was calibrated to the score scale using only the training
+essays, after which the three estimates were averaged with equal weight. The
+experiment did not retrain either scorer with comparative-judgment results.</p>
 <p><span id="measures"></span></p>
 <h2>Measures</h2>
 <p>Quadratic weighted kappa (QWK) measures agreement with the human scores. It
-ranges from 0 for chance-level agreement to 1 for perfect agreement and
-penalizes large disagreements more strongly than small ones.</p>
+ranges from 0 for chance-level agreement to 1 for perfect agreement and gives
+larger disagreements more weight than smaller ones.</p>
 <p>Exact agreement is the proportion of estimates equal to the human score.
 Adjacent agreement is the proportion equal to, or one half-point from, the
 human score. Mean absolute error (MAE) is the average distance from the human
-score. Root mean squared error (RMSE) gives additional weight to larger errors.</p>
-<p>For the first comparison, uncertainty was estimated with 10,000 paired
-resamples of the 185 held-out essays. The lower bound is the one-sided 95
-percent lower bound for the QWK change. “Resamples at or below zero” is the
-proportion of resamples in which adding CJ produced no improvement.</p>
+score, while root mean squared error (RMSE) gives additional weight to larger
+errors.</p>
+<p>Uncertainty was estimated with 10,000 paired resamples of the 185 held-out
+essays. The lower bound is the one-sided 95 percent lower bound for the QWK
+change. “Resamples at or below zero” is the proportion of resamples in which
+the equal combination did not improve on the named estimate.</p>
 <p><span id="results"></span></p>
 <h2>Results</h2>
-<p><span id="adding-comparative-judgment-to-each-scorer"></span></p>
-<h3>Adding comparative judgment to each scorer</h3>
-<p>Adding the uncalibrated CJ result increased QWK for both scorers on the same
-185 held-out essays.</p>
+<p><span id="held-out-essays"></span></p>
+<h3>Held-out essays</h3>
 <table>
 <thead>
 <tr>
-<th>Scorer</th>
-<th align="right">Scorer alone QWK</th>
-<th align="right">With CJ QWK</th>
-<th align="right">QWK change</th>
-<th align="right">One-sided 95% lower bound</th>
-<th align="right">Resamples at or below zero</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Hybrid</td>
-<td align="right">0.7390</td>
-<td align="right">0.7621</td>
-<td align="right">+0.0231</td>
-<td align="right">0.0014</td>
-<td align="right">0.0419</td>
-</tr>
-<tr>
-<td>Transparent</td>
-<td align="right">0.7271</td>
-<td align="right">0.7574</td>
-<td align="right">+0.0303</td>
-<td align="right">0.0008</td>
-<td align="right">0.0460</td>
-</tr>
-</tbody></table>
-<p>Both lower bounds are above zero. In the paired resampling analysis, 95.81
-percent of the hybrid comparisons and 95.40 percent of the transparent
-comparisons retained a positive change. This result applies to this writing
-task and does not establish the same effect for other tasks.</p>
-<p><span id="equal-combination-on-the-held-out-essays"></span></p>
-<h3>Equal combination on the held-out essays</h3>
-<p>The second comparison evaluated every estimate separately and then averaged
-all three with equal weight.</p>
-<table>
-<thead>
-<tr>
-<th>Test estimate</th>
+<th>Estimate</th>
 <th align="right">QWK</th>
 <th align="right">Exact agreement</th>
 <th align="right">Adjacent agreement</th>
@@ -101,23 +87,23 @@ all three with equal weight.</p>
 </tr>
 </thead>
 <tbody><tr>
-<td>Transparent scorer</td>
-<td align="right">0.7271</td>
-<td align="right">0.4973</td>
-<td align="right">0.9568</td>
-<td align="right">0.2757</td>
-<td align="right">0.4060</td>
+<td>Repaired handcrafted scorer</td>
+<td align="right">0.6908</td>
+<td align="right">0.4054</td>
+<td align="right">0.8649</td>
+<td align="right">0.3703</td>
+<td align="right">0.5133</td>
 </tr>
 <tr>
-<td>Hybrid scorer</td>
-<td align="right">0.7390</td>
-<td align="right">0.4757</td>
-<td align="right">0.9622</td>
-<td align="right">0.2811</td>
-<td align="right">0.3993</td>
+<td>Combined scorer</td>
+<td align="right">0.7920</td>
+<td align="right">0.5459</td>
+<td align="right">0.9405</td>
+<td align="right">0.2568</td>
+<td align="right">0.3976</td>
 </tr>
 <tr>
-<td>Calibrated CJ</td>
+<td>Calibrated comparative judgment</td>
 <td align="right">0.7537</td>
 <td align="right">0.4649</td>
 <td align="right">0.9622</td>
@@ -126,17 +112,47 @@ all three with equal weight.</p>
 </tr>
 <tr>
 <td>Equal average of all three</td>
-<td align="right">0.7659</td>
-<td align="right">0.5135</td>
-<td align="right">0.9730</td>
-<td align="right">0.2568</td>
-<td align="right">0.3767</td>
+<td align="right">0.8161</td>
+<td align="right">0.5946</td>
+<td align="right">0.9676</td>
+<td align="right">0.2189</td>
+<td align="right">0.3545</td>
 </tr>
 </tbody></table>
-<p>The equal average has the highest QWK, exact agreement, and adjacent agreement.
-It also has the lowest MAE and RMSE. On these 185 essays, the combined estimate
-agrees with the human scores more closely than any of the three estimates on
-its own.</p>
+<p>The equal average has the strongest point estimate on all five measures. The
+paired resampling results show how firmly the QWK differences can be stated.</p>
+<table>
+<thead>
+<tr>
+<th>Comparison</th>
+<th align="right">QWK change</th>
+<th align="right">One-sided 95% lower bound</th>
+<th align="right">Resamples at or below zero</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Equal average versus repaired handcrafted scorer</td>
+<td align="right">+0.1252</td>
+<td align="right">0.0828</td>
+<td align="right">0.0000</td>
+</tr>
+<tr>
+<td>Equal average versus combined scorer</td>
+<td align="right">+0.0240</td>
+<td align="right">-0.0058</td>
+<td align="right">0.0927</td>
+</tr>
+<tr>
+<td>Equal average versus calibrated comparative judgment</td>
+<td align="right">+0.0624</td>
+<td align="right">0.0275</td>
+<td align="right">0.0017</td>
+</tr>
+</tbody></table>
+<p>The held-out evidence supports an improvement over the repaired handcrafted
+scorer and comparative judgment on its own. However, the lower bound for the
+comparison with the combined scorer crosses zero, so this experiment does not
+clearly distinguish the equal average from the combined scorer.</p>
 <p><span id="out-of-fold-training-comparison"></span></p>
 <h3>Out-of-fold training comparison</h3>
 <p>The same measurements were computed for the 282 out-of-fold training essays.
@@ -154,23 +170,23 @@ that essay.</p>
 </tr>
 </thead>
 <tbody><tr>
-<td>Transparent scorer</td>
-<td align="right">0.7303</td>
-<td align="right">0.4645</td>
-<td align="right">0.9433</td>
-<td align="right">0.2979</td>
-<td align="right">0.4253</td>
+<td>Repaired handcrafted scorer</td>
+<td align="right">0.7877</td>
+<td align="right">0.4787</td>
+<td align="right">0.9326</td>
+<td align="right">0.2961</td>
+<td align="right">0.4304</td>
 </tr>
 <tr>
-<td>Hybrid scorer</td>
-<td align="right">0.7437</td>
-<td align="right">0.4823</td>
+<td>Combined scorer</td>
+<td align="right">0.8521</td>
+<td align="right">0.5957</td>
 <td align="right">0.9716</td>
-<td align="right">0.2784</td>
-<td align="right">0.4072</td>
+<td align="right">0.2163</td>
+<td align="right">0.3498</td>
 </tr>
 <tr>
-<td>Calibrated CJ</td>
+<td>Calibrated comparative judgment</td>
 <td align="right">0.7274</td>
 <td align="right">0.4362</td>
 <td align="right">0.9397</td>
@@ -179,91 +195,29 @@ that essay.</p>
 </tr>
 <tr>
 <td>Equal average of all three</td>
-<td align="right">0.7323</td>
-<td align="right">0.4574</td>
-<td align="right">0.9645</td>
-<td align="right">0.2908</td>
-<td align="right">0.4082</td>
+<td align="right">0.8244</td>
+<td align="right">0.5355</td>
+<td align="right">0.9787</td>
+<td align="right">0.2429</td>
+<td align="right">0.3634</td>
 </tr>
 </tbody></table>
-<p>The equal average does not outperform the hybrid scorer on the out-of-fold
-training essays. The improvement on the held-out essays must therefore be
-treated as a test-set result, not as a uniform advantage across both
-partitions.</p>
-<p><span id="relationship-between-the-errors"></span></p>
-<h3>Relationship between the errors</h3>
-<p>The correlations below compare the absolute error made by each pair of
-estimates on the held-out essays.</p>
-<table>
-<thead>
-<tr>
-<th>Pair of estimates</th>
-<th align="right">Absolute-error correlation</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Transparent and hybrid</td>
-<td align="right">0.4900</td>
-</tr>
-<tr>
-<td>Hybrid and CJ</td>
-<td align="right">0.3436</td>
-</tr>
-<tr>
-<td>Transparent and CJ</td>
-<td align="right">0.3773</td>
-</tr>
-</tbody></table>
-<p>CJ has a lower error correlation with either scorer than the two scorers have
-with each other. Its errors therefore overlap less with the scorer errors. This
-provides a direct explanation for why CJ can improve the combined estimate even
-though its individual QWK is only moderately higher than the scorer QWKs.</p>
-<p><span id="essays-on-which-the-estimates-disagree-substantially"></span></p>
-<h3>Essays on which the estimates disagree substantially</h3>
-<p>Eleven held-out essays have a difference of at least one scale point between
-the highest and lowest component estimate.</p>
-<table>
-<thead>
-<tr>
-<th align="right">Difference between highest and lowest estimate</th>
-<th align="right">Essays</th>
-<th align="right">Combined-estimate MAE</th>
-<th align="right">Mean component MAE</th>
-<th align="right">Largest component MAE</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="right">1.0</td>
-<td align="right">10</td>
-<td align="right">0.10</td>
-<td align="right">0.40</td>
-<td align="right">0.60</td>
-</tr>
-<tr>
-<td align="right">1.5</td>
-<td align="right">1</td>
-<td align="right">0.00</td>
-<td align="right">0.6667</td>
-<td align="right">1.00</td>
-</tr>
-</tbody></table>
-<p>For these disagreement cases, the equal average is closer to the human score
-than the components are on average. The result concerns only eleven essays and
-should be interpreted as a description of those cases rather than as an
-independent performance estimate.</p>
+<p>Here, the combined scorer has higher QWK, exact agreement, and lower error than
+the equal average. The equal average has slightly higher adjacent agreement.
+Consequently, the corrected experiment does not show a uniform fusion
+advantage across the two partitions.</p>
 <p><span id="interpretation"></span></p>
 <h2>Interpretation</h2>
-<p>The held-out results show that comparative judgment contains information that
-is not already present in either scorer. Adding CJ improves both scorers, and
-the equal combination of all three produces the strongest held-out result in
-this experiment. The error correlations and the eleven disagreement cases
-show why the combination can help: the three methods do not make the same
-errors on the same essays.</p>
-<p>The out-of-fold training comparison does not show the same overall advantage
-for the equal combination. The evidence therefore supports a bounded claim
-about the 185 held-out essays from this writing task. Replication across
-writing tasks is required before the result can support a general claim about
-the instrument.</p>
+<p>On the held-out essays, comparative judgment contributes information that
+improves the equal average relative to the repaired handcrafted scorer and to
+comparative judgment alone. The equal average also has a higher point estimate
+than the combined scorer, but the paired uncertainty analysis does not resolve
+that difference. On the out-of-fold training essays, the combined scorer is
+stronger than the equal average.</p>
+<p>The corrected evidence therefore supports continued study of comparative
+judgment as an additional source of information. It does not establish that
+fusion is generally better than the combined scorer. The experiment concerns
+one writing task, and any broader claim requires replication across tasks.</p>
 </article>
   </main>
 </body>
