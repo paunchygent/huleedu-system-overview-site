@@ -12,6 +12,7 @@ const repositoryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url))
 const codebergRepository = "https://codeberg.org/paunchygent/huleedu-research-code";
 const fullRevision = /^[0-9a-f]{40}$/;
 const safePathPart = /^[A-Za-z0-9_.-]+$/;
+const usage = "Usage: npm run code:render -- --repo <local-repository> --revision <full-sha> [--output-root <absolute-new-directory>]";
 const languageByExtension = new Map([
   [".json", "json"],
   [".md", "markdown"],
@@ -34,13 +35,13 @@ const readArguments = (argumentsList) => {
   for (let index = 0; index < argumentsList.length; index += 2) {
     const name = argumentsList[index];
     const value = argumentsList[index + 1];
-    if (!["--repo", "--revision", "--output"].includes(name) || !value || values.has(name)) {
-      throw new Error("Usage: npm run code:render -- --repo <local-repository> --revision <full-sha> [--output <directory>]");
+    if (!["--repo", "--revision", "--output-root"].includes(name) || !value || values.has(name)) {
+      throw new Error(usage);
     }
     values.set(name, value);
   }
   if (!values.has("--repo") || !values.has("--revision")) {
-    throw new Error("Usage: npm run code:render -- --repo <local-repository> --revision <full-sha> [--output <directory>]");
+    throw new Error(usage);
   }
   return values;
 };
@@ -273,35 +274,60 @@ p, li { line-height: 1.65; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto; } }
 `;
 
-const outputDirectory = async (repository, requestedOutput) => {
-  if (!requestedOutput) return path.join(repositoryRoot, "public", "code");
-  const outputRoot = path.resolve(requestedOutput);
-  const physicalOutput = path.join(await realpath(path.dirname(outputRoot)), path.basename(outputRoot));
-  const relativeOutput = path.relative(repository, physicalOutput);
-  const outputParts = relativeOutput.split(path.sep);
-  if (
-    !relativeOutput ||
-    relativeOutput.startsWith(`..${path.sep}`) ||
-    path.isAbsolute(relativeOutput) ||
-    outputParts.some((part) => !safePathPart.test(part))
-  ) {
-    throw new Error("Optional output directory must be a new child of the local repository");
+const externalOutputDirectory = async (requestedOutput) => {
+  if (!path.isAbsolute(requestedOutput) || path.normalize(requestedOutput) !== requestedOutput) {
+    throw new Error("Output root must be an absolute normalized path");
   }
+  const parsed = path.parse(requestedOutput);
+  if (requestedOutput === parsed.root) {
+    throw new Error("Output root must not name a filesystem root");
+  }
+
+  let current = parsed.root;
+  const parts = path.relative(parsed.root, requestedOutput).split(path.sep);
+  for (const [index, part] of parts.entries()) {
+    current = path.join(current, part);
+    try {
+      const entry = await lstat(current);
+      if (entry.isSymbolicLink()) {
+        throw new Error(`Output root contains a symlink component: ${current}`);
+      }
+      if (!entry.isDirectory()) {
+        throw new Error(`Output root component is not a directory: ${current}`);
+      }
+      if (index === parts.length - 1) {
+        throw new Error("Output root must not already exist");
+      }
+    } catch (error) {
+      if (error.code === "ENOENT") {
+        if (index === parts.length - 1) return requestedOutput;
+        throw new Error(`Output root parent does not exist: ${current}`);
+      }
+      throw error;
+    }
+  }
+  throw new Error("Output root must name a new directory");
+};
+
+const outputDirectory = async (requestedOutput) => {
+  if (requestedOutput) return externalOutputDirectory(requestedOutput);
+  const canonicalOutput = path.join(repositoryRoot, "public", "code");
   try {
-    await lstat(physicalOutput);
+    if ((await lstat(canonicalOutput)).isSymbolicLink()) {
+      throw new Error("Canonical code reader output must not be a symlink");
+    }
   } catch (error) {
-    if (error.code === "ENOENT") return physicalOutput;
-    throw error;
+    if (error.code !== "ENOENT") throw error;
   }
-  throw new Error("Optional output directory must not already exist");
+  return canonicalOutput;
 };
 
 const main = async () => {
   const argumentsMap = readArguments(process.argv.slice(2));
   const revision = argumentsMap.get("--revision");
   const repository = await validateRepository(argumentsMap.get("--repo"), revision);
-  const requestedOutput = argumentsMap.get("--output");
-  const outputRoot = await outputDirectory(repository, requestedOutput);
+  const requestedOutput = argumentsMap.get("--output-root");
+  const outputRoot = await outputDirectory(requestedOutput);
   const files = await readCommittedFiles(repository, revision);
   const publicationDate = await publicationDateFor(repository, revision);
   const readmeFile = files.find((file) => file.sourcePath === "public_research_code/README.md");
