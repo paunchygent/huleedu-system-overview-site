@@ -60,14 +60,6 @@ const index = await readFile(path.join(outputRoot, "index.html"), "utf8");
 if (!index.includes(manifest.revision) || !index.includes("Repository tree")) {
   throw new Error("Generated code reader index does not match its declared revision");
 }
-const revisionIndex = await readFile(
-  path.join(outputRoot, manifest.revision, "index.html"),
-  "utf8",
-);
-if (revisionIndex !== index) {
-  throw new Error("Generated revision index does not match the current reader index");
-}
-
 for (const sourcePath of manifest.files) {
   const parts = sourcePath.split("/");
   if (

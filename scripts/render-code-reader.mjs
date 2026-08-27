@@ -346,7 +346,6 @@ const main = async () => {
     sources.find(([file]) => file === readmeFile)[1],
   );
   await writeFile(path.join(outputRoot, "index.html"), indexHtml);
-  await writeFile(path.join(revisionRoot, "index.html"), indexHtml);
   for (const [file, source] of sources) {
     const outputFile = path.join(revisionRoot, "source", ...file.parts) + ".html";
     await mkdir(path.dirname(outputFile), { recursive: true });
