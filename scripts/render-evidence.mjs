@@ -82,7 +82,10 @@ const renderPage = (document, body) => {
 </head>
 <body>
   <header class="page-header">
-    <a class="back-link" href="/huleedu-system-overview/">HuleEdu system overview</a>
+    <nav class="page-nav" aria-label="Research navigation">
+      <a href="/huleedu-system-overview/">System overview</a>
+      <a href="/code/">Research code</a>
+    </nav>
     <h1>${title}</h1>
     <p class="source-line"><a href="/evidence/source/${slug}.md">Markdown source</a> · evidence revision <code>${sourceRevision}</code></p>
   </header>

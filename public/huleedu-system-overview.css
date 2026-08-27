@@ -47,7 +47,14 @@
       color: #3f3f3f;
       font-size: 11pt;
       line-height: 1.5;
+      margin: 0 0 3pt 0;
+    }
+
+    .document-links {
       margin: 0 0 10pt 0;
+      color: #3f3f3f;
+      font-size: 10pt;
+      line-height: 1.5;
     }
 
     .title-rule {
@@ -173,7 +180,12 @@
 
       .meta {
         font-size: 0.96rem;
+        margin-bottom: 0.2rem;
+      }
+
+      .document-links {
         margin-bottom: 1rem;
+        font-size: 0.92rem;
       }
 
       .title-rule {
