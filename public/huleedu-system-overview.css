@@ -51,10 +51,19 @@
     }
 
     .document-links {
-      margin: 0 0 10pt 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5pt 18pt;
+      margin: 0 0 12pt 0;
       color: #3f3f3f;
       font-size: 10pt;
       line-height: 1.5;
+    }
+
+    .document-links a {
+      display: inline-flex;
+      gap: 0.45em;
+      align-items: baseline;
     }
 
     .title-rule {
@@ -184,8 +193,28 @@
       }
 
       .document-links {
-        margin-bottom: 1rem;
-        font-size: 0.92rem;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, max-content));
+        gap: 0.75rem 2.5rem;
+        margin: 0.9rem 0 1.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        line-height: 1.4;
+      }
+
+      .document-links a {
+        padding: 0.35rem 0;
+        text-decoration: none;
+      }
+
+      .document-links a:hover {
+        box-shadow: inset 0 -2px #0b2545;
+      }
+
+      .document-links a:focus-visible {
+        border-radius: 2px;
+        outline: 2px solid #173e70;
+        outline-offset: 4px;
       }
 
       .title-rule {
@@ -282,6 +311,13 @@
         border-radius: 2px;
         outline: 2px solid #173e70;
         outline-offset: 3px;
+      }
+
+      @media (max-width: 520px) {
+        .document-links {
+          grid-template-columns: 1fr;
+          gap: 0.35rem;
+        }
       }
 
       .external-link::after {
