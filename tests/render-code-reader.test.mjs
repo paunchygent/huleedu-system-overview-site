@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
-import { mkdir, mkdtemp, readFile, symlink, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, realpath, symlink, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
@@ -10,8 +10,10 @@ import { promisify } from "node:util";
 const runFile = promisify(execFile);
 const repositoryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const renderer = path.join(repositoryRoot, "scripts", "render-code-reader.mjs");
+const validator = path.join(repositoryRoot, "scripts", "validate-code-reader.mjs");
 
 const runGit = (cwd, argumentsList, environment) => runFile("git", argumentsList, { cwd, env: environment });
+const createPublicationParent = async () => realpath(await mkdtemp(path.join(os.tmpdir(), "huleedu-reader-publication-")));
 
 const createRepository = async () => {
   const root = await mkdtemp(path.join(os.tmpdir(), "huleedu-reader-"));
@@ -37,12 +39,24 @@ const createRepository = async () => {
   return { root, revision: stdout.trim(), publicationDate: "2026-08-26T12:34:56.000Z" };
 };
 
-const render = (repository, revision, output) => runFile(process.execPath, [renderer, "--repo", repository, "--revision", revision, "--output", output]);
+const render = (repository, revision, outputRoot) => runFile(process.execPath, [
+  renderer,
+  "--repo",
+  repository,
+  "--revision",
+  revision,
+  "--output-root",
+  outputRoot,
+]);
+
+const validate = (outputRoot) => runFile(process.execPath, [validator, "--output-root", outputRoot]);
 
 test("renders one exact public tree with revision, publication date, and line anchors", async () => {
   const fixture = await createRepository();
-  const output = path.join(fixture.root, "reader-output");
+  const publicationParent = await createPublicationParent();
+  const output = path.join(publicationParent, "reader-output");
   await render(fixture.root, fixture.revision, output);
+  await validate(output);
   const manifest = JSON.parse(await readFile(path.join(output, "reader-manifest.json"), "utf8"));
   assert.equal(manifest.revision, fixture.revision);
   assert.deepEqual(manifest.files, [
@@ -78,21 +92,52 @@ test("refuses an invalid revision and a dirty repository", async () => {
   await assert.rejects(render(fixture.root, fixture.revision, output), /tree is dirty/);
 });
 
-test("refuses an existing optional output directory without deleting it", async () => {
+test("refuses an existing external output directory without deleting it", async () => {
   const fixture = await createRepository();
-  const existingOutput = path.join(fixture.root, "existing-output");
+  const publicationParent = await createPublicationParent();
+  const existingOutput = path.join(publicationParent, "existing-output");
   await mkdir(existingOutput);
   const sentinel = path.join(existingOutput, "sentinel.txt");
   await writeFile(sentinel, "preserve me\n");
-  await runGit(fixture.root, ["add", "."]);
-  await runGit(fixture.root, ["commit", "-m", "Add existing output sentinel"]);
-  const { stdout } = await runGit(fixture.root, ["rev-parse", "HEAD"]);
 
   await assert.rejects(
-    render(fixture.root, stdout.trim(), existingOutput),
+    render(fixture.root, fixture.revision, existingOutput),
     /must not already exist/,
   );
   assert.equal(await readFile(sentinel, "utf8"), "preserve me\n");
+});
+
+test("refuses unsafe external output roots and symlink components", async () => {
+  const fixture = await createRepository();
+  const publicationParent = await createPublicationParent();
+  const unsafeRoot = path.parse(publicationParent).root;
+  await assert.rejects(
+    render(fixture.root, fixture.revision, "relative-output"),
+    /absolute normalized path/,
+  );
+  await assert.rejects(
+    render(fixture.root, fixture.revision, unsafeRoot),
+    /must not name a filesystem root/,
+  );
+  await assert.rejects(
+    validate(path.join(publicationParent, "missing-output")),
+    /must name an existing directory/,
+  );
+
+  const releaseParent = path.join(publicationParent, "release-parent");
+  await mkdir(releaseParent);
+  const symlinkParent = path.join(publicationParent, "symlink-parent");
+  await symlink(releaseParent, symlinkParent);
+  await assert.rejects(
+    render(fixture.root, fixture.revision, path.join(symlinkParent, "reader-output")),
+    /contains a symlink component/,
+  );
+
+  const validOutput = path.join(publicationParent, "valid-output");
+  await render(fixture.root, fixture.revision, validOutput);
+  const validationSymlink = path.join(publicationParent, "validation-symlink");
+  await symlink(validOutput, validationSymlink);
+  await assert.rejects(validate(validationSymlink), /contains a symlink component/);
 });
 
 test("refuses committed symlinks that could traverse outside the public tree", async () => {
@@ -102,7 +147,7 @@ test("refuses committed symlinks that could traverse outside the public tree", a
   await runGit(fixture.root, ["commit", "-m", "Add unsafe link"]);
   const { stdout } = await runGit(fixture.root, ["rev-parse", "HEAD"]);
   await assert.rejects(
-    render(fixture.root, stdout.trim(), path.join(fixture.root, "reader-output")),
+    render(fixture.root, stdout.trim(), path.join(await createPublicationParent(), "reader-output")),
     /unsafe tree entry/,
   );
 });

@@ -10,6 +10,11 @@ services:
     restart: always
     expose:
       - "80"
+    volumes:
+      - type: bind
+        source: ${HULEEDU_PUBLICATION_ROOT:-/home/paunchygent/apps/huleedu-public-research-publication}
+        target: /srv/huleedu-publication
+        read_only: true
     environment:
       VIRTUAL_HOST: research.hule.education
       VIRTUAL_PORT: "80"
