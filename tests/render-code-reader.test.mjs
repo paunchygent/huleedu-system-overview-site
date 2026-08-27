@@ -65,7 +65,7 @@ test("nginx caches immutable revision source pages while current reader surfaces
   const configuration = await readFile(path.join(repositoryRoot, "nginx.conf"), "utf8");
   assert.match(
     configuration,
-    /location ~ \^\/code\/\[0-9a-f\]\{40\}\/source\/ \{\s+add_header Cache-Control "public, max-age=31536000, immutable" always;/,
+    /location ~ "\^\/code\/\[0-9a-f\]\{40\}\/source\/" \{\s+add_header Cache-Control "public, max-age=31536000, immutable" always;/,
   );
   assert.match(configuration, /location \/code\/ \{\s+add_header Cache-Control "no-store" always;/);
 });
