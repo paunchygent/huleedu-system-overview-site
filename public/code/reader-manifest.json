@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "revision": "74666175fcdca7937cacdfca71d557efe1f231d5",
+  "readmePath": "public_research_code/README.md",
+  "files": [
+    "LICENSE",
+    "public_research_code/ARCHITECTURE.md",
+    "public_research_code/EXCLUSIONS.md",
+    "public_research_code/README.md",
+    "public_research_code/check_projection.py",
+    "public_research_code/inventory.json",
+    "public_research_code/manifest.json",
+    "scripts/ml_training/essay_scoring/tests/test_prediction_mapping.py",
+    "scripts/ml_training/essay_scoring/training/prediction_mapping.py"
+  ]
+}

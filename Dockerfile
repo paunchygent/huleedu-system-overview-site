@@ -6,4 +6,5 @@ RUN mkdir -p /usr/share/nginx/html/huleedu-system-overview
 COPY public/huleedu-system-overview.html /usr/share/nginx/html/huleedu-system-overview/index.html
 COPY public/huleedu-system-overview.css /usr/share/nginx/html/huleedu-system-overview/huleedu-system-overview.css
 COPY public/evidence /usr/share/nginx/html/evidence
+COPY public/code /usr/share/nginx/html/code
 COPY public/favicon.svg /usr/share/nginx/html/favicon.svg
