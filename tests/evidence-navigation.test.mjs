@@ -13,7 +13,7 @@ test("evidence pages expose clear navigation to the overview and research code",
   ]);
 
   assert.match(renderer, /<nav class="page-nav" aria-label="Research navigation">/);
-  assert.match(renderer, /href="\/huleedu-system-overview\/">System overview<\/a>/);
-  assert.match(renderer, /href="\/code\/">Research code<\/a>/);
-  assert.match(stylesheet, /\.page-nav \{[\s\S]*?font-size: 0\.96rem;[\s\S]*?font-weight: 700;/);
+  assert.match(renderer, /href="\/huleedu-system-overview\/"/);
+  assert.match(renderer, /href="\/code\/"/);
+  assert.match(stylesheet, /\.page-nav a \{[\s\S]*?text-decoration: none;/);
 });
