@@ -11,7 +11,7 @@ const utf8 = new TextDecoder("utf-8", { fatal: true });
 const repositoryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const codebergRepository = "https://codeberg.org/paunchygent/huleedu-research-code";
 const fullRevision = /^[0-9a-f]{40}$/;
-const safePathPart = /^[A-Za-z0-9][A-Za-z0-9._-]*$/;
+const safePathPart = /^[A-Za-z0-9_.-]+$/;
 const languageByExtension = new Map([
   [".json", "json"],
   [".md", "markdown"],
@@ -93,6 +93,26 @@ const validateRepository = async (repository, revision) => {
   return localRoot;
 };
 
+const publicationDateFor = async (repository, revision) => {
+  const committedAt = decodeText(
+    await runGit(repository, ["show", "-s", "--format=%cI", revision]),
+    "revision timestamp",
+  ).trim();
+  const timestamp = new Date(committedAt);
+  if (Number.isNaN(timestamp.getTime())) {
+    throw new Error(`Refusing revision with an invalid commit timestamp: ${committedAt}`);
+  }
+  return {
+    dateTime: timestamp.toISOString(),
+    label: new Intl.DateTimeFormat("en-GB", {
+      day: "numeric",
+      month: "long",
+      timeZone: "UTC",
+      year: "numeric",
+    }).format(timestamp),
+  };
+};
+
 const readCommittedFiles = async (repository, revision) => {
   const tree = decodeGitTree(
     await runGit(repository, ["ls-tree", "-r", "-z", "--long", revision]),
@@ -107,7 +127,10 @@ const readCommittedFiles = async (repository, revision) => {
       type !== "blob" ||
       !["100644", "100755"].includes(mode) ||
       parts.length === 0 ||
-      parts.some((part) => !safePathPart.test(part))
+      parts.some(
+        (part) =>
+          !safePathPart.test(part) || part === "." || part === ".." || part === ".git",
+      )
     ) {
       throw new Error(`Refusing unsafe tree entry: ${sourcePath}`);
     }
@@ -172,7 +195,7 @@ const renderLines = (source, language) => {
     .join("\n");
 };
 
-const layout = ({ title, revision, body }) => `<!doctype html>
+const layout = ({ title, revision, publicationDate, body }) => `<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -184,14 +207,18 @@ const layout = ({ title, revision, body }) => `<!doctype html>
 <body>
   <header class="site-header"><a href="/huleedu-system-overview/">HuleEdu research</a><a href="${codebergRepository}">Codeberg</a></header>
   <main class="reader-layout">
-    <aside class="revision-rail" aria-label="Public revision"><a href="${codebergRepository}/commit/${revision}">${revision}</a></aside>
+    <aside class="revision-rail" aria-label="Public revision">
+      <span>Revision</span>
+      <a href="${codebergRepository}/commit/${revision}">${revision}</a>
+      <time datetime="${publicationDate.dateTime}">Published ${publicationDate.label}</time>
+    </aside>
     <section class="reader-content">${body}</section>
   </main>
 </body>
 </html>
 `;
 
-const renderIndex = async (revision, files, readme) => {
+const renderIndex = async (revision, publicationDate, files, readme) => {
   const tree = files
     .map(({ sourcePath, parts }) => `<li style="--depth:${parts.length - 1}"><a href="${sourceUrl(revision, parts)}">${escapeHtml(sourcePath)}</a></li>`)
     .join("\n");
@@ -199,15 +226,16 @@ const renderIndex = async (revision, files, readme) => {
   return layout({
     title: "Code",
     revision,
+    publicationDate,
     body: `<section class="readme">${readmeHtml}</section>
-      <p class="provenance">Revision <a href="${codebergRepository}/commit/${revision}">${revision}</a></p>
       <section aria-labelledby="tree-title"><h2 id="tree-title">Repository tree</h2><ul class="tree">${tree}</ul></section>`,
   });
 };
 
-const renderSourcePage = (revision, file, source) => layout({
+const renderSourcePage = (revision, publicationDate, file, source) => layout({
   title: file.sourcePath,
   revision,
+  publicationDate,
   body: `<p class="eyebrow"><a href="/code/">Code</a> / ${escapeHtml(file.sourcePath)}</p>
     <h1>${escapeHtml(file.sourcePath)}</h1>
     <p class="provenance"><a href="${codebergUrl(revision, file.parts)}">View this file on Codeberg</a></p>
@@ -222,8 +250,10 @@ a:focus-visible { outline: 3px solid #b35c17; outline-offset: 3px; }
 .site-header { display: flex; justify-content: space-between; gap: 1rem; max-width: 1120px; margin: 0 auto; padding: 1rem clamp(1.25rem, 5vw, 4rem); font-size: .9rem; }
 .reader-layout { display: grid; grid-template-columns: minmax(10rem, 14rem) minmax(0, 1fr); max-width: 1120px; min-height: calc(100vh - 3rem); margin: 0 auto; background: #fff; }
 .revision-rail { padding: 2rem 1rem; border-right: 1px solid #c8c8c8; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .72rem; line-height: 1.4; overflow-wrap: anywhere; }
+.revision-rail span, .revision-rail a, .revision-rail time { display: block; }
+.revision-rail time { margin-top: .75rem; color: #454545; }
 .reader-content { min-width: 0; padding: clamp(2rem, 5vw, 4.5rem); }
-h1 { max-width: 22ch; margin: 0 0 1rem; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.08; letter-spacing: -.025em; }
+h1 { max-width: 22ch; margin: 0 0 1rem; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.08; letter-spacing: -.025em; overflow-wrap: anywhere; }
 h2 { margin-top: 3rem; font-size: 1.25rem; }
 p, li { line-height: 1.65; }
 .eyebrow, .provenance { color: #454545; font-size: .92rem; }
@@ -273,6 +303,7 @@ const main = async () => {
   const requestedOutput = argumentsMap.get("--output");
   const outputRoot = await outputDirectory(repository, requestedOutput);
   const files = await readCommittedFiles(repository, revision);
+  const publicationDate = await publicationDateFor(repository, revision);
   const readmeFile = files.find((file) => file.sourcePath === "public_research_code/README.md");
   if (!readmeFile) {
     throw new Error("Refusing repository without public_research_code/README.md");
@@ -282,11 +313,11 @@ const main = async () => {
   if (!requestedOutput) await rm(outputRoot, { recursive: true, force: true });
   await mkdir(path.join(revisionRoot, "source"), { recursive: true });
   await writeFile(path.join(outputRoot, "code.css"), stylesheet);
-  await writeFile(path.join(outputRoot, "index.html"), await renderIndex(revision, files, sources.find(([file]) => file === readmeFile)[1]));
+  await writeFile(path.join(outputRoot, "index.html"), await renderIndex(revision, publicationDate, files, sources.find(([file]) => file === readmeFile)[1]));
   for (const [file, source] of sources) {
     const outputFile = path.join(revisionRoot, "source", ...file.parts) + ".html";
     await mkdir(path.dirname(outputFile), { recursive: true });
-    await writeFile(outputFile, renderSourcePage(revision, file, source));
+    await writeFile(outputFile, renderSourcePage(revision, publicationDate, file, source));
   }
   await writeFile(
     path.join(outputRoot, "reader-manifest.json"),

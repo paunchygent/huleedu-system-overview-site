@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>public_research_code/ARCHITECTURE.md | HuleEdu research code</title>
+  <link rel="icon" href="/favicon.svg">
+  <link rel="stylesheet" href="/code/code.css">
+</head>
+<body>
+  <header class="site-header"><a href="/huleedu-system-overview/">HuleEdu research</a><a href="https://codeberg.org/paunchygent/huleedu-research-code">Codeberg</a></header>
+  <main class="reader-layout">
+    <aside class="revision-rail" aria-label="Public revision">
+      <span>Revision</span>
+      <a href="https://codeberg.org/paunchygent/huleedu-research-code/commit/92328f8d9d8d36e9af934f8139c6dd99715a1d36">92328f8d9d8d36e9af934f8139c6dd99715a1d36</a>
+      <time datetime="2026-08-27T21:38:56.000Z">Published 27 August 2026</time>
+    </aside>
+    <section class="reader-content"><p class="eyebrow"><a href="/code/">Code</a> / public_research_code/ARCHITECTURE.md</p>
+    <h1>public_research_code/ARCHITECTURE.md</h1>
+    <p class="provenance"><a href="https://codeberg.org/paunchygent/huleedu-research-code/src/commit/92328f8d9d8d36e9af934f8139c6dd99715a1d36/public_research_code/ARCHITECTURE.md">View this file on Codeberg</a></p>
+    <pre class="source-code"><code><span class="code-line" id="L1">
+  <a class="line-number" href="#L1" aria-label="Line 1">1</a>
+  <span class="source-text"><span class="hljs-section"># Architecture</span></span>
+</span>
+<span class="code-line" id="L2">
+  <a class="line-number" href="#L2" aria-label="Line 2">2</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L3">
+  <a class="line-number" href="#L3" aria-label="Line 3">3</a>
+  <span class="source-text">HuleEdu authors a positive inventory of public files. The released projector</span>
+</span>
+<span class="code-line" id="L4">
+  <a class="line-number" href="#L4" aria-label="Line 4">4</a>
+  <span class="source-text">materializes those files from one committed HuleEdu tree into a new curated</span>
+</span>
+<span class="code-line" id="L5">
+  <a class="line-number" href="#L5" aria-label="Line 5">5</a>
+  <span class="source-text">research-code edition. The edition is generated output, not an editable source</span>
+</span>
+<span class="code-line" id="L6">
+  <a class="line-number" href="#L6" aria-label="Line 6">6</a>
+  <span class="source-text">of truth.</span>
+</span>
+<span class="code-line" id="L7">
+  <a class="line-number" href="#L7" aria-label="Line 7">7</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L8">
+  <a class="line-number" href="#L8" aria-label="Line 8">8</a>
+  <span class="source-text">General <span class="hljs-code">`common_core`</span> contract files are included as the current import closure;</span>
+</span>
+<span class="code-line" id="L9">
+  <a class="line-number" href="#L9" aria-label="Line 9">9</a>
+  <span class="source-text">they are not presented as research features.</span>
+</span>
+<span class="code-line" id="L10">
+  <a class="line-number" href="#L10" aria-label="Line 10">10</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L11">
+  <a class="line-number" href="#L11" aria-label="Line 11">11</a>
+  <span class="source-text">The source inventory preserves selected HuleEdu paths. It covers the shared</span>
+</span>
+<span class="code-line" id="L12">
+  <a class="line-number" href="#L12" aria-label="Line 12">12</a>
+  <span class="source-text">feature-contract registry and extraction seams, local embedding implementation</span>
+</span>
+<span class="code-line" id="L13">
+  <a class="line-number" href="#L13" aria-label="Line 13">13</a>
+  <span class="source-text">and import-light configuration, training and score interpretation, comparative</span>
+</span>
+<span class="code-line" id="L14">
+  <a class="line-number" href="#L14" aria-label="Line 14">14</a>
+  <span class="source-text">judgement orchestration and its typed provider boundary, plus Bradley--Terry</span>
+</span>
+<span class="code-line" id="L15">
+  <a class="line-number" href="#L15" aria-label="Line 15">15</a>
+  <span class="source-text">aggregation. Source that describes an excluded runtime boundary remains</span>
+</span>
+<span class="code-line" id="L16">
+  <a class="line-number" href="#L16" aria-label="Line 16">16</a>
+  <span class="source-text">inspectable, but the edition does not claim that provider, Hemma, database,</span>
+</span>
+<span class="code-line" id="L17">
+  <a class="line-number" href="#L17" aria-label="Line 17">17</a>
+  <span class="source-text">queue, or model-backed execution is available.</span>
+</span>
+<span class="code-line" id="L18">
+  <a class="line-number" href="#L18" aria-label="Line 18">18</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L19">
+  <a class="line-number" href="#L19" aria-label="Line 19">19</a>
+  <span class="source-text"><span class="hljs-code">`run_synthetic_demo.py`</span> is the runnable vertical. It imports the real current</span>
+</span>
+<span class="code-line" id="L20">
+  <a class="line-number" href="#L20" aria-label="Line 20">20</a>
+  <span class="source-text">registry, half-band score mapping, and Fisher-information Bradley--Terry code</span>
+</span>
+<span class="code-line" id="L21">
+  <a class="line-number" href="#L21" aria-label="Line 21">21</a>
+  <span class="source-text">with deterministic numeric inputs. Its direct dependencies are NumPy and</span>
+</span>
+<span class="code-line" id="L22">
+  <a class="line-number" href="#L22" aria-label="Line 22">22</a>
+  <span class="source-text">Pydantic; it deliberately does not import embedding or provider runtimes.</span>
+</span>
+<span class="code-line" id="L23">
+  <a class="line-number" href="#L23" aria-label="Line 23">23</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L24">
+  <a class="line-number" href="#L24" aria-label="Line 24">24</a>
+  <span class="source-text">Before a generated edition is accepted, the HuleEdu content check verifies its</span>
+</span>
+<span class="code-line" id="L25">
+  <a class="line-number" href="#L25" aria-label="Line 25">25</a>
+  <span class="source-text">own inventory and manifest, the complete candidate file set, regular UTF-8</span>
+</span>
+<span class="code-line" id="L26">
+  <a class="line-number" href="#L26" aria-label="Line 26">26</a>
+  <span class="source-text">files, permitted paths, and credential-like content. Python source under a</span>
+</span>
+<span class="code-line" id="L27">
+  <a class="line-number" href="#L27" aria-label="Line 27">27</a>
+  <span class="source-text"><span class="hljs-code">`models`</span> namespace is permitted because it defines typed contracts; non-source</span>
+</span>
+<span class="code-line" id="L28">
+  <a class="line-number" href="#L28" aria-label="Line 28">28</a>
+  <span class="source-text">model directories remain refused.</span>
+</span></code></pre></section>
+  </main>
+</body>
+</html>

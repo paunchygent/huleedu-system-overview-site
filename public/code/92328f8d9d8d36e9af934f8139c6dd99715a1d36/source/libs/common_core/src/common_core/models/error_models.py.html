@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>libs/common_core/src/common_core/models/error_models.py | HuleEdu research code</title>
+  <link rel="icon" href="/favicon.svg">
+  <link rel="stylesheet" href="/code/code.css">
+</head>
+<body>
+  <header class="site-header"><a href="/huleedu-system-overview/">HuleEdu research</a><a href="https://codeberg.org/paunchygent/huleedu-research-code">Codeberg</a></header>
+  <main class="reader-layout">
+    <aside class="revision-rail" aria-label="Public revision">
+      <span>Revision</span>
+      <a href="https://codeberg.org/paunchygent/huleedu-research-code/commit/92328f8d9d8d36e9af934f8139c6dd99715a1d36">92328f8d9d8d36e9af934f8139c6dd99715a1d36</a>
+      <time datetime="2026-08-27T21:38:56.000Z">Published 27 August 2026</time>
+    </aside>
+    <section class="reader-content"><p class="eyebrow"><a href="/code/">Code</a> / libs/common_core/src/common_core/models/error_models.py</p>
+    <h1>libs/common_core/src/common_core/models/error_models.py</h1>
+    <p class="provenance"><a href="https://codeberg.org/paunchygent/huleedu-research-code/src/commit/92328f8d9d8d36e9af934f8139c6dd99715a1d36/libs/common_core/src/common_core/models/error_models.py">View this file on Codeberg</a></p>
+    <pre class="source-code"><code><span class="code-line" id="L1">
+  <a class="line-number" href="#L1" aria-label="Line 1">1</a>
+  <span class="source-text"><span class="hljs-string">&quot;&quot;&quot;Standardized error data models for HuleEdu services.</span></span>
+</span>
+<span class="code-line" id="L2">
+  <a class="line-number" href="#L2" aria-label="Line 2">2</a>
+  <span class="source-text"><span class="hljs-string"></span></span>
+</span>
+<span class="code-line" id="L3">
+  <a class="line-number" href="#L3" aria-label="Line 3">3</a>
+  <span class="source-text"><span class="hljs-string">Domain purpose:</span></span>
+</span>
+<span class="code-line" id="L4">
+  <a class="line-number" href="#L4" aria-label="Line 4">4</a>
+  <span class="source-text"><span class="hljs-string">    Define immutable structured error payloads shared by service boundaries,</span></span>
+</span>
+<span class="code-line" id="L5">
+  <a class="line-number" href="#L5" aria-label="Line 5">5</a>
+  <span class="source-text"><span class="hljs-string">    metadata envelopes, and operational diagnostics.</span></span>
+</span>
+<span class="code-line" id="L6">
+  <a class="line-number" href="#L6" aria-label="Line 6">6</a>
+  <span class="source-text"><span class="hljs-string"></span></span>
+</span>
+<span class="code-line" id="L7">
+  <a class="line-number" href="#L7" aria-label="Line 7">7</a>
+  <span class="source-text"><span class="hljs-string">Relationships:</span></span>
+</span>
+<span class="code-line" id="L8">
+  <a class="line-number" href="#L8" aria-label="Line 8">8</a>
+  <span class="source-text"><span class="hljs-string">    - Service-specific error enums extend the cross-service ``ErrorCode`` set</span></span>
+</span>
+<span class="code-line" id="L9">
+  <a class="line-number" href="#L9" aria-label="Line 9">9</a>
+  <span class="source-text"><span class="hljs-string">      while preserving a single ``ErrorDetail`` payload shape.</span></span>
+</span>
+<span class="code-line" id="L10">
+  <a class="line-number" href="#L10" aria-label="Line 10">10</a>
+  <span class="source-text"><span class="hljs-string">    - Event and API metadata models embed these payloads for typed failure</span></span>
+</span>
+<span class="code-line" id="L11">
+  <a class="line-number" href="#L11" aria-label="Line 11">11</a>
+  <span class="source-text"><span class="hljs-string">      reporting and tracing.</span></span>
+</span>
+<span class="code-line" id="L12">
+  <a class="line-number" href="#L12" aria-label="Line 12">12</a>
+  <span class="source-text"><span class="hljs-string">&quot;&quot;&quot;</span></span>
+</span>
+<span class="code-line" id="L13">
+  <a class="line-number" href="#L13" aria-label="Line 13">13</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L14">
+  <a class="line-number" href="#L14" aria-label="Line 14">14</a>
+  <span class="source-text"><span class="hljs-keyword">from</span> datetime <span class="hljs-keyword">import</span> datetime</span>
+</span>
+<span class="code-line" id="L15">
+  <a class="line-number" href="#L15" aria-label="Line 15">15</a>
+  <span class="source-text"><span class="hljs-keyword">from</span> uuid <span class="hljs-keyword">import</span> UUID</span>
+</span>
+<span class="code-line" id="L16">
+  <a class="line-number" href="#L16" aria-label="Line 16">16</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L17">
+  <a class="line-number" href="#L17" aria-label="Line 17">17</a>
+  <span class="source-text"><span class="hljs-keyword">from</span> pydantic <span class="hljs-keyword">import</span> BaseModel, ConfigDict, Field, JsonValue</span>
+</span>
+<span class="code-line" id="L18">
+  <a class="line-number" href="#L18" aria-label="Line 18">18</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L19">
+  <a class="line-number" href="#L19" aria-label="Line 19">19</a>
+  <span class="source-text"><span class="hljs-keyword">from</span> common_core.error_enums <span class="hljs-keyword">import</span> (</span>
+</span>
+<span class="code-line" id="L20">
+  <a class="line-number" href="#L20" aria-label="Line 20">20</a>
+  <span class="source-text">    BatchConductorErrorCode,</span>
+</span>
+<span class="code-line" id="L21">
+  <a class="line-number" href="#L21" aria-label="Line 21">21</a>
+  <span class="source-text">    CJAssessmentErrorCode,</span>
+</span>
+<span class="code-line" id="L22">
+  <a class="line-number" href="#L22" aria-label="Line 22">22</a>
+  <span class="source-text">    ClassManagementErrorCode,</span>
+</span>
+<span class="code-line" id="L23">
+  <a class="line-number" href="#L23" aria-label="Line 23">23</a>
+  <span class="source-text">    ErrorCode,</span>
+</span>
+<span class="code-line" id="L24">
+  <a class="line-number" href="#L24" aria-label="Line 24">24</a>
+  <span class="source-text">    FileValidationErrorCode,</span>
+</span>
+<span class="code-line" id="L25">
+  <a class="line-number" href="#L25" aria-label="Line 25">25</a>
+  <span class="source-text">    IdentityErrorCode,</span>
+</span>
+<span class="code-line" id="L26">
+  <a class="line-number" href="#L26" aria-label="Line 26">26</a>
+  <span class="source-text">    LLMErrorCode,</span>
+</span>
+<span class="code-line" id="L27">
+  <a class="line-number" href="#L27" aria-label="Line 27">27</a>
+  <span class="source-text">    SpellcheckerErrorCode,</span>
+</span>
+<span class="code-line" id="L28">
+  <a class="line-number" href="#L28" aria-label="Line 28">28</a>
+  <span class="source-text">)</span>
+</span>
+<span class="code-line" id="L29">
+  <a class="line-number" href="#L29" aria-label="Line 29">29</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L30">
+  <a class="line-number" href="#L30" aria-label="Line 30">30</a>
+  <span class="source-text"><span class="hljs-comment"># Union type for all service-specific error codes</span></span>
+</span>
+<span class="code-line" id="L31">
+  <a class="line-number" href="#L31" aria-label="Line 31">31</a>
+  <span class="source-text">ErrorCodeType = (</span>
+</span>
+<span class="code-line" id="L32">
+  <a class="line-number" href="#L32" aria-label="Line 32">32</a>
+  <span class="source-text">    ErrorCode</span>
+</span>
+<span class="code-line" id="L33">
+  <a class="line-number" href="#L33" aria-label="Line 33">33</a>
+  <span class="source-text">    | BatchConductorErrorCode</span>
+</span>
+<span class="code-line" id="L34">
+  <a class="line-number" href="#L34" aria-label="Line 34">34</a>
+  <span class="source-text">    | CJAssessmentErrorCode</span>
+</span>
+<span class="code-line" id="L35">
+  <a class="line-number" href="#L35" aria-label="Line 35">35</a>
+  <span class="source-text">    | ClassManagementErrorCode</span>
+</span>
+<span class="code-line" id="L36">
+  <a class="line-number" href="#L36" aria-label="Line 36">36</a>
+  <span class="source-text">    | FileValidationErrorCode</span>
+</span>
+<span class="code-line" id="L37">
+  <a class="line-number" href="#L37" aria-label="Line 37">37</a>
+  <span class="source-text">    | IdentityErrorCode</span>
+</span>
+<span class="code-line" id="L38">
+  <a class="line-number" href="#L38" aria-label="Line 38">38</a>
+  <span class="source-text">    | LLMErrorCode</span>
+</span>
+<span class="code-line" id="L39">
+  <a class="line-number" href="#L39" aria-label="Line 39">39</a>
+  <span class="source-text">    | SpellcheckerErrorCode</span>
+</span>
+<span class="code-line" id="L40">
+  <a class="line-number" href="#L40" aria-label="Line 40">40</a>
+  <span class="source-text">)</span>
+</span>
+<span class="code-line" id="L41">
+  <a class="line-number" href="#L41" aria-label="Line 41">41</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L42">
+  <a class="line-number" href="#L42" aria-label="Line 42">42</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L43">
+  <a class="line-number" href="#L43" aria-label="Line 43">43</a>
+  <span class="source-text"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ErrorDetail</span>(<span class="hljs-title class_ inherited__">BaseModel</span>):</span>
+</span>
+<span class="code-line" id="L44">
+  <a class="line-number" href="#L44" aria-label="Line 44">44</a>
+  <span class="source-text">    <span class="hljs-string">&quot;&quot;&quot;</span></span>
+</span>
+<span class="code-line" id="L45">
+  <a class="line-number" href="#L45" aria-label="Line 45">45</a>
+  <span class="source-text"><span class="hljs-string">    The canonical, PURE data model for an error in the HuleEdu platform.</span></span>
+</span>
+<span class="code-line" id="L46">
+  <a class="line-number" href="#L46" aria-label="Line 46">46</a>
+  <span class="source-text"><span class="hljs-string">    This model contains only data fields and no behavior.</span></span>
+</span>
+<span class="code-line" id="L47">
+  <a class="line-number" href="#L47" aria-label="Line 47">47</a>
+  <span class="source-text"><span class="hljs-string">    &quot;&quot;&quot;</span></span>
+</span>
+<span class="code-line" id="L48">
+  <a class="line-number" href="#L48" aria-label="Line 48">48</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L49">
+  <a class="line-number" href="#L49" aria-label="Line 49">49</a>
+  <span class="source-text">    error_code: ErrorCodeType</span>
+</span>
+<span class="code-line" id="L50">
+  <a class="line-number" href="#L50" aria-label="Line 50">50</a>
+  <span class="source-text">    message: <span class="hljs-built_in">str</span></span>
+</span>
+<span class="code-line" id="L51">
+  <a class="line-number" href="#L51" aria-label="Line 51">51</a>
+  <span class="source-text">    correlation_id: UUID</span>
+</span>
+<span class="code-line" id="L52">
+  <a class="line-number" href="#L52" aria-label="Line 52">52</a>
+  <span class="source-text">    timestamp: datetime</span>
+</span>
+<span class="code-line" id="L53">
+  <a class="line-number" href="#L53" aria-label="Line 53">53</a>
+  <span class="source-text">    service: <span class="hljs-built_in">str</span></span>
+</span>
+<span class="code-line" id="L54">
+  <a class="line-number" href="#L54" aria-label="Line 54">54</a>
+  <span class="source-text">    operation: <span class="hljs-built_in">str</span></span>
+</span>
+<span class="code-line" id="L55">
+  <a class="line-number" href="#L55" aria-label="Line 55">55</a>
+  <span class="source-text">    details: <span class="hljs-built_in">dict</span>[<span class="hljs-built_in">str</span>, JsonValue] = Field(default_factory=<span class="hljs-built_in">dict</span>)</span>
+</span>
+<span class="code-line" id="L56">
+  <a class="line-number" href="#L56" aria-label="Line 56">56</a>
+  <span class="source-text">    stack_trace: <span class="hljs-built_in">str</span> | <span class="hljs-literal">None</span> = <span class="hljs-literal">None</span></span>
+</span>
+<span class="code-line" id="L57">
+  <a class="line-number" href="#L57" aria-label="Line 57">57</a>
+  <span class="source-text">    trace_id: <span class="hljs-built_in">str</span> | <span class="hljs-literal">None</span> = <span class="hljs-literal">None</span></span>
+</span>
+<span class="code-line" id="L58">
+  <a class="line-number" href="#L58" aria-label="Line 58">58</a>
+  <span class="source-text">    span_id: <span class="hljs-built_in">str</span> | <span class="hljs-literal">None</span> = <span class="hljs-literal">None</span></span>
+</span>
+<span class="code-line" id="L59">
+  <a class="line-number" href="#L59" aria-label="Line 59">59</a>
+  <span class="source-text"></span>
+</span>
+<span class="code-line" id="L60">
+  <a class="line-number" href="#L60" aria-label="Line 60">60</a>
+  <span class="source-text">    model_config = ConfigDict(frozen=<span class="hljs-literal">True</span>)</span>
+</span></code></pre></section>
+  </main>
+</body>
+</html>
