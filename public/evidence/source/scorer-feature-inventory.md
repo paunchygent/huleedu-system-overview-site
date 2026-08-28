@@ -1,18 +1,18 @@
 # Production scorer features
 
-The production registry defines two scalar recipes. The transparent scorer uses
-31 named scalar values. The hybrid scorer uses 38 named scalar values together
-with 768 embedding coordinates. Twenty-seven scalars are common to both
-recipes; four occur only in the transparent scorer and eleven only in the
+The accepted registry defines two scalar recipes. The transparent scorer uses
+30 named scalar values. The hybrid scorer uses 36 named scalar values together
+with 768 embedding coordinates. Twenty-four scalars are common to both
+recipes; six occur only in the transparent scorer and twelve only in the
 hybrid scorer.
 
 ## Production feature inventory
 
 | scorer | accepted identity | scalar values | embedding coordinates | total inputs |
 | --- | --- | ---: | ---: | ---: |
-| transparent | `handcrafted.current.v1` | 31 | 0 | 31 |
+| transparent | `handcrafted.current.v1` | 30 | 0 | 30 |
 | embeddings only | `embeddings.primary.v1` | 0 | 768 | 768 |
-| hybrid | `combined.current.v1` | 38 | 768 | 806 |
+| hybrid | `combined.current.v1` | 36 | 768 | 804 |
 
 Four named scalars use the same language-model runtime that produces the
 embedding: sentence-similarity variance and the three prompt-relevance
@@ -25,9 +25,9 @@ and published word norms.
 | Evidence family | What the scalar measures | Registry name | Transparent | Hybrid |
 | --- | --- | --- | :---: | :---: |
 | Correction and error | Grammar errors per 100 words | `grammar_errors_per_100_words` | yes | yes |
-| Correction and error | LanguageTool spelling errors per 100 words | `language_tool_spelling_errors_per_100_words` | yes | yes |
-| Correction and error | Verified second-language dictionary corrections per 100 words | `l2_dictionary_corrections_per_100_words` | yes | yes |
-| Correction and error | Final spelling issues per 100 words | `final_spelling_issues_per_100_words` | yes | yes |
+| Correction and error | Applied non-core spelling issues per 100 words | `non_core_spelling_issues_per_100_words` | yes | — |
+| Correction and error | Applied core-L2 spelling issues per 100 words | `core_l2_spelling_issues_per_100_words` | yes | — |
+| Correction and error | Applied total spelling issues per 100 words | `final_spelling_issues_per_100_words` | — | yes |
 | Correction and error | Punctuation errors per 100 words | `punctuation_errors_per_100_words` | yes | yes |
 | Readability | SMOG readability | `smog` | yes | yes |
 | Readability | Coleman–Liau readability | `coleman_liau` | yes | yes |
@@ -75,9 +75,10 @@ other prompts. The hybrid scorer retains the earlier raw contrastive version.
 
 The newest complete per-scalar analysis examines the frozen research hybrid
 used in the August 2026 official-test study. That model has 805 inputs: 768
-embedding coordinates and 37 scalars. It is the immediate predecessor of the
-current 806-input hybrid and omits only
-`l2_dictionary_corrections_per_100_words` from the scalar recipe.
+embedding coordinates and 37 scalars. The current accepted hybrid has 804
+inputs: the same number of embedding coordinates and 36 scalars. It removes
+the broad LanguageTool and L2 source-attribution predictors and retains one
+cumulative applied total-spelling rate.
 
 The analysis is not an XGBoost split-count table. It uses mean absolute
 TreeSHAP, which measures how strongly the fitted five-model ensemble used each
@@ -94,7 +95,7 @@ absolute attribution and the 37 scalars for 8.57%. Among the scalars,
 relevance family totals `0.000926`. These values describe that fitted model;
 they are not a general ranking of what matters in writing.
 
-No current 806-input split-count, gain, permutation, removal, or TreeSHAP table
+No current 804-input split-count, gain, permutation, removal, or TreeSHAP table
 has been produced. An older split-count table exists for a 68-essay Swedish
 cohort and a 788-input historical model. Its population and recipe differ too
 much for it to describe the current scorers.
