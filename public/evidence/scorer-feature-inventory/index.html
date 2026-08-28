@@ -15,15 +15,15 @@
       <a href="/code/">Research code <span aria-hidden="true">→</span></a>
     </nav>
     <h1>Scorer features and remaining errors</h1>
-    <p class="source-line"><a href="/evidence/source/scorer-feature-inventory.md">View Markdown source</a><span aria-hidden="true"> · </span>evidence revision <code>2b53923fc4cc</code></p>
+    <p class="source-line"><a href="/evidence/source/scorer-feature-inventory.md">View Markdown source</a><span aria-hidden="true"> · </span>evidence revision <code>64bf127d441d</code></p>
   </header>
   <main>
     <article class="markdown-body"><p><span id="production-scorer-features"></span></p>
 <h1>Production scorer features</h1>
-<p>The production registry defines two scalar recipes. The transparent scorer uses
-31 named scalar values. The hybrid scorer uses 38 named scalar values together
-with 768 embedding coordinates. Twenty-seven scalars are common to both
-recipes; four occur only in the transparent scorer and eleven only in the
+<p>The accepted registry defines two scalar recipes. The transparent scorer uses
+30 named scalar values. The hybrid scorer uses 36 named scalar values together
+with 768 embedding coordinates. Twenty-four scalars are common to both
+recipes; six occur only in the transparent scorer and twelve only in the
 hybrid scorer.</p>
 <p><span id="production-feature-inventory"></span></p>
 <h2>Production feature inventory</h2>
@@ -40,9 +40,9 @@ hybrid scorer.</p>
 <tbody><tr>
 <td>transparent</td>
 <td><code>handcrafted.current.v1</code></td>
-<td align="right">31</td>
+<td align="right">30</td>
 <td align="right">0</td>
-<td align="right">31</td>
+<td align="right">30</td>
 </tr>
 <tr>
 <td>embeddings only</td>
@@ -54,9 +54,9 @@ hybrid scorer.</p>
 <tr>
 <td>hybrid</td>
 <td><code>combined.current.v1</code></td>
-<td align="right">38</td>
+<td align="right">36</td>
 <td align="right">768</td>
-<td align="right">806</td>
+<td align="right">804</td>
 </tr>
 </tbody></table>
 <p>Four named scalars use the same language-model runtime that produces the
@@ -85,23 +85,23 @@ and published word norms.</p>
 </tr>
 <tr>
 <td>Correction and error</td>
-<td>LanguageTool spelling errors per 100 words</td>
-<td><code>language_tool_spelling_errors_per_100_words</code></td>
+<td>Applied non-core spelling issues per 100 words</td>
+<td><code>non_core_spelling_issues_per_100_words</code></td>
 <td align="center">yes</td>
-<td align="center">yes</td>
+<td align="center">—</td>
 </tr>
 <tr>
 <td>Correction and error</td>
-<td>Verified second-language dictionary corrections per 100 words</td>
-<td><code>l2_dictionary_corrections_per_100_words</code></td>
+<td>Applied core-L2 spelling issues per 100 words</td>
+<td><code>core_l2_spelling_issues_per_100_words</code></td>
 <td align="center">yes</td>
-<td align="center">yes</td>
+<td align="center">—</td>
 </tr>
 <tr>
 <td>Correction and error</td>
-<td>Final spelling issues per 100 words</td>
+<td>Applied total spelling issues per 100 words</td>
 <td><code>final_spelling_issues_per_100_words</code></td>
-<td align="center">yes</td>
+<td align="center">—</td>
 <td align="center">yes</td>
 </tr>
 <tr>
@@ -378,9 +378,10 @@ other prompts. The hybrid scorer retains the earlier raw contrastive version.</p
 <h2>How the most recent frozen hybrid used its inputs</h2>
 <p>The newest complete per-scalar analysis examines the frozen research hybrid
 used in the August 2026 official-test study. That model has 805 inputs: 768
-embedding coordinates and 37 scalars. It is the immediate predecessor of the
-current 806-input hybrid and omits only
-<code>l2_dictionary_corrections_per_100_words</code> from the scalar recipe.</p>
+embedding coordinates and 37 scalars. The current accepted hybrid has 804
+inputs: the same number of embedding coordinates and 36 scalars. It removes
+the broad LanguageTool and L2 source-attribution predictors and retains one
+cumulative applied total-spelling rate.</p>
 <p>The analysis is not an XGBoost split-count table. It uses mean absolute
 TreeSHAP, which measures how strongly the fitted five-model ensemble used each
 input across its 5,042 training essays. TreeSHAP does not state how much
@@ -394,7 +395,7 @@ absolute attribution and the 37 scalars for 8.57%. Among the scalars,
 <code>language_tool_spelling_errors_per_100_words</code> (<code>0.017286</code>). The prompt-
 relevance family totals <code>0.000926</code>. These values describe that fitted model;
 they are not a general ranking of what matters in writing.</p>
-<p>No current 806-input split-count, gain, permutation, removal, or TreeSHAP table
+<p>No current 804-input split-count, gain, permutation, removal, or TreeSHAP table
 has been produced. An older split-count table exists for a 68-essay Swedish
 cohort and a 788-input historical model. Its population and recipe differ too
 much for it to describe the current scorers.</p>

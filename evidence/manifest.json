@@ -1,16 +1,56 @@
 {
   "documents": [
     {
+      "slug": "accepted-correction-scorers",
+      "title": "Accepted correction treatment and scorers",
+      "import": false,
+      "sourceRepo": "huleedu",
+      "sourceRevision": "64bf127d441dc900e63ee25778245ad9d35d63b8",
+      "sourcePath": "docs/reference/ref-hule-research-story-50-accepted-cumulative-correction-scorer-promotion.md",
+      "supportingSources": [
+        {
+          "sourceRepo": "huleedu",
+          "sourceRevision": "64bf127d441dc900e63ee25778245ad9d35d63b8",
+          "sourcePath": "docs/backlog/stories/st-hule-20-48-correct-parser-stabilization-authority-and-reassess-core-l2-scorer-value.md"
+        },
+        {
+          "sourceRepo": "huleedu",
+          "sourceRevision": "64bf127d441dc900e63ee25778245ad9d35d63b8",
+          "sourcePath": "docs/backlog/tasks/task-hule-20-48-03-run-matched-scorer-comparison-and-min-para-relevance-ablation.md"
+        },
+        {
+          "sourceRepo": "huleedu",
+          "sourceRevision": "64bf127d441dc900e63ee25778245ad9d35d63b8",
+          "sourcePath": "docs/backlog/tasks/task-hule-20-50-01-promote-cumulative-correction-features-and-materialize-accepted-ellipse-scores.md"
+        },
+        {
+          "sourceRepo": "huleedu",
+          "sourceRevision": "64bf127d441dc900e63ee25778245ad9d35d63b8",
+          "sourcePath": "docs/backlog/tasks/task-hule-20-46-01-complete-final-core-l2-membership-and-feature-semantics.md"
+        },
+        {
+          "sourceRepo": "huleedu",
+          "sourceRevision": "64bf127d441dc900e63ee25778245ad9d35d63b8",
+          "sourcePath": "docs/backlog/tasks/task-hule-20-46-02-screen-the-actual-correction-and-feature-vertical-on-100-seeded-ellipse-essays.md"
+        },
+        {
+          "sourceRepo": "huleedu",
+          "sourceRevision": "64bf127d441dc900e63ee25778245ad9d35d63b8",
+          "sourcePath": "docs/backlog/tasks/task-hule-20-40-03-audit-and-prune-the-complete-l2-dictionary-baseline.md"
+        }
+      ]
+    },
+    {
       "slug": "scorer-feature-inventory",
       "title": "Scorer features and remaining errors",
       "import": false,
       "sourceRepo": "huleedu",
-      "sourceRevision": "2b53923fc4cc6ffb8f96703c92a0cf2dbfce275b",
+      "sourceRevision": "64bf127d441dc900e63ee25778245ad9d35d63b8",
       "sourcePath": "docs/reference/ref-hule-research-ellipse-frozen-scorer-benchmark-against-choi-et-al-2026-ellipse-frozen-scorer-benchmark-against-choi-et-al-2026.md",
       "supportingSources": [
         {
           "sourceRepo": "huleedu",
-          "sourceRevision": "608cbe87cc3a5ddb266c02e2983d9279c2ae24b3",
+          "sourceRevision": "64bf127d441dc900e63ee25778245ad9d35d63b8",
           "sourcePath": "docs/reference/ref-hule-general-task-0810-production-essay-scoring-feature-state-task-0810-production-essay-scoring-feature-state.md"
         },
         {
@@ -25,8 +65,13 @@
         },
         {
           "sourceRepo": "huleedu",
-          "sourceRevision": "608cbe87cc3a5ddb266c02e2983d9279c2ae24b3",
+          "sourceRevision": "64bf127d441dc900e63ee25778245ad9d35d63b8",
           "sourcePath": "docs/reference/ref-hule-research-task-43-05-unrestricted-length-ellipse-experiment-results-task-43-05-unrestricted-length-ellipse-experiment-results.md"
+        },
+        {
+          "sourceRepo": "huleedu",
+          "sourceRevision": "64bf127d441dc900e63ee25778245ad9d35d63b8",
+          "sourcePath": "docs/reference/ref-hule-research-story-50-accepted-cumulative-correction-scorer-promotion.md"
         }
       ]
     },

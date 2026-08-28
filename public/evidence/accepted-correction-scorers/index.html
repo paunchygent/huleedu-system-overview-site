@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Accepted correction treatment and scorers | HuleEdu</title>
+  <link rel="icon" href="/favicon.svg">
+  <link rel="stylesheet" href="/evidence/evidence.css">
+  <link rel="canonical" href="https://research.hule.education/evidence/accepted-correction-scorers/">
+</head>
+<body>
+  <header class="page-header">
+    <nav class="page-nav" aria-label="Research navigation">
+      <a href="/huleedu-system-overview/"><span aria-hidden="true">←</span> System overview</a>
+      <a href="/code/">Research code <span aria-hidden="true">→</span></a>
+    </nav>
+    <h1>Accepted correction treatment and scorers</h1>
+    <p class="source-line"><a href="/evidence/source/accepted-correction-scorers.md">View Markdown source</a><span aria-hidden="true"> · </span>evidence revision <code>64bf127d441d</code></p>
+  </header>
+  <main>
+    <article class="markdown-body"><p><span id="accepted-correction-treatment-and-scorers"></span></p>
+<h1>Accepted correction treatment and scorers</h1>
+<p>The current scorer packages use the cumulative correction treatment evaluated
+in Story 48 and accepted for production use in Story 50. Story 50 promoted the
+evaluated treatment into durable scorer packages; it did not run a new
+comparative experiment.</p>
+<p><span id="accepted-correction-semantics"></span></p>
+<h2>Accepted correction semantics</h2>
+<p>The treatment cumulatively applies eligible LanguageTool repairs and validated
+core-L2 exact-span lexical repairs. Core-L2 is the subset that the ordinary
+spelling tools could not recover. Only context-free, single-token lexical
+spelling pairs can enter the durable dictionary. Grammar and syntax changes,
+compounds, ambiguous contextual substitutions, and multi-token rewrites do not
+enter it.</p>
+<p>The operational dictionary contains 15,229 accepted pairs. Of these, 5,391 are
+classified as core-L2 and 9,838 as recoverable by ordinary tools under the
+accepted comparison policy.</p>
+<p>Applied corrections remain error evidence. The repaired text is used only for
+features derived through spaCy. The fixed embedding continues to represent the
+canonical unrepaired essay. Once a pair has entered the dictionary, the
+application step is a deterministic lookup and makes no model call.</p>
+<p><span id="live-screen-and-full-population-derivation"></span></p>
+<h2>Live screen and full-population derivation</h2>
+<p>The seeded live screen used 100 ELLIPSE essays and the real LanguageTool and
+Hemma feature boundaries. It produced 28 features for every essay with zero
+provider calls. Sentence-context inspection accepted all 702 applied
+corrections as meaning-preserving.</p>
+<p>The completed cumulative derivation recorded the following applied spelling
+operations:</p>
+<table>
+<thead>
+<tr>
+<th>Population</th>
+<th align="right">Essays</th>
+<th align="right">Applied corrections</th>
+<th align="right">Ordinary-tool recoverable</th>
+<th align="right">Core-L2</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Training</td>
+<td align="right">5,470</td>
+<td align="right">30,663</td>
+<td align="right">24,842</td>
+<td align="right">5,821</td>
+</tr>
+<tr>
+<td>Official test</td>
+<td align="right">2,567</td>
+<td align="right">14,511</td>
+<td align="right">11,488</td>
+<td align="right">3,023</td>
+</tr>
+</tbody></table>
+<p>The ordinary-tool-recoverable and core-L2 counts are mutually exclusive and
+sum to the applied total in each population.</p>
+<p><span id="story-48-scorer-comparison"></span></p>
+<h2>Story 48 scorer comparison</h2>
+<p>Story 48 fitted both scorer lanes with the cumulative treatment and then
+applied the fixed treatment once to the official test.</p>
+<table>
+<thead>
+<tr>
+<th>Scorer</th>
+<th align="right">Train/CV QWK</th>
+<th align="right">Train/CV MAE</th>
+<th align="right">Official-test QWK</th>
+<th align="right">Official-test MAE</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>White-box</td>
+<td align="right">0.651749</td>
+<td align="right">0.401554</td>
+<td align="right">0.648796</td>
+<td align="right">0.387807</td>
+</tr>
+<tr>
+<td>Hybrid</td>
+<td align="right">0.751293</td>
+<td align="right">0.331718</td>
+<td align="right">0.749481</td>
+<td align="right">0.316907</td>
+</tr>
+</tbody></table>
+<p>These values describe the accepted corrected scorers. They do not assign the
+complete difference in performance to corrections alone.</p>
+<p><span id="story-50-accepted-package-promotion"></span></p>
+<h2>Story 50 accepted package promotion</h2>
+<p>Story 50 used the Story 48-selected correction semantics and created the
+accepted packages, complete prediction artifacts, and registry receipts.</p>
+<table>
+<thead>
+<tr>
+<th>Lane</th>
+<th>Public scorer identity</th>
+<th align="right">Feature columns</th>
+<th align="right">Prediction rows</th>
+<th>Accepted-scorer receipt</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>White-box</td>
+<td><code>handcrafted.current.v1</code></td>
+<td align="right">30</td>
+<td align="right">8,037</td>
+<td>resolved</td>
+</tr>
+<tr>
+<td>Hybrid</td>
+<td><code>combined.current.v1</code></td>
+<td align="right">804</td>
+<td align="right">8,037</td>
+<td>resolved</td>
+</tr>
+</tbody></table>
+<p>Each prediction artifact contains 5,470 role-labelled training rows followed
+by 2,567 role-labelled official-test rows. The hybrid package has 768 embedding
+coordinates and 36 scalar columns. Story 50 established package, prediction,
+and registry identity without repeating Story 48&#39;s performance comparison.</p>
+<p><span id="source-provenance"></span></p>
+<h2>Source provenance</h2>
+<p>This public synthesis is pinned to HuleEdu revision
+<code>64bf127d441dc900e63ee25778245ad9d35d63b8</code>. The four principal accepted
+sources are:</p>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Evidence used here</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>docs/backlog/stories/st-hule-20-48-correct-parser-stabilization-authority-and-reassess-core-l2-scorer-value.md</code></td>
+<td>accepted cumulative treatment</td>
+</tr>
+<tr>
+<td><code>docs/backlog/tasks/task-hule-20-48-03-run-matched-scorer-comparison-and-min-para-relevance-ablation.md</code></td>
+<td>full-population derivation and scorer results</td>
+</tr>
+<tr>
+<td><code>docs/reference/ref-hule-research-story-50-accepted-cumulative-correction-scorer-promotion.md</code></td>
+<td>accepted package and receipt identities</td>
+</tr>
+<tr>
+<td><code>docs/backlog/tasks/task-hule-20-50-01-promote-cumulative-correction-features-and-materialize-accepted-ellipse-scores.md</code></td>
+<td>Story 50 promotion result</td>
+</tr>
+</tbody></table>
+<p>The dictionary totals and live screen are retained in the same pinned revision
+under Story 46 Tasks 01 and 02. The dictionary-admission boundary is retained
+under Story 40 Task 03.</p>
+</article>
+  </main>
+</body>
+</html>
