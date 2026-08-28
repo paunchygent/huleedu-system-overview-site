@@ -102,22 +102,22 @@
     {
       "slug": "official-test-benchmark",
       "title": "Official ELLIPSE test benchmark",
-      "sourceRepo": "huleeduBenchmark",
-      "sourceRevision": "310ab8d4cb80f5fcde2f0c75e1e141366f7a991c",
-      "sourcePath": "docs/reference/ref-hule-research-ellipse-frozen-scorer-benchmark-against-choi-et-al-2026-ellipse-frozen-scorer-benchmark-against-choi-et-al-2026.md"
+      "sourceRepo": "huleedu",
+      "sourceRevision": "535970e527fe6f56c96b19b5befc26310fd043fc",
+      "sourcePath": "docs/reference/ref-hule-research-current-ellipse-accepted-scorer-benchmark-and-late-fusion-current-ellipse-accepted-scorer-benchmark-and-late-fusion.md"
     },
     {
       "slug": "official-test-benchmark-feature-detail",
       "title": "Official-test scalar attribution inventory",
       "sourceRepo": "huleeduBenchmark",
-      "sourceRevision": "310ab8d4cb80f5fcde2f0c75e1e141366f7a991c",
+      "sourceRevision": "535970e527fe6f56c96b19b5befc26310fd043fc",
       "sourcePath": "docs/reference/ref-hule-research-ellipse-frozen-scorer-benchmark-against-choi-et-al-2026-ellipse-frozen-scorer-benchmark-against-choi-et-al-2026-part-01.md"
     },
     {
       "slug": "length-inclusion",
       "title": "Unrestricted-length ELLIPSE experiment",
       "sourceRepo": "huleedu",
-      "sourceRevision": "608cbe87cc3a5ddb266c02e2983d9279c2ae24b3",
+      "sourceRevision": "535970e527fe6f56c96b19b5befc26310fd043fc",
       "sourcePath": "docs/reference/ref-hule-research-task-43-05-unrestricted-length-ellipse-experiment-results-task-43-05-unrestricted-length-ellipse-experiment-results.md"
     },
     {
@@ -132,14 +132,14 @@
       "slug": "comparative-judgment-request-shape",
       "title": "Comparative-judgment request shape",
       "sourceRepo": "huleedu",
-      "sourceRevision": "608cbe87cc3a5ddb266c02e2983d9279c2ae24b3",
+      "sourceRevision": "535970e527fe6f56c96b19b5befc26310fd043fc",
       "sourcePath": "docs/reference/ref-hule-general-cj-to-llm-prompt-contract-cj-to-llm-prompt-contract.md"
     }
   ],
   "assetCopies": [
     {
       "sourceRepo": "huleedu",
-      "sourceRevision": "608cbe87cc3a5ddb266c02e2983d9279c2ae24b3",
+      "sourceRevision": "535970e527fe6f56c96b19b5befc26310fd043fc",
       "sourcePath": "docs/reference/ellipse-overlap-map-v0",
       "destinationPath": "cohort-overlap/ellipse-overlap-map-v0"
     }

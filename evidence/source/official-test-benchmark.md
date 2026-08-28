@@ -1,401 +1,301 @@
 ---
 type: reference
-id: REF-HULE-RESEARCH-ellipse-frozen-scorer-benchmark-against-choi-et-al-2026
-title: ELLIPSE frozen scorer benchmark against Choi et al. 2026
+id: REF-HULE-RESEARCH-current-ellipse-accepted-scorer-benchmark-and-late-fusion
+title: Official ELLIPSE production scorer benchmark
 repository: huleedu
 owners:
   - kind: service
     id: huleedu
-created: '2026-08-25'
+created: '2026-08-28'
 status: active
 reference_kind: research
-summary: Full-population frozen-scorer results with sealed continuity, subgroup decomposition, and an explicit protocol-difference ledger against Choi et al. 2026.
+summary: Production-scorer instrument benchmark with current full-test agreement, absolute-error, and gross-error evidence plus an explicitly bounded Choi et al. comparison.
 ---
 
 ## Research Purpose And Boundary
 
-This reference reports the predeclared Story 20-44 evaluation of two frozen
-ELLIPSE scorer arms in the whitebox and hybrid lanes, plus their fixed
-equal-weight late fusions. It asks whether the frozen scorers retain their
-performance when the inherited prompt and 200-to-1,000-word filters are
-removed, while excluding four source rows below the accepted 50-alphabetic-
-token essay boundary.
+This reference is the single governed human-readable authority for the official
+ELLIPSE test benchmark. The production `combined.current.v1` hybrid is the
+operational bench. Current embeddings, pure-whitebox, and late-fusion arms are
+comparators; none changes production identity.
 
-The comparison is to the ELLIPSE Overall QWK `0.726` reported by Choi et al.
-in Table 8 of *Enhancing Automated Essay Scoring With Three Techniques:
-Two-Stage Fine-Tuning, Score Alignment, and Self-Training*, IEEE Access 14
-(2026), DOI `10.1109/ACCESS.2026.3718177`. The comparison is descriptive.
-It does not select a model, change a frozen scorer, authorize production use,
-or claim a protocol-identical replication.
+The evaluation covers all 2,567 rows in the current ELLIPSE scorer test
+authority. Learned weights use all 5,470 aligned out-of-fold training
+predictions and minimize training-side mean squared error on a non-negative
+0.01 simplex grid. Test labels are used only for final evaluation. The source
+bundle contains embeddings, whitebox, and hybrid signals only; no CGS data or
+comparative-judgment signal enters any arm.
+
+This result changes no scorer package, selector, registry, calibration,
+dataset, production state, or historical experiment. The public scorer
+identities remain `embeddings.primary.v1`, `handcrafted.current.v1`, and
+`combined.current.v1`.
+
+## What A Scorer Benchmark Must Establish
+
+Quadratic weighted Cohen's kappa is an important cohort-level agreement
+statistic. It rewards preservation of ordinal distances relative to the score
+distribution. It does not bound the error on any essay, and it can move when
+the prediction marginal or terminal mapping changes even when the underlying
+raw predictions do not improve pointwise. A high QWK therefore does not by
+itself establish that a scorer is suitable for student- or teacher-facing use.
+
+A scorer-like instrument must report both overall agreement and the individual
+error distribution. This benchmark uses the native half-grade scale and the
+following ladder:
+
+- `0.0`: exact agreement;
+- `0.5`: adjacent, within one half grade;
+- `1.0`: a full-grade error, retained as the outer comparison boundary;
+- `>=1.5`: a gross error greater than one full grade;
+- `>=2.0`: a two-grade-or-larger error, reported separately.
+
+One full grade is not desirable, but it remains a plausible human-disagreement
+boundary. A gross machine error is qualitatively different: it can invalidate
+the practical use of the score even while aggregate QWK remains high. Human
+ratings can be discussed and adjudicated. A frozen machine prediction is a
+repeatable property of the fitted system; correcting one observed output does
+not remove the failure pattern elsewhere. For that reason, gross and two-grade
+errors are operational evidence, not secondary decoration around QWK.
+
+The verified ELLIPSE pairwise human-rater Overall QWK is
+`0.5849381457369485` over 5,728 admitted pairs. It demonstrates genuine rating
+difficulty in this population. It is contextual evidence, not a universal
+machine ceiling or a substitute for MAE and the machine error ladder, because
+the pairwise-rater estimand and prediction-versus-averaged-target estimand are
+different.
+
+This is the applied critique behind the benchmark. Human disagreement does not
+excuse machine error. Human scores are rater-dependent and can be discussed,
+moderated, or combined with other evidence. A deployed scorer version applies
+one frozen behavior repeatedly and at scale. Its systematic skew therefore
+affects every similar future case until the system is changed and revalidated.
+Reporting a state-of-the-art agreement coefficient without the underlying
+absolute-error and tail profile leaves that practical risk unmeasured.
+
+Here `MAE` means mean absolute error, not mean standard error. MAE measures the
+average magnitude of a score miss; RMSE penalizes larger misses more strongly.
+Neither replaces the discrete error ladder, because two scorers can have
+similar averages while distributing harm very differently across students,
+score bands, prompts, or demographic groups.
+
+Robustness is a separate requirement. A scorer that performs well on the fixed
+test distribution may still be manipulable by irrelevant length, repetition,
+prompt mimicry, superficial mechanics, or other construct-irrelevant changes.
+Production confidence therefore requires both natural error-profile evidence
+and controlled robustness or adversarial tests that preserve the intended
+writing construct.
 
 ## Evidence And Sources
 
-- The predeclared protocol was retained at
-  `.orchestration/context/sessions/01a02917-0817-773e-90d4-43870e2002b7/evidence/task-hule-20-44-02/evaluation-protocol-v1.json`
-  at `2026-08-25T20:16:28Z`, SHA-256
-  `92f9e02f66a32a245597a8a289031481f4a5f8c45e670fe2806dd277f5b82b97`,
-  before any full-population metric was computed.
-- The four 2,567-row prediction files and their common row order are bound by
-  `full-prediction-manifest.json`, file SHA-256
-  `f10154bb5f3aca2af0c3ef8b0aa3d5e40ab0441660bc98e668e87a179865a97e`
-  and ordered-record digest
-  `4da3c55c22d8b2a43d1dce9cce47aa8ee04c7407b8f29c7a32b25047d28c239a`.
-- The population manifest SHA-256 is
-  `67b37d94aa5bedec811cb4f88d50e0fd56b817c99a562f0d1c73fabda383c601`.
-  It admits 2,259 sealed rows and 308 extension rows: 138 excluded-prompt,
-  120 short, and 50 long rows. Source indices `361`, `1278`, `1589`, and
-  `2446` are excluded because they contain only 25-46 alphabetic tokens.
-- The one-pass result is retained at
-  `.orchestration/context/sessions/01a02917-0817-773e-90d4-43870e2002b7/evidence/task-hule-20-44-02/evaluation-v1.json`,
+The source bundle is
+`output/essay_scoring/story50_full_test_embeddings_whitebox_hybrid_fusion_20260828/`.
+Its receipt binds the human report, machine summary, metric projection, and
+row-level result:
+
+| Artifact        | SHA-256                                                            |
+| --------------- | ------------------------------------------------------------------ |
+| `summary.json`  | `a5ab67ced1f1c7e8a96db66a2396b2e3b957de4579793cfd15340a17691ec87e` |
+| `metrics.csv`   | `ab70fee9f00e2e7f6a2bf4488a95fddf7fd1a56c124762b0e3ed9ae915d5b4d2` |
+| `test_rows.csv` | `77ac14cf75be3e906429b8defb8c650e734ec00dd4dff603f1b151271bdd2c73` |
+| `report.md`     | `8d49fc91fd2d175f587bbfa641c54b5045f07136c92cd769e2000e77d6026c3b` |
+
+The secondary nearest-valid-score bundle is
+`output/essay_scoring/story50_full_test_nearest_valid_score_comparator_20260828/`.
+It reuses the same frozen raw predictions and binds the remapped metric result
+and the separately labeled integer-only sensitivities:
+
+| Artifact                    | SHA-256                                                            |
+| --------------------------- | ------------------------------------------------------------------ |
+| `summary.json`              | `3ed10c607c185d59afea2856f1988d4033ce7728f76f2817551859c82774e8dd` |
+| `metrics.csv`               | `077f389833252c8ff16623ceeae587bfa1ca2d64b357412d7c763e4509c03622` |
+| `integer_sensitivities.csv` | `5b39ea3468bf48d7cab6b1488d23e2c253c0090b3d585b464e2c6d565156a13c` |
+| `test_rows.csv`             | `dd932f344c071439c7c395ad728515392a9e441737f520af22d390a7e6e11a43` |
+| `report.md`                 | `6a635dda36ad4bb60956c3f1dfdecfe326b5388a40bcd20595f6cf6d5a73d858` |
+
+The complete error ladder is derived without refitting from those two
+receipt-bound row files and retained at
+`output/essay_scoring/story50_official_test_instrument_benchmark_20260828/`.
+Its `summary.json` SHA-256 is
+`6a93d0edc5e195bbfbf621c608228323f2ad5425cb88500cec626daf12b4a44d`;
+the receipt SHA-256 is
+`78c65fcd8921121ba0572438b4c3f04f3400da4620459700ed95f63e5a0c86df`.
+Every half-grade error bin sums to all 2,567 rows under both mappings.
+
+The current scorer inputs are bound as follows:
+
+- `embeddings.primary.v1`: Story 50 5,470-train/2,567-test manifest SHA-256
+  `2a2dee313ab2feb64648e3cea189f0ac82f316fa1cf6d3d3fc3a5451ca1f6f76`
+  and predictions SHA-256
+  `6ca022cdf4b8f6c7b00abda7b7d877a3b2a0d094f9a32a29d211495397c50cbe`;
+  selector authority is `TASK-HULE-REP-0054`.
+- `handcrafted.current.v1`: 30-scalar Story 50 package, prediction-manifest
   SHA-256
-  `daa09380618dd1612d7a95b747b50825d9999cc64151c91d1d90f68acac143cd`.
-  Its compact one-off evaluator has SHA-256
-  `e5aba8a2eca504d7030f6aef51c36d7e30a07c750ac194020d0a494782adb6f2`.
-  A second invocation over the same inputs produced byte-identical output.
-- The sealed view exactly reproduced the retained Task 43 QWK, MAE, and
-  adjacent-agreement values for all four shared cells. The four pinned Task 43
-  metric-file digests are recorded in the result.
-- The post-benchmark component protocol was committed at `ff2d8e55a` before
-  fitting. Its canonical result is retained at
-  `.orchestration/context/sessions/01a02917-0817-773e-90d4-43870e2002b7/evidence/task-hule-20-44-03/component-audit-result-v3.json`,
+  `e541264e5e35afa609d62a8a255b519978a976bfe4c0cea598d3949d33525e27`,
+  predictions SHA-256
+  `5a566387cc759a1b7bf956fc39bbf9bd040aad61355f1f6f56ee3a7d184aba5c`,
+  and OOF SHA-256
+  `f5af26e33eda85c326556a5d5adccbb050fc00d22bf7eaeff4165b656a32ed83`.
+- `combined.current.v1`: 768 embeddings plus 36 scalars, prediction-manifest
   SHA-256
-  `79e9f8c1d17ec6fa36e3d035cf620d0468462b8190628bc4cd6383733f185bbb`.
-  The 37-row scalar inventory SHA-256 is
-  `111b11ea70c85ccaa8f68744aad17ffcfed5ce8205b0f35be82f1aeb35c3166e`.
-  The exact fit-driver SHA-256 is
-  `f054bdb70447d5e8432384de8793ef5e4e22c7af3eba0afaad067576d82e384b`;
-  the post-freeze continuation SHA-256 is
-  `0bb4f0e26e1d64ec4f13987fc2a8c3c54ea3e996fc4435b4ec196b5d08e43388`.
-- The embeddings, 37-scalar, and 33-scalar freeze-manifest SHA-256 values are,
-  respectively,
-  `cb2006ae3d51b860fefdfa6c7391085a1f9b428e1a4c1a66826bc3452a556925`,
-  `a91a46abfa298bd667c46c30224e2c9c4f1b6015d4d6088e64611d40cb5edf95`,
-  and `70a4e9c1892bb1fd5b50a931be01924ea9e8cb7c163ba5527cecec2584e1524f`.
-  Each binds five model-member digests and the exact feature-name projection.
-- External protocol facts come from the retained direct PDF extraction
-  `evidence/planning-fair-ellipse-benchmark/choi-2026-protocol.md` and the
-  primary public-release reconciliation
-  `ellipse-official-split-external-sources.md`. The public ELLIPSE CSVs contain
-  3,911 train rows and 2,571 test rows. The papers state that they use the
-  official test set but do not print the numeric split sizes; matching their
-  test population to 2,571 is therefore a well-supported inference from the
-  exact 6,482-row corpus match and official-split statement.
+  `9f7c2841b73cdce61465a606a5c5d84bb0012e8342364039f6e737c33dfb00d5`,
+  predictions SHA-256
+  `3e43999d767ad7d39ad24f92b33d458302bcddcb528466508b9cee2b8c0a7526`,
+  and OOF SHA-256
+  `7b6d390fa6ccf49559ac6e5be0475acb67ef23dd0c37a8de63f8f55bb1bda4f7`.
+- Shared row authority SHA-256:
+  `979bcd8959fffe0d684cb408a86d060820a8449b9777321ed89a43f0dc76ce03`.
+
+The accepted whitebox and hybrid package identities are recorded once in
+`REF-HULE-RESEARCH-story-50-accepted-cumulative-correction-scorer-promotion`.
+This reference does not copy those package manifests or registry receipts.
 
 ## Findings And Interpretation
 
-### Benchmark claim
+The production-output table uses each scorer package's terminal calibrated
+grade band. Fusion averages those calibrated component grades and then maps the
+aggregate to the nearest 0.5 grade band, clipped to 1-5. Adjacent accuracy means
+absolute mapped error at most 0.5. Counts are essays, not percentages.
 
-On the declared 2,567-row construct-admitted projection, raw-inclusive hybrid
-QWK was `0.7563`, compared with the Choi et al. ELLIPSE Overall cell `0.726`.
-The numerical difference is `0.0303`. It is a descriptive comparison, not a
-superiority, significance, or protocol-identical claim. This experiment
-excludes four sub-50-token source rows and differs in training population,
-target structure, model architecture, refitting, and input handling. The
-fixed equal-weight fusion had full-population QWK `0.7118` for raw base and
-`0.7235` for raw inclusive.
+| Arm                   | Method      |    QWK |    MAE |   RMSE |  Exact | Adjacent | >=1.0 | Gross >=1.5 | >=2.0 | Weights              |
+| --------------------- | ----------- | -----: | -----: | -----: | -----: | -------: | ----: | ----------: | ----: | -------------------- |
+| **Production hybrid** | component   | 0.7523 | 0.3091 | 0.4467 | 0.4686 |   0.9162 |   215 |           8 |     0 | `[1.0]`              |
+| Embeddings            | component   | 0.7507 | 0.3179 | 0.4589 | 0.4620 |   0.9077 |   237 |          14 |     0 | `[1.0]`              |
+| Whitebox              | component   | 0.6575 | 0.3757 | 0.5253 | 0.4059 |   0.8601 |   359 |          42 |     3 | `[1.0]`              |
+| Embeddings + whitebox | equal       | 0.7295 | 0.3185 | 0.4672 | 0.4768 |   0.8905 |   281 |          11 |     0 | `[0.50, 0.50]`       |
+| Embeddings + whitebox | learned OOF | 0.7481 | 0.3152 | 0.4540 | 0.4616 |   0.9131 |   223 |          13 |     0 | `[0.67, 0.33]`       |
+| Embeddings + hybrid   | equal       | 0.7535 | 0.3097 | 0.4505 | 0.4733 |   0.9108 |   229 |           9 |     0 | `[0.50, 0.50]`       |
+| Embeddings + hybrid   | learned OOF | 0.7523 | 0.3091 | 0.4467 | 0.4686 |   0.9162 |   215 |           8 |     0 | `[0.38, 0.62]`       |
+| Whitebox + hybrid     | equal       | 0.7282 | 0.3167 | 0.4625 | 0.4741 |   0.8960 |   267 |           9 |     0 | `[0.50, 0.50]`       |
+| Whitebox + hybrid     | learned OOF | 0.7477 | 0.3113 | 0.4464 | 0.4612 |   0.9198 |   206 |           9 |     0 | `[0.29, 0.71]`       |
+| Three-way             | equal       | 0.7506 | 0.3093 | 0.4453 | 0.4655 |   0.9190 |   208 |           8 |     0 | `[1/3, 1/3, 1/3]`    |
+| Three-way             | learned OOF | 0.7506 | 0.3093 | 0.4453 | 0.4655 |   0.9190 |   208 |           8 |     0 | `[0.28, 0.27, 0.45]` |
 
-### Raw-inclusive hybrid architecture and provenance
+The production hybrid remains the operational benchmark. Equal embeddings plus
+hybrid raises QWK by only `0.0013`, while MAE and RMSE rise, adjacent accuracy
+falls, full-grade-or-larger errors increase from 215 to 229, and gross errors
+increase from eight to nine. Its exact accuracy improves, but that isolated
+movement does not outweigh the broader regression. The OOF-learned
+embeddings-plus-hybrid weights reproduce the hybrid's mapped test metrics
+exactly.
 
-`Raw-inclusive` names the training arm, not an embedding adaptation. Its
-fitting population is the 3,479-row base population plus 1,563 recovered
-candidate essays, for 5,042 final-fit rows. The base-only arm uses the same
-architecture on 3,479 rows. Both arms use the same unadapted pretrained
-`microsoft/deberta-v3-base` encoder at model and tokenizer revision
-`8ccc9b6f36199bec6961081d44eb72fb3f7353f3`. The current path has no LoRA,
-supervised transformer fine-tuning, cross-fitted encoder, or chunk-embedding
-aggregation.
+Learned embeddings plus whitebox does not beat the production hybrid under its
+accepted calibration. Its independent construct signal remains important, but
+the accepted-calibration arm has 13 gross errors versus eight for production.
+Learned whitebox plus hybrid and the three-way arms reduce some
+full-grade-or-larger errors, but give up QWK or MAE and do not reduce gross
+errors below the production count. They remain tradeoff evidence rather than
+replacement recipes.
 
-The encoder receives normalized source text, truncates one model input to 512
-tokens, averages the final four hidden layers, and then takes an
-attention-mask-weighted token mean. It emits 768 float32 coordinates. This is
-the raw pretrained encoder path; it is distinct from the historical Story 07
-LoRA-adapted, cross-fitted DeBERTa representations.
+The residual correlations explain the limited fusion value:
 
-The `combined.current.v1` source matrix contains those 768 coordinates followed
-by 38 scalar features. Four suffix scalars also derive from the accepted
-DeBERTa runtime: sentence-similarity variance, essay/prompt similarity,
-intro/prompt similarity, and minimum paragraph relevance. The other scalar
-families use their declared text-analysis paths. Task 43 fitted the frozen
-hybrid on its recorded 805-column research projection: 768 embedding
-coordinates plus 37 scalar columns. That projection omitted
-`l2_dictionary_corrections_per_100_words` for the historical experiment; it
-does not remove the feature from the 806-column accepted source registry or
-from future scorer work.
+| Residual pair         | Pearson correlation |
+| --------------------- | ------------------: |
+| Embeddings / whitebox |              0.6168 |
+| Embeddings / hybrid   |              0.9232 |
+| Whitebox / hybrid     |              0.6343 |
 
-The fitted head is one early-fusion XGBoost regression ensemble, not a mean of
-separately trained embedding and linguistic scorers. Its recipe is
-`reg:squarederror`, depth 4, learning rate `0.03`, minimum child weight 20,
-L2 regularization 2, no L1 regularization, full row and column sampling, at
-most 1,500 rounds, and 100-round early stopping. Five fixed prompt-holdout
-folds validate only the 3,479 base rows; eligible candidate rows augment fold
-training by prompt. Square-root inverse-frequency grade weights are capped at
-3\. Final fitting uses seeds 42-46 and 235 rounds, derived from the five fold
-best iterations.
+Embeddings and hybrid largely repeat the same errors because the hybrid already
+contains the accepted embedding representation. Whitebox contributes more
+independent residual information, but its much weaker complete-population
+performance means that substantial whitebox weight pulls the aggregate result
+down. For equal embeddings plus whitebox versus hybrid, the fusion is closer on
+418 rows, hybrid is closer on 460, and 1,689 rows tie.
 
-The ensemble mean is the raw prediction. The frozen split-tail calibration
-then clips to 1-5, bins against its OOF-derived cutpoints, and emits one of the
-nine half-grade values. The two 50/50 fusion cells are different: they average
-the whitebox and hybrid raw predictions, then apply nearest-half mapping once.
-No official-test result selected or adjusted either mapping.
+## Nearest-Valid-Score Comparison
 
-### Training and test separation
+Choi et al. inverse-normalize continuous predictions and round them to the
+nearest valid score before QWK. The closest reproducible comparison for the
+current Story 50 scorers therefore bypasses their accepted split-tail
+calibrations, clips each frozen raw prediction to 1-5, and rounds it directly to
+the nearest valid ELLIPSE score. The official published ELLIPSE Overall target
+contains nine valid half-grade points. Multiplying both target and mapped
+prediction by two supplies integer category IDs without discarding a score
+point or changing QWK.
 
-The 3,479 base rows come from the retained training-side accepted generation.
-The 1,563 recovered candidates are training augmentation only. Their producer
-excluded normalized-text matches against all 2,571 raw official-test rows, so
-exact content overlap under that normalization is ruled out. Candidate rows
-enter an OOF fold only when their prompt is not the held-out prompt. Final
-Task 43 fitting froze model membership, rounds, and calibration before its
-official-test prediction step. Task 03 likewise fits and freezes all reduced
-heads before reading the Task 44 full-population matrices or targets.
+For late fusion, equal weights are fixed. Learned weights are newly selected on
+the 5,470 aligned raw OOF predictions by the same non-negative 0.01 simplex
+grid, minimizing raw training-side MSE. No test label selects a weight or
+mapping, and no XGBoost or embeddings scorer is refit.
 
-This supports train/test content separation and within-run freeze chronology.
-It does not establish that the official test was a pristine, globally
-single-use confirmation set. The test has been evaluated in earlier governed
-experiments, candidate IDs do not retain a complete source-row crosswalk, and
-the retained evidence cannot prove that every historical architecture choice
-was independent of prior test observations. No one-use or selection-
-independence claim is made here.
+| Arm                           | Method          |    QWK |    MAE |   RMSE |  Exact | Adjacent | >=1.0 | Gross >=1.5 | >=2.0 | Weights              |
+| ----------------------------- | --------------- | -----: | -----: | -----: | -----: | -------: | ----: | ----------: | ----: | -------------------- |
+| Choi et al. Table 8 Overall   | published       | 0.7260 |     NR |     NR |     NR |       NR |    NR |          NR |    NR | NR                   |
+| Production hybrid predictions | component       | 0.7495 | 0.2988 | 0.4326 | 0.4760 |   0.9283 |   184 |           5 |     0 | `[1.0]`              |
+| Embeddings                    | component       | 0.7510 | 0.2996 | 0.4326 | 0.4737 |   0.9291 |   182 |           5 |     0 | `[1.0]`              |
+| Whitebox                      | component       | 0.6557 | 0.3531 | 0.4965 | 0.4223 |   0.8827 |   301 |          29 |     0 | `[1.0]`              |
+| Embeddings + whitebox         | equal           | 0.7241 | 0.3052 | 0.4403 | 0.4686 |   0.9244 |   194 |           9 |     0 | `[0.50, 0.50]`       |
+| Embeddings + whitebox         | learned raw OOF | 0.7484 | 0.2926 | 0.4261 | 0.4842 |   0.9318 |   175 |           3 |     0 | `[0.77, 0.23]`       |
+| Embeddings + hybrid           | equal           | 0.7499 | 0.2990 | 0.4319 | 0.4745 |   0.9291 |   182 |           4 |     0 | `[0.50, 0.50]`       |
+| Embeddings + hybrid           | learned raw OOF | 0.7515 | 0.2978 | 0.4310 | 0.4760 |   0.9303 |   179 |           5 |     0 | `[0.33, 0.67]`       |
+| Whitebox + hybrid             | equal           | 0.7258 | 0.3050 | 0.4393 | 0.4675 |   0.9260 |   190 |           9 |     0 | `[0.50, 0.50]`       |
+| Whitebox + hybrid             | learned raw OOF | 0.7459 | 0.2966 | 0.4287 | 0.4760 |   0.9322 |   174 |           4 |     0 | `[0.20, 0.80]`       |
+| Three-way                     | equal           | 0.7427 | 0.2951 | 0.4294 | 0.4819 |   0.9295 |   181 |           4 |     0 | `[1/3, 1/3, 1/3]`    |
+| Three-way                     | learned raw OOF | 0.7466 | 0.2961 | 0.4288 | 0.4780 |   0.9314 |   176 |           4 |     0 | `[0.32, 0.20, 0.48]` |
 
-### Matched raw-inclusive component diagnostics
+`NR` means not reported. Choi et al. publish the ELLIPSE Overall QWK but not
+the row-level predictions, MAE, RMSE, exact or adjacent accuracy, or any
+full-grade, gross, or two-grade error counts. Their QWK result is therefore a
+valid aggregate comparator but insufficient evidence for operational scorer
+safety.
 
-Task 03 fitted three reduced heads after the six-cell benchmark was complete.
-Each uses the same 5,042 fitting rows, 3,479 base-row prompt-holdout OOF
-validation positions, training recipe, weights, five seeds, and split-tail
-mapping as the 805-column raw-inclusive hybrid. These are matched diagnostic
-refits, not additive submodels inside the hybrid.
+On this mapping, the hybrid changes from accepted-calibration QWK `0.7523` to
+nearest-valid-score QWK `0.7495`. The best nearest-valid-score QWK is `0.7515`
+for learned embeddings plus hybrid, compared with Choi et al.'s reported Table
+8 Overall cell of `0.726`. This remains a protocol-aligned comparison rather
+than an identical replication: the current scorer authority contains 2,567
+rows, uses Overall-only training, and represents one frozen ensemble rather
+than Choi et al.'s ten train/dev refits of a joint seven-trait model.
 
-| Fitted head                  | Columns | OOF QWK | QWK delta | OOF MAE | MAE delta | >=1 |  >1 |
-| ---------------------------- | ------: | ------: | --------: | ------: | --------: | --: | --: |
-| Full hybrid reference        |     805 |  0.7490 |         - |  0.3211 |         - | 283 |  17 |
-| Embeddings only              |     768 |  0.7335 |   -0.0155 |  0.3352 |   +0.0141 | 308 |  25 |
-| Complete no-L2 scalar suffix |      37 |  0.6280 |   -0.1210 |  0.3971 |   +0.0760 | 534 |  83 |
-| Non-embedding scalars        |      33 |  0.6309 |   -0.1181 |  0.3938 |   +0.0727 | 522 |  78 |
+QWK alone would select learned embeddings plus hybrid from this table. The
+complete instrument profile gives a different and more useful reading.
+Learned embeddings plus whitebox has QWK `0.7484`, only `0.0031` below that
+maximum, while achieving the best MAE (`0.2926`), best RMSE (`0.4261`), best
+exact accuracy (`0.4842`), three gross errors, and no error of two grades or
+more. It also combines the dense representation with a separately fitted,
+construct-explicit scorer rather than averaging embeddings with a hybrid that
+already contains them. It is therefore the most defensible experimental fusion
+from the joint construct-validity and pointwise-error perspective. It remains
+an experimental comparator until a separate production promotion is accepted.
 
-The following official-test view was opened only after all three reduced
-heads and their 15 model members were frozen. Because Task 03 was requested
-after the benchmark result existed, these values are descriptive and are not
-model-selection evidence.
+The production hybrid remains a credible operational bench: under its deployed
+calibration it has eight gross errors (`0.31%`) and zero two-grade errors among
+2,567 essays. Under the Choi-aligned mapping the same frozen raw predictions
+have five gross errors and zero two-grade errors. Those facts are more directly
+relevant to trust than the small QWK differences among the leading arms.
 
-| Fitted head                  | Full QWK | QWK delta | Full MAE | MAE delta | Adjacent | >=1 |  >1 |
-| ---------------------------- | -------: | --------: | -------: | --------: | -------: | --: | --: |
-| Full hybrid reference        |   0.7563 |         - |   0.3041 |         - |    91.7% | 212 |   5 |
-| Embeddings only              |   0.7474 |   -0.0090 |   0.3115 |   +0.0074 |    91.3% | 223 |   7 |
-| Complete no-L2 scalar suffix |   0.6398 |   -0.1165 |   0.3983 |   +0.0943 |    84.4% | 400 |  52 |
-| Non-embedding scalars        |   0.6386 |   -0.1177 |   0.3944 |   +0.0904 |    85.2% | 381 |  45 |
-
-The embeddings-only head is `0.0155` OOF QWK and `0.0090` full-population
-QWK below the full hybrid. Both scalar-only heads are about `0.118` to
-`0.121` OOF QWK below it. Adding the four embedding-derived semantic scalars
-to the 33 other scalars changes OOF and full-population QWK in opposite
-directions. These refit differences do not assign causal or additive QWK
-credit to any feature set; XGBoost can use interactions and substitute among
-correlated inputs.
-
-### Frozen-hybrid attribution, families, and overlap
-
-The existing five-member 805-column hybrid was evaluated on its 5,042-row
-training matrix with member-averaged TreeSHAP. Before attribution, all five
-ordered model paths, seeds, and file SHA-256 values were matched to
-`experiment-freeze.json`; each frozen member has SHA-256
-`d0ea0b7bfcf96fb9012ab2fd1dd560bb983a1d07054aab7441b8d2ec77c5912e`.
-The averaged contributions reconstruct the ensemble raw predictions with
-maximum absolute error `0.00000477`. The table sums mean absolute TreeSHAP
-within each accepted family. It measures model attribution on that matrix,
-not independent QWK contribution. Family widths differ, so the 768-coordinate
-embedding total is also not a per-feature comparison.
-
-| Accepted construct family             | Features | Sum mean absolute TreeSHAP |
-| ------------------------------------- | -------: | -------------------------: |
-| DeBERTa mean-last-four embedding      |      768 |                   1.199600 |
-| Frequency and sophistication          |        2 |                   0.019017 |
-| Moving-average lexical diversity      |        1 |                   0.000000 |
-| Concreteness norms                    |        2 |                   0.000901 |
-| Lexical-decision norms                |        2 |                   0.002890 |
-| Word-prevalence norms                 |        2 |                   0.000738 |
-| Correction and error rates            |        4 |                   0.021273 |
-| Length statistics                     |        2 |                   0.053890 |
-| Lexical statistics                    |        1 |                   0.000103 |
-| Readability and sentence length       |        4 |                   0.006918 |
-| Prompt relevance, embedding-derived   |        3 |                   0.000926 |
-| Semantic coherence, embedding-derived |        1 |                   0.000377 |
-| Syntactic parse                       |        3 |                   0.001754 |
-| Causal-predicate complex nominal      |        1 |                   0.000376 |
-| Complex nominal density               |        1 |                   0.000095 |
-| Clause rates                          |        4 |                   0.001334 |
-| RST satellite relation                |        1 |                   0.001632 |
-| Word-range dispersion                 |        3 |                   0.000213 |
-
-The embedding family accounts for `1.199600` of the `1.312038` summed mean
-absolute attribution (`91.43%`); all 37 scalar columns account for `8.57%`.
-This is the fitted model's attribution distribution, not an accuracy share.
-
-The complete 37-feature attribution table, scalar-to-embedding correlations,
-and high-correlation scalar pairs are retained in the governed
-[scalar attribution inventory](ref-hule-research-ellipse-frozen-scorer-benchmark-against-choi-et-al-2026-ellipse-frozen-scorer-benchmark-against-choi-et-al-2026-part-01.md).
-That inventory also records embedding-derived lineage, constant-feature and
-exact-duplicate checks, and the limits of interpreting association as
-redundancy or causal contribution.
-
-### Post-training grade-band mapping
-
-The retained raw-inclusive OOF contrast applies two mappings to identical raw
-predictions. Split-tail is the frozen selected mapping; sealed half-band is
-plain nearest-half rounding.
-
-| OOF mapping                |     QWK |     MAE | >=1 |  >1 |
-| -------------------------- | ------: | ------: | --: | --: |
-| Split-tail                 |  0.7490 |  0.3211 | 283 |  17 |
-| Sealed half-band           |  0.7428 |  0.3094 | 240 |  15 |
-| Split-tail minus half-band | +0.0062 | +0.0116 | +43 |  +2 |
-
-On these 3,479 OOF rows, split-tail raises QWK by `0.006204` while increasing
-MAE by `0.011641`, errors of at least one grade by 43, and errors larger than
-one grade by two. This is a metric trade-off from terminal mapping only; the
-underlying raw predictions are unchanged, and no official-test value selected
-the cutpoints.
-
-### Full 2,567-row result
-
-Rates are percentages. `>=1` counts mapped errors of at least one grade;
-`>1` counts errors larger than one grade.
-
-| Declared cell          |    QWK |    MAE |   RMSE |   Bias | Exact | Adjacent | >=1 |  >1 |
-| ---------------------- | -----: | -----: | -----: | -----: | ----: | -------: | --: | --: |
-| Base whitebox          | 0.6438 | 0.3855 | 0.5314 | 0.0614 | 39.0% |    85.6% | 370 |  42 |
-| Base hybrid            | 0.7435 | 0.3103 | 0.4458 | 0.0092 | 46.4% |    91.8% | 210 |   7 |
-| Base 50/50 fusion      | 0.7118 | 0.3070 | 0.4385 | 0.0199 | 46.1% |    92.8% | 185 |   7 |
-| Inclusive whitebox     | 0.6524 | 0.3792 | 0.5232 | 0.0438 | 39.3% |    86.4% | 348 |  39 |
-| Inclusive hybrid       | 0.7563 | 0.3041 | 0.4419 | 0.0197 | 47.6% |    91.7% | 212 |   5 |
-| Inclusive 50/50 fusion | 0.7235 | 0.3062 | 0.4391 | 0.0316 | 46.4% |    92.6% | 190 |   7 |
-
-### Sealed 2,259-row continuity view
-
-| Declared cell          |    QWK |    MAE |   RMSE |   Bias | Exact | Adjacent | >=1 |  >1 |
-| ---------------------- | -----: | -----: | -----: | -----: | ----: | -------: | --: | --: |
-| Base whitebox          | 0.6461 | 0.3869 | 0.5321 | 0.0664 | 38.9% |    85.3% | 331 |  34 |
-| Base hybrid            | 0.7474 | 0.3072 | 0.4433 | 0.0151 | 46.8% |    92.0% | 180 |   7 |
-| Base 50/50 fusion      | 0.7139 | 0.3070 | 0.4377 | 0.0224 | 46.0% |    92.8% | 162 |   5 |
-| Inclusive whitebox     | 0.6545 | 0.3792 | 0.5231 | 0.0511 | 39.4% |    86.3% | 310 |  32 |
-| Inclusive hybrid       | 0.7570 | 0.3035 | 0.4417 | 0.0250 | 47.8% |    91.8% | 186 |   5 |
-| Inclusive 50/50 fusion | 0.7244 | 0.3066 | 0.4384 | 0.0347 | 46.3% |    92.7% | 166 |   5 |
-
-All four non-fusion cells matched their retained Task 43 QWK, MAE, and
-adjacent-agreement values exactly. The fusion cells were computed in this run
-from the same sealed rows under the predeclared rule.
-
-### Raw-inclusive hybrid population stability
-
-The 308 restored rows changed the inclusive-hybrid aggregate only slightly.
-The restored-only QWK is computed directly on those rows; it is not the
-difference between the sealed and full QWKs, because QWK is non-additive.
-
-| View          |     n |    QWK |    MAE |   RMSE |    Bias | Exact | Adjacent | >=1 |  >1 |
-| ------------- | ----: | -----: | -----: | -----: | ------: | ----: | -------: | --: | --: |
-| Sealed        | 2,259 | 0.7570 | 0.3035 | 0.4417 |  0.0250 | 47.8% |    91.8% | 186 |   5 |
-| Full          | 2,567 | 0.7563 | 0.3041 | 0.4419 |  0.0197 | 47.6% |    91.7% | 212 |   5 |
-| Restored only |   308 | 0.7102 | 0.3084 | 0.4432 | -0.0195 | 46.8% |    91.6% |  26 |   0 |
-
-Full minus sealed was QWK `-0.0006588`, MAE `+0.0005986`, RMSE
-`+0.0001793`, exact agreement `-0.1213` percentage points, and adjacent
-agreement `-0.0249` points. Errors larger than one grade remained at five.
-The result therefore supports near-flat aggregate performance under this
-population extension. It does not imply that every restored subgroup has the
-same error distribution as the sealed rows.
-
-### Restored-population decomposition
-
-| Declared cell          | Subgroup        |   n |    QWK |    MAE |   RMSE |    Bias | Exact | Adjacent | >=1 |  >1 |
-| ---------------------- | --------------- | --: | -----: | -----: | -----: | ------: | ----: | -------: | --: | --: |
-| Base whitebox          | Excluded prompt | 138 | 0.4719 | 0.3623 | 0.5178 | -0.1304 | 42.0% |    88.4% |  16 |   4 |
-| Base whitebox          | Short           | 120 | 0.4012 | 0.4125 | 0.5496 |  0.1458 | 35.0% |    84.2% |  19 |   2 |
-| Base whitebox          | Long            |  50 | 0.7232 | 0.3200 | 0.4899 |  0.1600 | 48.0% |    92.0% |   4 |   2 |
-| Base hybrid            | Excluded prompt | 138 | 0.5571 | 0.3297 | 0.4682 | -0.1268 | 44.9% |    89.1% |  15 |   0 |
-| Base hybrid            | Short           | 120 | 0.6505 | 0.3208 | 0.4449 |  0.0625 | 43.3% |    92.5% |   9 |   0 |
-| Base hybrid            | Long            |  50 | 0.6963 | 0.3700 | 0.4950 | -0.0100 | 38.0% |    88.0% |   6 |   0 |
-| Base 50/50 fusion      | Excluded prompt | 138 | 0.5444 | 0.2971 | 0.4504 | -0.1087 | 50.0% |    92.0% |  11 |   2 |
-| Base 50/50 fusion      | Short           | 120 | 0.6092 | 0.3000 | 0.4233 |  0.1250 | 45.8% |    94.2% |   7 |   0 |
-| Base 50/50 fusion      | Long            |  50 | 0.6734 | 0.3500 | 0.4743 |  0.0100 | 40.0% |    90.0% |   5 |   0 |
-| Inclusive whitebox     | Excluded prompt | 138 | 0.4988 | 0.3514 | 0.4982 | -0.1341 | 42.0% |    89.9% |  14 |   3 |
-| Inclusive whitebox     | Short           | 120 | 0.4076 | 0.4208 | 0.5572 |  0.0792 | 33.3% |    85.0% |  18 |   3 |
-| Inclusive whitebox     | Long            |  50 | 0.6913 | 0.3600 | 0.5099 |  0.1200 | 42.0% |    88.0% |   6 |   1 |
-| Inclusive hybrid       | Excluded prompt | 138 | 0.6387 | 0.2935 | 0.4361 | -0.0978 | 50.0% |    91.3% |  12 |   0 |
-| Inclusive hybrid       | Short           | 120 | 0.6510 | 0.3333 | 0.4610 |  0.0667 | 42.5% |    90.8% |  11 |   0 |
-| Inclusive hybrid       | Long            |  50 | 0.7957 | 0.2900 | 0.4183 | -0.0100 | 48.0% |    94.0% |   3 |   0 |
-| Inclusive 50/50 fusion | Excluded prompt | 138 | 0.5850 | 0.2899 | 0.4299 | -0.1087 | 49.3% |    93.5% |   9 |   1 |
-| Inclusive 50/50 fusion | Short           | 120 | 0.5875 | 0.3208 | 0.4587 |  0.1125 | 45.0% |    91.7% |  10 |   1 |
-| Inclusive 50/50 fusion | Long            |  50 | 0.7492 | 0.3000 | 0.4472 |  0.0800 | 50.0% |    90.0% |   5 |   0 |
-
-For the raw-inclusive hybrid cell, the excluded-prompt and short groups
-have lower within-group QWK than the sealed view, while the long group does
-not. Short rows have the largest subgroup MAE (`0.3333`). Excluded-prompt
-rows show a negative bias (`-0.0978`); short rows show a positive bias
-(`0.0667`). QWK is not additive across subgroups, so these values explain the
-error shape but cannot be treated as weighted contributions to the full QWK.
-
-### Full-population target bands
-
-Low means targets 1.0-2.0 (`n=225`), broad high means 4.0-5.0 (`n=425`),
-and exact high means 4.5-5.0 (`n=68`). Broad high contains exact high.
-
-| Declared cell          | Band       |    MAE |    Bias | >=1 |  >1 |
-| ---------------------- | ---------- | -----: | ------: | --: | --: |
-| Base whitebox          | Low        | 0.5333 |  0.4711 |  67 |  10 |
-| Base whitebox          | Broad high | 0.4318 | -0.3000 |  78 |  11 |
-| Base whitebox          | Exact high | 0.4853 | -0.4412 |  14 |   2 |
-| Base hybrid            | Low        | 0.3689 |  0.2933 |  32 |   0 |
-| Base hybrid            | Broad high | 0.3882 | -0.2776 |  56 |   2 |
-| Base hybrid            | Exact high | 0.4118 | -0.3382 |   9 |   1 |
-| Base 50/50 fusion      | Low        | 0.4844 |  0.4711 |  42 |   3 |
-| Base 50/50 fusion      | Broad high | 0.4141 | -0.3953 |  58 |   4 |
-| Base 50/50 fusion      | Exact high | 0.5735 | -0.5735 |  16 |   2 |
-| Inclusive whitebox     | Low        | 0.5044 |  0.4289 |  61 |   9 |
-| Inclusive whitebox     | Broad high | 0.4529 | -0.3141 |  74 |  12 |
-| Inclusive whitebox     | Exact high | 0.4706 | -0.4265 |  17 |   2 |
-| Inclusive hybrid       | Low        | 0.3333 |  0.2400 |  28 |   0 |
-| Inclusive hybrid       | Broad high | 0.3212 | -0.2435 |  48 |   2 |
-| Inclusive hybrid       | Exact high | 0.4632 | -0.3897 |   8 |   1 |
-| Inclusive 50/50 fusion | Low        | 0.4533 |  0.4222 |  38 |   4 |
-| Inclusive 50/50 fusion | Broad high | 0.3788 | -0.3435 |  55 |   3 |
-| Inclusive 50/50 fusion | Exact high | 0.5368 | -0.5368 |  13 |   2 |
-
-The inclusive hybrid has the lowest low- and broad-high MAE, but the base
-hybrid has lower exact-high MAE. This is descriptive tail evidence; it does
-not alter the declared scorer set or frozen mapping.
-
-### Protocol-difference ledger
-
-| Dimension           | Choi et al. 2026                                                                                 | Story 20-44 evaluation                                                                                                                                                                               |
-| ------------------- | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Test population     | Fixed official ELLIPSE test set; 2,571 rows inferred from the verified public split              | 2,567 construct-admitted rows from that source; four rows below 50 alphabetic tokens excluded                                                                                                        |
-| Test targets        | Official ELLIPSE Overall target used as one jointly modeled trait                                | ADR-HULE-0046 two-rater Overall mean; one admitted extension target differs from the source split's `Overall`                                                                                        |
-| Training population | Official 3,911-row train pool, repeatedly divided into train/dev                                 | Frozen raw base: 3,479 rows; frozen raw inclusive: 5,042 rows, including 1,563 recovered essays outside the official 3,911-row training release                                                      |
-| Training objective  | Overall plus six analytic traits jointly; the Overall head consumes other trait representations  | Overall only                                                                                                                                                                                         |
-| Aggregation         | Mean test result over ten train/dev refits; no Overall-cell SD published                         | One frozen scorer per cell, internally a fixed five-seed ensemble; one evaluation pass                                                                                                               |
-| Input handling      | BERT-CNN truncated to 512 tokens and BERT-TransEnc capped at 60 sentences                        | Full source text enters the feature pipeline; the DeBERTa embedding branch and four embedding-derived scalars use a 512-token model input, while other scalar families use their declared text paths |
-| Mapping and QWK     | Inverse-normalize, round to nearest valid 1-5 score, quadratic QWK                               | Frozen scorer cells use OOF-derived split-tail half-grade calibration; fusion averages raw predictions then maps to the nearest half grade; quadratic QWK uses nine categories                       |
-| Compared number     | Table 8 `Ovrl` cell `0.726` for `+LoRA+SA`; the prose highlights the seven-trait average `0.664` | Raw-inclusive hybrid QWK `0.7563`; the predeclared equal fusion is `0.7235`                                                                                                                          |
-
-The ledger explains why the numeric comparison is informative but not a
-controlled replication. In particular, the four-row construct exclusion and
-different training targets prevent an identical-protocol claim.
+The five-category sensitivities are not Choi-equivalent results. Choi et al.
+do not declare an ELLIPSE-specific category count or a rule for collapsing a
+published half-grade. Rounding half-grade gold values downward gives current
+scorer QWK values around `0.53-0.61`; rounding them upward gives around
+`0.56-0.63`; evaluating against either raw integer rater changes the target
+authority and gives around `0.54-0.63`. Those ranges demonstrate that a
+five-category collapse is material, not a harmless integer re-encoding.
 
 ## Evidence Gaps And Follow-Up
 
-- Choi et al. do not publish an Overall-cell standard deviation, and this work
-  evaluates one frozen scorer per cell. No inferential significance claim can
-  be made for the `0.0303` QWK difference.
-- The papers do not print the ELLIPSE train/test counts. The 3,911/2,571 split
-  is verified from the primary public release and inferred to be their split
-  from their exact 6,482-row corpus match and explicit official-test statement.
-- The four excluded rows prevent a result for the literal full 2,571-row
-  source. Supporting those fragments would require changing the frozen
-  MATTR-50 feature construct and is outside this story.
-- Subgroup supports are small and subgroup QWK is non-additive. The subgroup
-  tables describe where errors occur; they do not establish causal prompt- or
-  length-specific effects.
-- Story 44's six-cell results did not change model membership, calibration,
-  retraining, registry promotion, or production use. The later reduced-head
-  fits are explicitly labeled post-benchmark diagnostics rather than new
-  benchmark cells. Any promotion or production use requires a separately
-  governed decision and evidence base.
+- This is one frozen full-test population, not a new prompt-general or Swedish
+  transfer result. No inferential superiority claim follows from the small QWK
+  differences.
+- The official ELLIPSE test population has supported earlier governed
+  evaluations. This result preserves train/test fitting separation but is not a
+  globally single-use model-selection confirmation.
+- The result does not change accepted scorer selection. Any later recipe or
+  production change requires separate governed authority and evidence.
+- Choi et al. state "nearest valid score" but do not print the ELLIPSE-specific
+  increment or category count. The nine-point comparison follows the published
+  ELLIPSE target authority; it does not claim access to an unpublished
+  implementation detail.
+- A separate cross-paper AES audit should extract native score scale, QWK, MAE,
+  RMSE, exact and adjacent accuracy, full-grade, gross and two-grade errors,
+  score-band and subgroup bias, decision-boundary crossings, robustness or
+  adversarial tests, and row-prediction availability for regression, ordinal,
+  neural, and LLM-based scorers. Unpublished cells must remain `not reported`.
+  When a dataset has no defensible native grade step, the audit should retain
+  raw score-point and scale-relative errors rather than inventing one.
+- This fixed official-test result is not adversarial validation. Controlled
+  construct-preserving perturbation and distribution-shift evidence remains
+  necessary before any claim of robust student- or teacher-facing use.
+- When any public scorer ID resolves a new accepted package, update this living
+  reference only from a new receipt-bound complete-population comparison.
+  Preserve this source bundle as immutable historical evidence.

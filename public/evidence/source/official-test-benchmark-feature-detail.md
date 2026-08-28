@@ -2,11 +2,13 @@
 ## Research Purpose And Boundary
 
 This part preserves the individual scalar attribution and correlation
-inventory for the frozen Task 43 raw-inclusive hybrid. The root reference owns
-the benchmark claim, component-head performance, family totals, mapping
-contrast, population stability, and external comparison. This part owns only
-the 37 scalar rows and their measured overlap on the fixed 5,042-row training
-matrix.
+inventory plus the held-out signed feature-mechanism continuation for the
+frozen Task 43 raw-inclusive hybrid. The root reference owns the benchmark
+claim, component-head performance, headline mechanism findings, mapping
+contrast, population stability, and external comparison. This part owns the 37
+scalar rows and their measured overlap on the fixed 5,042-row training matrix,
+then the detailed scalar/family pressure and residual evidence on the retained
+2,567-row official test.
 
 Mean absolute TreeSHAP measures use by the existing nonlinear ensemble. The
 Pearson values measure association. Neither quantity is an additive QWK
@@ -29,6 +31,14 @@ contribution, causal effect, or feature-removal result.
 - Correlation: Pearson correlation on the same 5,042 rows. `Max |r|` is the
   maximum absolute correlation between one scalar and any one of the 768
   embedding coordinates.
+- Held-out continuation:
+  `.orchestration/context/sessions/01a02917-0817-773e-90d4-43870e2002b7/evidence/task-hule-20-44-03/feature-mechanism-summary-v1.json`,
+  SHA-256
+  `233444d0307a842da56488f943a72dd7a86703e3a2c1e436310a8acfefa05723`.
+  The complete 275-row estimates SHA-256 is
+  `42e2a0529fe7d0c276c8ecb462814c391bb0bb37159bdcd6032021395a09ecc9`;
+  the 2,567-row scalar-value/contribution/residual join SHA-256 is
+  `2d80a8a5941f4e1844cecad25ef78c45cf70e9cf4ce2cbcfb4e95eed40742788`.
 
 ## Findings And Interpretation
 
@@ -95,6 +105,55 @@ The high correlations include shared denominators and overlapping constructs,
 but correlation alone does not establish that one feature is removable. The
 TreeSHAP values likewise describe the fitted ensemble on this matrix; they do
 not report performance after removing a feature.
+
+## Held-Out Signed Attribution And Residual Alignment
+
+The continuation reuses the five frozen historical 805-column members on the
+retained official-test matrix. The then-current Task 44 806-column source contained
+`l2_dictionary_corrections_per_100_words`; the projection omits it only because
+the historical learner never received it. TreeSHAP reconstructs the ensemble
+within `0.00000572`, and the recomputed ensemble differs from the retained raw
+predictions by at most `0.00000024`. The common base value is `3.178818`.
+
+The target strata contain 2,567 full, 225 low, 1,917 mid, 425 broad-high, and
+68 exact-high rows. Every named scalar and accepted family retains support,
+mean signed and absolute contribution, percentile 95% intervals from 2,000
+deterministic row-bootstrap replicates, tail-minus-mid differences, and raw and
+mapped residual alignment. These are descriptive intervals, not
+prompt-clustered population inference. Signed values below are grade-scale
+prediction pressure relative to the model base value.
+
+| Feature or accepted family          |      Full | Low 1.0-2.0 | Mid 2.5-3.5 | Broad high 4.0-5.0 | Exact high 4.5-5.0 |
+| ----------------------------------- | --------: | ----------: | ----------: | -----------------: | -----------------: |
+| DeBERTa embedding family            | -0.021648 |   -0.802622 |   -0.067613 |          +0.599137 |          +0.916769 |
+| `word_count`                        | -0.013093 |   -0.034154 |   -0.016584 |          +0.013804 |          +0.025033 |
+| Length statistics                   | -0.013195 |   -0.034613 |   -0.016719 |          +0.014041 |          +0.025615 |
+| Correction and error rates          | -0.004429 |   -0.016542 |   -0.006222 |          +0.010068 |          +0.013411 |
+| Frequency and sophistication        | -0.008734 |   -0.011005 |   -0.010266 |          -0.000625 |          +0.013919 |
+| Prompt relevance, embedding-derived | -0.000010 |   +0.000251 |   -0.000019 |          -0.000108 |          -0.000194 |
+
+Low-band length pressure is downward on average, despite raw overprediction of
+`+0.341438`. The low-minus-mid length-family difference is `-0.018060`, 95%
+interval `[-0.026573, -0.009887]`. Length is positive on 39.1% of low rows;
+within those rows, error pressure is negative in 81.8% but fully offsets length
+in 31.8%. The longest/high-error low cell (`n=39`) has length `+0.043579`,
+error `-0.020855`, joint pressure `+0.022725`, and raw residual `+0.379217`.
+This is a bounded local length-overpressure pattern, not an aggregate low-band
+explanation.
+
+Broad-high and exact-high raw residuals are `-0.291574` and `-0.436538`;
+332/425 and 64/68 rows are underpredicted. Frequency/sophistication is nearly
+neutral in broad-high and small positive in exact-high. Correction/error
+pressure is positive in both high views, not downward, but too small to close
+the residual. Prompt-relevance pressure is negligible and slightly downward,
+with both intervals crossing zero. Embeddings supply the main upward pressure,
+yet the final raw predictions remain low.
+
+“Overweighted” and “underweighted” are residual-alignment interpretations here,
+not causal weight estimates. TreeSHAP does not show what a refit, feature
+removal, or different loss would do. The three-by-three word-count/error table
+reports observed main-effect cells only; no 805-by-805 or 806-by-806 SHAP
+interaction tensor was computed.
 
 ## Evidence Gaps And Follow-Up
 
