@@ -92,6 +92,14 @@
       "sourcePath": "docs/backlog/stories/st-hule-23-01-consolidate-retrospective-fusion-evidence-under-a-loss-aligned-objective.md"
     },
     {
+      "slug": "ellipse-cj-ranknet-probe",
+      "title": "Learning from comparative-judgment decisions",
+      "import": false,
+      "sourceRepo": "huleedu",
+      "sourceRevision": "8fe970fd37e413ddaf8ad060953887b780e4da83",
+      "sourcePath": "docs/reference/ref-hule-research-ellipse-cj-inductive-ranknet-and-fusion-experiment-synthesis-ellipse-cj-inductive-ranknet-and-fusion-experiment-synthesis.md"
+    },
+    {
       "slug": "human-rater-agreement",
       "title": "Human-rater agreement evidence",
       "import": false,
