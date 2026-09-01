@@ -18,44 +18,22 @@
     <p class="source-line"><a href="/evidence/source/comparative-judgment-fusion.md">View Markdown source</a><span aria-hidden="true"> · </span>evidence revision <code>409aab696da2</code></p>
   </header>
   <main>
-    <article class="markdown-body"><p><span id="why-the-earlier-result-was-replaced"></span></p>
-<h2>Why the earlier result was replaced</h2>
-<p>An earlier version of this page reported a fusion experiment whose
-handcrafted scorer did not represent the construct claimed for it. Three
-variables described as prompt similarity were raw cosine measurements in the
-same DeBERTa representation space used elsewhere in the system. They therefore
-measured broad position in that representation space as well as, and sometimes
-instead of, specific similarity to the assigned prompt. The old result cannot
-show what a distinct handcrafted lane contributes, so its tables and
-interpretation have been removed.</p>
-<p>The repaired prompt-relevance calculation first subtracts the cohort&#39;s mean
-representation. It then compares each essay with its assigned prompt relative
-to the other 39 prompts in the governed prompt collection. In the construct
-test, the selected whole-essay measure correlated with human score at 0.1830
-for the correct prompt, while the strongest result across 500 wrong-prompt
-assignments was 0.0351. By contrast, the earlier raw introduction measure
-failed the same principle: its correct-prompt correlation was 0.4240, while a
-wrong-prompt assignment reached 0.4281.</p>
-<p>The repair did not make the handcrafted scorer look better. In a separate
-prompt-holdout comparison, the repaired scorer reached 0.6332 QWK, compared
-with 0.6915 for the preceding version. The repaired measure was retained
-because its meaning was supported by the prompt controls. The scorer now uses
-named scalar measurements and contains no 768-number essay representation,
-although four scalar measurements, including prompt relevance, are calculated
-with a fixed locally hosted language model.</p>
-<p><span id="experiment"></span></p>
+    <article class="markdown-body"><p><span id="experiment"></span></p>
 <h2>Experiment</h2>
-<p>The corrected fusion experiment used one ELLIPSE writing task. It included 282
+<p>The experiment used one ELLIPSE writing task. It included 282
 essays in the out-of-fold training comparison and 185 held-out essays in the
 test comparison. Every essay had a human score and three separately produced
 estimates:</p>
 <ul>
-<li>the repaired handcrafted scorer;</li>
+<li>the handcrafted scorer, which uses named scalar measurements and contains no
+768-number essay representation;</li>
 <li>the combined scorer, which adds a 768-number representation of the complete
 essay to its scalar measurements; and</li>
 <li>comparative judgment, which derives an ordering from repeated pairwise essay
 comparisons.</li>
 </ul>
+<p>Four measurements in the handcrafted scorer, including prompt relevance, are
+calculated with a fixed locally hosted language model.</p>
 <p>The machine scorers produced their estimates without comparative judgment.
 Comparative judgment was calibrated to the score scale using only the training
 essays, after which the three estimates were averaged with equal weight. The
@@ -90,7 +68,7 @@ the equal combination did not improve on the named estimate.</p>
 </tr>
 </thead>
 <tbody><tr>
-<td>Repaired handcrafted scorer</td>
+<td>Handcrafted scorer</td>
 <td align="right">0.6908</td>
 <td align="right">0.4054</td>
 <td align="right">0.8649</td>
@@ -134,7 +112,7 @@ paired resampling results show how firmly the QWK differences can be stated.</p>
 </tr>
 </thead>
 <tbody><tr>
-<td>Equal average versus repaired handcrafted scorer</td>
+<td>Equal average versus handcrafted scorer</td>
 <td align="right">+0.1252</td>
 <td align="right">0.0828</td>
 <td align="right">0.0000</td>
@@ -152,7 +130,7 @@ paired resampling results show how firmly the QWK differences can be stated.</p>
 <td align="right">0.0017</td>
 </tr>
 </tbody></table>
-<p>The held-out evidence supports an improvement over the repaired handcrafted
+<p>The held-out evidence supports an improvement over the handcrafted
 scorer and comparative judgment on its own. However, the lower bound for the
 comparison with the combined scorer crosses zero, so this experiment does not
 clearly distinguish the equal average from the combined scorer.</p>
@@ -173,7 +151,7 @@ that essay.</p>
 </tr>
 </thead>
 <tbody><tr>
-<td>Repaired handcrafted scorer</td>
+<td>Handcrafted scorer</td>
 <td align="right">0.7877</td>
 <td align="right">0.4787</td>
 <td align="right">0.9326</td>
@@ -207,29 +185,26 @@ that essay.</p>
 </tbody></table>
 <p>Here, the combined scorer has higher QWK, exact agreement, and lower error than
 the equal average. The equal average has slightly higher adjacent agreement.
-Consequently, the corrected experiment does not show a uniform fusion
+Consequently, the experiment does not show a uniform fusion
 advantage across the two partitions.</p>
 <p><span id="interpretation"></span></p>
 <h2>Interpretation</h2>
 <p>On the held-out essays, comparative judgment contributes information that
-improves the equal average relative to the repaired handcrafted scorer and to
+improves the equal average relative to the handcrafted scorer and to
 comparative judgment alone. The equal average also has a higher point estimate
 than the combined scorer, but the paired uncertainty analysis does not resolve
 that difference. On the out-of-fold training essays, the combined scorer is
 stronger than the equal average.</p>
-<p>The corrected evidence therefore supports continued study of comparative
+<p>The evidence supports continued study of comparative
 judgment as an additional source of information. It does not establish that
 fusion is generally better than the combined scorer. The experiment concerns
 one writing task, and any broader claim requires replication across tasks.</p>
-<p>At public code revision
+<p>Public code revision
 <a href="https://research.hule.education/code/eebc7379b1396572739d2f81851856df010c0024/"><code>eebc7379b1396572739d2f81851856df010c0024</code></a>,
-the implementation exposes both the
+contains both the
 <a href="https://research.hule.education/code/eebc7379b1396572739d2f81851856df010c0024/source/services/cj_assessment_service/cj_core_logic/comparison_processing.py.html#L80">comparison-submission path</a>
 and the function that
-<a href="https://research.hule.education/code/eebc7379b1396572739d2f81851856df010c0024/source/services/cj_assessment_service/cj_core_logic/bt_scoring.py.html#L39">turns pairwise outcomes into Bradley--Terry scores</a>.
-Those links document the comparative-judgment implementation. The numerical
-results above remain supported by the experiment records described on this
-page rather than by the source listing alone.</p>
+<a href="https://research.hule.education/code/eebc7379b1396572739d2f81851856df010c0024/source/services/cj_assessment_service/cj_core_logic/bt_scoring.py.html#L39">turns pairwise outcomes into Bradley--Terry scores</a>.</p>
 </article>
   </main>
 </body>
