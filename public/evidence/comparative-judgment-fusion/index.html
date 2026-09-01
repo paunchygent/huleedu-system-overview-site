@@ -15,196 +15,115 @@
       <a href="/code/">Research code <span aria-hidden="true">→</span></a>
     </nav>
     <h1>Comparative judgment and scorer agreement</h1>
-    <p class="source-line"><a href="/evidence/source/comparative-judgment-fusion.md">View Markdown source</a><span aria-hidden="true"> · </span>evidence revision <code>409aab696da2</code></p>
+    <p class="source-line"><a href="/evidence/source/comparative-judgment-fusion.md">View Markdown source</a><span aria-hidden="true"> · </span>evidence revision <code>3ffeb7353c71</code></p>
   </header>
   <main>
-    <article class="markdown-body"><p><span id="experiment"></span></p>
-<h2>Experiment</h2>
-<p>The experiment used one ELLIPSE writing task. It included 282
-essays in the out-of-fold training comparison and 185 held-out essays in the
-test comparison. Every essay had a human score and three separately produced
-estimates:</p>
+    <article class="markdown-body"><p><span id="current-separated-late-fusion"></span></p>
+<h2>Current Separated Late Fusion</h2>
+<p>The current experiment used one ELLIPSE writing task, with 282 essays in the
+out-of-fold training cohort and 185 held-out essays. It combined three
+independently produced estimates only after each method had assigned its own
+score.</p>
 <ul>
-<li>the handcrafted scorer, which uses named scalar measurements and contains no
-768-number essay representation;</li>
-<li>the combined scorer, which adds a 768-number representation of the complete
-essay to its scalar measurements; and</li>
-<li>comparative judgment, which derives an ordering from repeated pairwise essay
-comparisons.</li>
+<li>The white-box estimate used the current 30 named scalar measures.</li>
+<li>The embeddings-only estimate used the 768-dimensional representation of the
+complete essay.</li>
+<li>The comparative-judgment estimate used a Bradley-Terry ranking derived from
+pairwise decisions by a model judge.</li>
 </ul>
-<p>Four measurements in the handcrafted scorer, including prompt relevance, are
-calculated with a fixed locally hosted language model.</p>
-<p>The machine scorers produced their estimates without comparative judgment.
-Comparative judgment was calibrated to the score scale using only the training
-essays, after which the three estimates were averaged with equal weight. The
-experiment did not retrain either scorer with comparative-judgment results.</p>
-<p><span id="measures"></span></p>
-<h2>Measures</h2>
-<p>Quadratic weighted kappa (QWK) measures agreement with the human scores. It
-ranges from 0 for chance-level agreement to 1 for perfect agreement and gives
-larger disagreements more weight than smaller ones.</p>
-<p>Exact agreement is the proportion of estimates equal to the human score.
-Adjacent agreement is the proportion equal to, or one half-point from, the
-human score. Mean absolute error (MAE) is the average distance from the human
-score, while root mean squared error (RMSE) gives additional weight to larger
-errors.</p>
-<p>Uncertainty was estimated with 10,000 paired resamples of the 185 held-out
-essays. The lower bound is the one-sided 95 percent lower bound for the QWK
-change. “Resamples at or below zero” is the proportion of resamples in which
-the equal combination did not improve on the named estimate.</p>
+<p>This design differs from the hybrid scorer. The current hybrid scorer combines
+the 768 embedding dimensions and 36 scalar measures inside one fitted model.
+The separated experiment instead preserves the white-box and embeddings-only
+estimates as distinct inputs to the final calculation.</p>
+<p>The comparative-judgment scale projection was fitted on the training cohort.
+The held-out human scores were not used to produce any component. The equal
+combination used fixed weights, while the learned combination selected
+non-negative weights from the out-of-fold training predictions.</p>
 <p><span id="results"></span></p>
 <h2>Results</h2>
-<p><span id="held-out-essays"></span></p>
-<h3>Held-out essays</h3>
 <table>
 <thead>
 <tr>
 <th>Estimate</th>
 <th align="right">QWK</th>
-<th align="right">Exact agreement</th>
-<th align="right">Adjacent agreement</th>
 <th align="right">MAE</th>
 <th align="right">RMSE</th>
+<th align="right">Exact</th>
+<th align="right">Within half a point</th>
+<th align="right">Errors of at least one point</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>Handcrafted scorer</td>
-<td align="right">0.6908</td>
-<td align="right">0.4054</td>
-<td align="right">0.8649</td>
-<td align="right">0.3703</td>
-<td align="right">0.5133</td>
-</tr>
-<tr>
-<td>Combined scorer</td>
-<td align="right">0.7920</td>
-<td align="right">0.5459</td>
-<td align="right">0.9405</td>
-<td align="right">0.2568</td>
+<td>Embeddings only</td>
+<td align="right">0.8118</td>
+<td align="right">0.2676</td>
 <td align="right">0.3976</td>
+<td align="right">0.5135</td>
+<td align="right">0.9514</td>
+<td align="right">9</td>
 </tr>
 <tr>
-<td>Calibrated comparative judgment</td>
+<td>White-box</td>
+<td align="right">0.7306</td>
+<td align="right">0.3486</td>
+<td align="right">0.4807</td>
+<td align="right">0.4108</td>
+<td align="right">0.8973</td>
+<td align="right">19</td>
+</tr>
+<tr>
+<td>Comparative judgment</td>
 <td align="right">0.7537</td>
-<td align="right">0.4649</td>
-<td align="right">0.9622</td>
 <td align="right">0.2865</td>
 <td align="right">0.4027</td>
+<td align="right">0.4649</td>
+<td align="right">0.9622</td>
+<td align="right">7</td>
 </tr>
 <tr>
-<td>Equal average of all three</td>
-<td align="right">0.8161</td>
-<td align="right">0.5946</td>
-<td align="right">0.9676</td>
-<td align="right">0.2189</td>
-<td align="right">0.3545</td>
+<td>Equal three-way combination</td>
+<td align="right">0.8124</td>
+<td align="right">0.2486</td>
+<td align="right">0.3676</td>
+<td align="right">0.5243</td>
+<td align="right">0.9784</td>
+<td align="right">4</td>
+</tr>
+<tr>
+<td>Learned three-way combination</td>
+<td align="right">0.8105</td>
+<td align="right">0.2378</td>
+<td align="right">0.3639</td>
+<td align="right">0.5514</td>
+<td align="right">0.9730</td>
+<td align="right">5</td>
 </tr>
 </tbody></table>
-<p>The equal average has the strongest point estimate on all five measures. The
-paired resampling results show how firmly the QWK differences can be stated.</p>
-<table>
-<thead>
-<tr>
-<th>Comparison</th>
-<th align="right">QWK change</th>
-<th align="right">One-sided 95% lower bound</th>
-<th align="right">Resamples at or below zero</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Equal average versus handcrafted scorer</td>
-<td align="right">+0.1252</td>
-<td align="right">0.0828</td>
-<td align="right">0.0000</td>
-</tr>
-<tr>
-<td>Equal average versus combined scorer</td>
-<td align="right">+0.0240</td>
-<td align="right">-0.0058</td>
-<td align="right">0.0927</td>
-</tr>
-<tr>
-<td>Equal average versus calibrated comparative judgment</td>
-<td align="right">+0.0624</td>
-<td align="right">0.0275</td>
-<td align="right">0.0017</td>
-</tr>
-</tbody></table>
-<p>The held-out evidence supports an improvement over the handcrafted
-scorer and comparative judgment on its own. However, the lower bound for the
-comparison with the combined scorer crosses zero, so this experiment does not
-clearly distinguish the equal average from the combined scorer.</p>
-<p><span id="out-of-fold-training-comparison"></span></p>
-<h3>Out-of-fold training comparison</h3>
-<p>The same measurements were computed for the 282 out-of-fold training essays.
-These estimates were produced without scoring an essay with a model trained on
-that essay.</p>
-<table>
-<thead>
-<tr>
-<th>Out-of-fold estimate</th>
-<th align="right">QWK</th>
-<th align="right">Exact agreement</th>
-<th align="right">Adjacent agreement</th>
-<th align="right">MAE</th>
-<th align="right">RMSE</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Handcrafted scorer</td>
-<td align="right">0.7877</td>
-<td align="right">0.4787</td>
-<td align="right">0.9326</td>
-<td align="right">0.2961</td>
-<td align="right">0.4304</td>
-</tr>
-<tr>
-<td>Combined scorer</td>
-<td align="right">0.8521</td>
-<td align="right">0.5957</td>
-<td align="right">0.9716</td>
-<td align="right">0.2163</td>
-<td align="right">0.3498</td>
-</tr>
-<tr>
-<td>Calibrated comparative judgment</td>
-<td align="right">0.7274</td>
-<td align="right">0.4362</td>
-<td align="right">0.9397</td>
-<td align="right">0.3121</td>
-<td align="right">0.4315</td>
-</tr>
-<tr>
-<td>Equal average of all three</td>
-<td align="right">0.8244</td>
-<td align="right">0.5355</td>
-<td align="right">0.9787</td>
-<td align="right">0.2429</td>
-<td align="right">0.3634</td>
-</tr>
-</tbody></table>
-<p>Here, the combined scorer has higher QWK, exact agreement, and lower error than
-the equal average. The equal average has slightly higher adjacent agreement.
-Consequently, the experiment does not show a uniform fusion
-advantage across the two partitions.</p>
-<p><span id="interpretation"></span></p>
-<h2>Interpretation</h2>
-<p>On the held-out essays, comparative judgment contributes information that
-improves the equal average relative to the handcrafted scorer and to
-comparative judgment alone. The equal average also has a higher point estimate
-than the combined scorer, but the paired uncertainty analysis does not resolve
-that difference. On the out-of-fold training essays, the combined scorer is
-stronger than the equal average.</p>
-<p>The evidence supports continued study of comparative
-judgment as an additional source of information. It does not establish that
-fusion is generally better than the combined scorer. The experiment concerns
-one writing task, and any broader claim requires replication across tasks.</p>
-<p>Public code revision
-<a href="https://research.hule.education/code/eebc7379b1396572739d2f81851856df010c0024/"><code>eebc7379b1396572739d2f81851856df010c0024</code></a>,
-contains both the
-<a href="https://research.hule.education/code/eebc7379b1396572739d2f81851856df010c0024/source/services/cj_assessment_service/cj_core_logic/comparison_processing.py.html#L80">comparison-submission path</a>
-and the function that
-<a href="https://research.hule.education/code/eebc7379b1396572739d2f81851856df010c0024/source/services/cj_assessment_service/cj_core_logic/bt_scoring.py.html#L39">turns pairwise outcomes into Bradley--Terry scores</a>.</p>
+<p>The equal combination preserved essentially the same overall agreement as the
+embeddings-only estimate. It reduced average error, raised the number of
+essays within half a point from 176 to 181, and reduced errors of at least one
+point from nine to four. The learned combination produced the lowest MAE and
+RMSE, although its QWK was slightly lower than the embeddings-only estimate.</p>
+<p>The main result is therefore greater stability without merging the three
+sources of evidence inside one model. Their final weights and their individual
+estimates remain available for inspection.</p>
+<p><span id="comparison-cost"></span></p>
+<h2>Comparison Cost</h2>
+<p>The comparative-judgment estimate required 3,000 pairwise decisions for the
+185 held-out essays. It added useful information for this cohort, but the same
+direct method requires a substantial new comparison graph for each new cohort.</p>
+<p><span id="evidence-identity"></span></p>
+<h2>Evidence Identity</h2>
+<p>The retained experiment is
+<code>output/essay_scoring/story50_current_embeddings_whitebox_cgs_fusion_20260828</code>.
+Its report SHA-256 is
+<code>5b6eb68edc3969205c790bd9301a05915372fd0a00f4962b4e54c5038f2ab4a6</code>,
+its summary SHA-256 is
+<code>45cf85f020b5c5e1c46f434d14bffc4f8de78b6624c243fa3292b2a2ccd62df7</code>,
+and its held-out row SHA-256 is
+<code>e5ef402218c88dece17ddf5ea6971b2d79226508ab2c1db61b31112c848eb7f5dc</code>.</p>
+<p>The result is recorded in the HuleEdu research reference at source revision
+<code>3ffeb7353c715faaf3b7897b4a38a46081bbba9e</code>.</p>
 </article>
   </main>
 </body>
