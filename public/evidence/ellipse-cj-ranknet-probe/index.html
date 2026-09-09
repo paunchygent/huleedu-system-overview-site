@@ -26,12 +26,19 @@ be learned from essay representations and applied to new essays. Grade
 agreement asks a separate question: whether the learned ordering matches the
 human scores.</p>
 <p><span id="full-acquisition-result"></span></p>
-<p><span id="current-full-result"></span></p>
-<h2>Current Full Result</h2>
-<p>The later experiment used 25,000 comparative-judgment pairs across 5,470
-ELLIPSE essays. Its held-out pair evaluation contained 1,650 comparisons. The
-final refit used all 25,000 pairs, but the values below come from the held-out
-evaluation rather than that refit.</p>
+<p><span id="current-acquired-evidence"></span></p>
+<h2>Current Acquired Evidence</h2>
+<p>The current research pool contains 50,000 unordered comparative-judgment pairs
+across 5,470 ELLIPSE essays. Each pair was judged in both A/B orientations,
+giving 100,000 model-judge decisions. The first acquisition supplied 25,000
+pairs and a later adaptive acquisition supplied another 25,000.</p>
+<p><span id="held-out-result-from-the-first-acquisition"></span></p>
+<h3>Held-Out Result From the First Acquisition</h3>
+<p>The held-out metrics below come from the first 25,000-pair snapshot. Its pair
+evaluation contained 1,650 held-out pairs. The first-stage final refit used all
+25,000 pairs, but the values below come from the held-out evaluation rather
+than that refit. They do not describe a fresh held-out evaluation of the full
+50,000-pair pool.</p>
 <table>
 <thead>
 <tr>
@@ -64,7 +71,7 @@ evaluation rather than that refit.</p>
 <td align="right">30.42%</td>
 </tr>
 </tbody></table>
-<p>The larger experiment confirms that the model judge&#39;s decisions contain a
+<p>That first-stage experiment confirms that the model judge&#39;s decisions contain a
 strong and learnable signal. Both RankNet estimates predicted those decisions
 better than the score-based model. They did not reconstruct the
 human grades as well, particularly at the high end. RankNet is therefore a

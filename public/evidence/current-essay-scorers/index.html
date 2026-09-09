@@ -20,7 +20,7 @@
   <main>
     <article class="markdown-body"><p><span id="what-is-current"></span></p>
 <h2>What Is Current</h2>
-<p>HuleEdu currently studies three separate ways of estimating essay quality:</p>
+<p>HuleEdu&#39;s current official essay scorer combines three estimates:</p>
 <ul>
 <li>a <strong>pure-feature whitebox scorer</strong>, which uses named linguistic measures;</li>
 <li>an <strong>embeddings scorer</strong>, which uses a whole-essay numerical representation;</li>
@@ -29,14 +29,45 @@ over essay pairs.</li>
 </ul>
 <p><span id="official-train-test-evaluation"></span></p>
 <h2>Official Train-Test Evaluation</h2>
-<p>The current evaluation fitted the scorers on 5,468 admitted ELLIPSE training
-essays and evaluated them on all 2,567 essays in the official test set. The
-published split-tail grade mapping was used for the whitebox and embeddings
+<p>The latest full train-test fusion experiment fitted the three scorers on 5,468
+admitted ELLIPSE training essays and evaluated their combined prediction on all
+2,567 essays in the official test set. The published split-tail grade mapping
+was used for the whitebox and embeddings scorers. The selected late-fusion
+weights are 0.50 embeddings, 0.25 pure-feature whitebox, and 0.25 linear
+RankNet.</p>
+<table>
+<thead>
+<tr>
+<th>Official scorer</th>
+<th align="right">Quadratic weighted kappa</th>
+<th align="right">Mean absolute error</th>
+<th align="right">Root mean squared error</th>
+<th align="right">Spearman correlation</th>
+<th align="right">Errors of at least one grade point</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Embeddings + pure-feature whitebox + linear RankNet</td>
+<td align="right"><strong>0.7510</strong></td>
+<td align="right"><strong>0.3105</strong></td>
+<td align="right"><strong>0.4453</strong></td>
+<td align="right"><strong>0.7600</strong></td>
+<td align="right"><strong>8.2%</strong></td>
+</tr>
+</tbody></table>
+<p>This late-fusion result is HuleEdu&#39;s current official result for comparison
+with other work on the same ELLIPSE test partition. Choi and colleagues
+reported quadratic weighted kappa 0.726 on that partition; differences between
+the complete systems still matter when interpreting the comparison.</p>
+<p><span id="component-results"></span></p>
+<h3>Component Results</h3>
+<p>The individual results show what each component contributed to the official
+combination. They are diagnostic results rather than alternative official
 scorers.</p>
 <table>
 <thead>
 <tr>
-<th>Scorer</th>
+<th>Component</th>
 <th align="right">Quadratic weighted kappa</th>
 <th align="right">Mean absolute error</th>
 <th align="right">Root mean squared error</th>
@@ -44,7 +75,7 @@ scorers.</p>
 </thead>
 <tbody><tr>
 <td>Embeddings</td>
-<td align="right"><strong>0.7498</strong></td>
+<td align="right">0.7498</td>
 <td align="right">0.3185</td>
 <td align="right">0.4596</td>
 </tr>
@@ -63,15 +94,12 @@ scorers.</p>
 </tbody></table>
 <p>Quadratic weighted kappa summarizes ordinal agreement with the human scores.
 Mean absolute error reports the average distance in grade points, while root
-mean squared error gives greater weight to larger misses. The embeddings scorer
-had the strongest individual result in this evaluation.</p>
-<p>The three estimates were also combined after each scorer had produced its own
-prediction. That late combination reached kappa 0.7510, mean absolute error
-0.3105, and root mean squared error 0.4453. It reduced errors of at least one
-grade point from 9.2% for embeddings alone to 8.2%, while increasing the
-high-score severe-error rate from 9.9% to 11.8%. The small aggregate gain
-therefore came with a material high-end tradeoff. It does not replace the three
-individual scorer results.</p>
+mean squared error gives greater weight to larger misses.</p>
+<p>Compared with embeddings alone, the official combined scorer reduced mean
+absolute error from 0.3185 to 0.3105, root mean squared error from 0.4596 to
+0.4453, and errors of at least one grade point from 9.2% to 8.2%. Its severe
+error rate among high-scoring essays increased from 9.9% to 11.8%. The official
+overall result therefore retains a measured high-end limitation.</p>
 <p><span id="reproduction-of-the-grade-mapping"></span></p>
 <h2>Reproduction of the Grade Mapping</h2>
 <p>A separate five-fold experiment trained and evaluated the published whitebox
@@ -80,23 +108,28 @@ split-tail mapping, pooled kappa was 0.7520 for embeddings and 0.6689 for
 whitebox. A positive-affine alternative reached 0.7114 and 0.6327.</p>
 <p>Split-tail produced higher agreement in every fold for both scorers. The
 positive-affine mapping reduced some average and severe errors, so the mapping
-choice still changes the error tradeoff. The official train-test values above
-remain the current external benchmark because they use the full training
+choice still changes the error tradeoff. The official late-fusion result above
+remains the current external benchmark because it uses the full training
 cohort and the untouched official test set.</p>
 <p><span id="ranknet-evidence"></span></p>
 <h2>RankNet Evidence</h2>
-<p>The RankNet research used 25,000 model-judge comparisons across 5,470 essays.
-On 1,650 held-out comparisons, RankNet predicted the judge&#39;s choices with
-0.830 accuracy and 0.350 log loss. A residual form that retained the
-score-based ordering as its starting point reached 0.835 accuracy and 0.348
-log loss. The ordinary score-based model reached 0.746 accuracy and 0.500 log
-loss on the same comparisons.</p>
+<p>The current RankNet research pool contains 50,000 unordered essay pairs across
+5,470 essays. Each pair was judged in both A/B orientations, producing 100,000
+model-judge decisions. The first acquisition supplied 25,000 pairs and the
+later adaptive acquisition supplied another 25,000.</p>
+<p>The available held-out pair metrics come from the first 25,000-pair snapshot,
+before the second acquisition. On its 1,650 held-out pairs, RankNet predicted
+the judge&#39;s choices with 0.830 accuracy and 0.350 log loss. A residual form
+that retained the score-based ordering as its starting point reached 0.835
+accuracy and 0.348 log loss. The ordinary score-based model reached 0.746
+accuracy and 0.500 log loss on the same pairs.</p>
 <p>This is strong evidence that the model judge&#39;s comparative choices contain a
 learnable signal. It is not evidence that those choices reproduce human grades
-better. On the corresponding grade reconstruction, the score-based model
-reached kappa 0.878, compared with 0.687 for RankNet and 0.726 for the residual
-form. The current prompt study therefore examines the quality of the judgments
-before any decision about collecting more comparison pairs.</p>
+better. On the corresponding first-snapshot grade reconstruction, the
+score-based model reached kappa 0.878, compared with 0.687 for RankNet and
+0.726 for the residual form. The current prompt study therefore examines the
+quality of the judgments before any decision about collecting more comparison
+pairs.</p>
 <p><span id="public-code-and-further-evidence"></span></p>
 <h2>Public Code and Further Evidence</h2>
 <p>The <a href="/code/">public research-code browser</a> presents the source used by this
@@ -104,6 +137,8 @@ site. The repository is also available from the
 <a href="https://codeberg.org/paunchygent/huleedu-research-code">HuleEdu research-code project on Codeberg</a>.
 The <a href="/evidence/ellipse-cj-ranknet-probe/">RankNet evidence page</a> explains the
 comparative-learning result in more detail.</p>
+<p><a href="https://arxiv.org/pdf/2602.01747">Choi, Kim, Liermann, Seong, and Huang (2026)</a>
+report the published comparison result cited above.</p>
 </article>
   </main>
 </body>

@@ -8,12 +8,20 @@ human scores.
 
 <span id="full-acquisition-result"></span>
 
-## Current Full Result
+## Current Acquired Evidence
 
-The later experiment used 25,000 comparative-judgment pairs across 5,470
-ELLIPSE essays. Its held-out pair evaluation contained 1,650 comparisons. The
-final refit used all 25,000 pairs, but the values below come from the held-out
-evaluation rather than that refit.
+The current research pool contains 50,000 unordered comparative-judgment pairs
+across 5,470 ELLIPSE essays. Each pair was judged in both A/B orientations,
+giving 100,000 model-judge decisions. The first acquisition supplied 25,000
+pairs and a later adaptive acquisition supplied another 25,000.
+
+### Held-Out Result From the First Acquisition
+
+The held-out metrics below come from the first 25,000-pair snapshot. Its pair
+evaluation contained 1,650 held-out pairs. The first-stage final refit used all
+25,000 pairs, but the values below come from the held-out evaluation rather
+than that refit. They do not describe a fresh held-out evaluation of the full
+50,000-pair pool.
 
 | Estimate | Pair log loss | Pair accuracy | Grade agreement | High-grade severe errors |
 | --- | ---: | ---: | ---: | ---: |
@@ -21,7 +29,7 @@ evaluation rather than that refit.
 | RankNet trained from comparative judgments | 0.3503 | 0.8303 | 0.6868 | 34.97% |
 | RankNet adjustment to the score-based ordering | **0.3482** | **0.8348** | 0.7260 | 30.42% |
 
-The larger experiment confirms that the model judge's decisions contain a
+That first-stage experiment confirms that the model judge's decisions contain a
 strong and learnable signal. Both RankNet estimates predicted those decisions
 better than the score-based model. They did not reconstruct the
 human grades as well, particularly at the high end. RankNet is therefore a
