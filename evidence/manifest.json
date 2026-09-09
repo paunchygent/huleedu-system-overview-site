@@ -1,6 +1,26 @@
 {
   "documents": [
     {
+      "slug": "current-essay-scorers",
+      "title": "Current essay scorers and official evaluation",
+      "import": false,
+      "sourceRepo": "huleedu",
+      "sourceRevision": "9bdaf7560c4766da10bf89195d4e72cf0779b5fc",
+      "sourcePath": "docs/backlog/tasks/task-hule-23-10-01-run-the-full-canonical-whitebox-embedding-and-linear-cj-train-test-evaluation.md",
+      "supportingSources": [
+        {
+          "sourceRepo": "huleedu",
+          "sourceRevision": "9bdaf7560c4766da10bf89195d4e72cf0779b5fc",
+          "sourcePath": "docs/backlog/tasks/task-hule-23-10-04-reproduce-the-published-scorer-recipes-through-outer-fold-evaluation.md"
+        },
+        {
+          "sourceRepo": "huleedu",
+          "sourceRevision": "9bdaf7560c4766da10bf89195d4e72cf0779b5fc",
+          "sourcePath": "docs/reference/ref-hule-research-ellipse-cj-inductive-ranknet-and-fusion-experiment-synthesis-ellipse-cj-inductive-ranknet-and-fusion-experiment-synthesis.md"
+        }
+      ]
+    },
+    {
       "slug": "accepted-correction-scorers",
       "title": "Accepted correction treatment and scorers",
       "import": false,
@@ -84,29 +104,21 @@
       "sourcePath": "docs/reference/ref-hule-research-ellipse-distribution-overlap-map-and-tail-data-strategy-survey-ellipse-distribution-overlap-map-and-tail-data-strategy-survey-part-01.md"
     },
     {
-      "slug": "comparative-judgment-fusion",
-      "title": "Comparative judgment and scorer agreement",
-      "import": false,
-      "sourceRepo": "huleedu",
-      "sourceRevision": "3ffeb7353c715faaf3b7897b4a38a46081bbba9e",
-      "sourcePath": "docs/reference/ref-hule-research-task-hule-18-02-23-cj-aes-fusion-results-task-hule-18-02-23-cj-aes-fusion-results.md"
-    },
-    {
       "slug": "ellipse-cj-ranknet-probe",
       "title": "Learning from comparative-judgment decisions",
       "import": false,
       "sourceRepo": "huleedu",
-      "sourceRevision": "f3115b95daaeb7f562abaf6ba786a140a21cf54f",
+      "sourceRevision": "9bdaf7560c4766da10bf89195d4e72cf0779b5fc",
       "sourcePath": "docs/reference/ref-hule-research-ellipse-cj-inductive-ranknet-and-fusion-experiment-synthesis-ellipse-cj-inductive-ranknet-and-fusion-experiment-synthesis.md",
       "supportingSources": [
         {
           "sourceRepo": "huleedu",
-          "sourceRevision": "f3115b95daaeb7f562abaf6ba786a140a21cf54f",
+          "sourceRevision": "9bdaf7560c4766da10bf89195d4e72cf0779b5fc",
           "sourcePath": "docs/backlog/tasks/task-hule-23-10-01-run-the-full-canonical-whitebox-embedding-and-linear-cj-train-test-evaluation.md"
         },
         {
           "sourceRepo": "huleedu",
-          "sourceRevision": "f3115b95daaeb7f562abaf6ba786a140a21cf54f",
+          "sourceRevision": "9bdaf7560c4766da10bf89195d4e72cf0779b5fc",
           "sourcePath": "docs/backlog/tasks/task-hule-23-10-04-reproduce-the-published-scorer-recipes-through-outer-fold-evaluation.md"
         }
       ]

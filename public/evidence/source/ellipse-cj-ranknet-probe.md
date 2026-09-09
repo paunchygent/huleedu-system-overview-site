@@ -1,4 +1,4 @@
-## Question
+## Research Question
 
 Comparative judgment records which of two essays a model judge considers
 better. RankNet asks whether those decisions contain a stable pattern that can
@@ -6,26 +6,9 @@ be learned from essay representations and applied to new essays. Grade
 agreement asks a separate question: whether the learned ordering matches the
 human scores.
 
-## Initial Essay-Disjoint Result
-
-The first experiment used one ELLIPSE writing task. It trained on 4,500
-comparisons among 282 essays and tested on 3,000 comparisons among 185
-different essays. Both used the same essay representation.
-
-| Estimate | Pair log loss | Pair accuracy | Grade agreement |
-| --- | ---: | ---: | ---: |
-| Score-based model | 0.5366 | 0.7193 | **0.7999** |
-| RankNet trained from comparative judgments | **0.4968** | 0.7543 | 0.7131 |
-| RankNet adjustment to the score-based ordering | 0.5061 | **0.7577** | 0.7349 |
-
-The genuine comparative decisions improved prediction of held-out pair
-choices. A control trained from directions derived from the human grades
-did not, so the result did not arise merely from changing the training format.
-The score-based model remained closer to the human grades.
-
 <span id="full-acquisition-result"></span>
 
-## Full Acquisition Result
+## Current Full Result
 
 The later experiment used 25,000 comparative-judgment pairs across 5,470
 ELLIPSE essays. Its held-out pair evaluation contained 1,650 comparisons. The
@@ -49,16 +32,6 @@ The validation log loss improved as the fit budget grew from 25 to 100 percent,
 but the uncertainty interval for the final increase included zero. The result
 does not establish that acquiring more pairs would improve the learned signal.
 
-## Current Scorer Comparison
-
-The subsequent full train/test evaluation kept embeddings, transparent
-features, and linear RankNet separate until final combination. Embeddings-only
-reached 0.7498 grade agreement on all 2,567 official-test essays. Linear
-RankNet reached 0.6561. Their three-way combination reached 0.7510 and reduced
-average and severe error, while increasing high-grade severe errors. The
-comparison supports examining several outcomes rather than treating one
-aggregate statistic as a decision.
-
 ## Interpretation
 
 The next question concerns the comparative decisions themselves. Gemma was
@@ -69,5 +42,8 @@ without obscuring performance elsewhere. It should report the evidence by
 score region and leave every conclusion, later trial, and acquisition decision
 to human assessment.
 
-The complete retained analysis is recorded in HuleEdu revision
-[`f3115b95daaeb7f562abaf6ba786a140a21cf54f`](https://github.com/paunchygent/huleedu/blob/f3115b95daaeb7f562abaf6ba786a140a21cf54f/docs/reference/ref-hule-research-ellipse-cj-inductive-ranknet-and-fusion-experiment-synthesis-ellipse-cj-inductive-ranknet-and-fusion-experiment-synthesis.md).
+The [current scorer evidence](/evidence/current-essay-scorers/) places this
+result beside the official whitebox and embeddings evaluation. The
+[public research-code browser](/code/) and
+[Codeberg repository](https://codeberg.org/paunchygent/huleedu-research-code)
+provide the corresponding public source.

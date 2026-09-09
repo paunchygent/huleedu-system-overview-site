@@ -21,7 +21,7 @@
 </head>
 <body>
 <h1 id="huleedu-the-essay-scoring-system">HuleEdu: The Essay-Scoring System</h1>
-<div class="meta">Last updated <time id="last-updated" datetime="2026-09-09">September 9, 2026</time>.</div>
+<div class="meta">Last updated <time id="last-updated" datetime="2026-09-10">September 10, 2026</time>.</div>
 
 <nav class="document-links" aria-label="Research code"><a href="/code/">Browse the research code <span aria-hidden="true">→</span></a><a href="https://codeberg.org/paunchygent/huleedu-research-code">Codeberg repository <span aria-hidden="true">↗</span></a></nav>
 
@@ -37,200 +37,70 @@
 <p>The second collection is private Swedish research material rather than a public dataset. It contains <a href="/evidence/cohort-overlap/#swedish-course-distributions-on-the-ellipse-scale">281 prompt-resolvable essays</a> written by my own upper-secondary students in English 5, English 6, and English 7, together with the assessment exemplars associated with their national tests. These courses are now named English 1, English 2, and English 3, so both naming systems occur in the retained material. The essays use anonymous identifiers; only my separate private records connect them to individual students.</p>
 <p>ELLIPSE provides thousands of essays, each rated twice by trained raters, so it is the material the methods learn from. The Swedish essays do not have comparable double-rated reference scores, and 281 essays are far too few to learn from. They therefore serve a different purpose by providing transfer evidence: evidence about whether a method learned from one population also applies to another. The system learns nothing from the Swedish essays.</p>
 <h2 id="how-a-score-is-produced">How a Score Is Produced</h2>
-<p>The system estimates essay quality through three separate methods. The feature-based scorer and hybrid scorer each produce a score for one essay, while comparative judgment ranks essays from pairwise decisions. Figure 1 shows how the three methods produce separate outputs that can be compared or combined.</p>
+<p>The current research compares three separate scorers. Each produces its own estimate, so its contribution and failure pattern remain visible.</p>
 <div class="figure">
-
-<svg aria-label="Diagram of the three scoring methods" height="460" role="img" viewbox="0 0 760 460" width="760" xmlns="http://www.w3.org/2000/svg">
-<g font-family="Verdana, 'DejaVu Sans', sans-serif">
-<!-- Method labels -->
-<text fill="#111111" font-size="13" font-weight="700" x="120" y="40">The feature-based scorer</text>
-<text fill="#111111" font-size="13" font-weight="700" x="120" y="180">The hybrid scorer</text>
-<text fill="#111111" font-size="13" font-weight="700" x="120" y="320">Comparative judgment</text>
-<!-- Essay document shape (feeds the two scorers) -->
-<path d="M 20 116 L 72 116 L 88 132 L 88 204 L 20 204 Z" fill="#ffffff" stroke="#111111" stroke-width="1.5"></path>
-<path d="M 72 116 L 72 132 L 88 132" fill="none" stroke="#111111" stroke-width="1.5"></path>
-<line stroke="#bbbbbb" stroke-width="1.5" x1="28" x2="80" y1="148" y2="148"></line>
-<line stroke="#bbbbbb" stroke-width="1.5" x1="28" x2="80" y1="160" y2="160"></line>
-<line stroke="#bbbbbb" stroke-width="1.5" x1="28" x2="80" y1="172" y2="172"></line>
-<text fill="#111111" font-size="12" text-anchor="middle" x="54" y="222">one essay</text>
-<!-- Arrows from the essay to the two scorers -->
-<path d="M 88 150 L 104 150 L 104 96 L 110 96" fill="none" stroke="#1f77b4" stroke-width="1.5"></path>
-<polygon fill="#1f77b4" points="120,96 110,91 110,101"></polygon>
-<path d="M 88 176 L 104 176 L 104 214 L 110 214" fill="none" stroke="#1f77b4" stroke-width="1.5"></path>
-<polygon fill="#1f77b4" points="120,214 110,209 110,219"></polygon>
-<!-- Feature-based scorer: 30 named measures -->
-<rect fill="#f1f1f1" height="96" rx="0" stroke="#111111" stroke-width="1.5" width="180" x="120" y="50"></rect>
-<text fill="#111111" font-size="12" font-weight="700" x="130" y="68">30 named measures</text>
-<text fill="#555555" font-size="12" x="130" y="86">errors per 100 words</text>
-<text fill="#555555" font-size="12" x="130" y="103">sentence-structure depth</text>
-<text fill="#555555" font-size="12" x="130" y="120">vocabulary variety</text>
-<text fill="#555555" font-size="12" x="130" y="137">organization</text>
-<line stroke="#1f77b4" stroke-width="1.5" x1="300" x2="312" y1="98" y2="98"></line>
-<polygon fill="#1f77b4" points="322,98 312,93 312,103"></polygon>
-<rect fill="#ffffff" height="52" rx="0" stroke="#111111" stroke-width="1.5" width="176" x="322" y="72"></rect>
-<text fill="#111111" font-size="12" font-weight="700" text-anchor="middle" x="410" y="93">small regression model</text>
-<text fill="#555555" font-size="12" text-anchor="middle" x="410" y="111">(learned weights)</text>
-<line stroke="#1f77b4" stroke-width="1.5" x1="498" x2="510" y1="98" y2="98"></line>
-<polygon fill="#1f77b4" points="520,98 510,93 510,103"></polygon>
-<rect fill="#e0e0e0" height="36" rx="0" stroke="#111111" stroke-width="1.5" width="80" x="520" y="80"></rect>
-<text fill="#111111" font-size="12" font-weight="700" text-anchor="middle" x="560" y="103">score</text>
-<!-- Hybrid scorer: embedding and measures -->
-<rect fill="#f1f1f1" height="52" rx="0" stroke="#111111" stroke-width="1.5" width="180" x="120" y="190"></rect>
-<text fill="#111111" font-size="12" font-weight="700" text-anchor="middle" x="210" y="211">language model reading</text>
-<text fill="#555555" font-size="12" text-anchor="middle" x="210" y="229">768 numbers (embedding)</text>
-<rect fill="#ffffff" height="30" rx="0" stroke="#bbbbbb" stroke-width="1.5" width="180" x="120" y="252"></rect>
-<text fill="#111111" font-size="12" text-anchor="middle" x="210" y="272">+ 36 scalar measures</text>
-<path d="M 300 216 L 306 216 L 306 236 L 312 236" fill="none" stroke="#1f77b4" stroke-width="1.5"></path>
-<path d="M 300 267 L 306 267 L 306 236" fill="none" stroke="#1f77b4" stroke-width="1.5"></path>
-<polygon fill="#1f77b4" points="322,236 312,231 312,241"></polygon>
-<rect fill="#ffffff" height="52" rx="0" stroke="#111111" stroke-width="1.5" width="176" x="322" y="210"></rect>
-<text fill="#111111" font-size="12" font-weight="700" text-anchor="middle" x="410" y="231">small regression model</text>
-<text fill="#555555" font-size="12" text-anchor="middle" x="410" y="249">(learned weights)</text>
-<line stroke="#1f77b4" stroke-width="1.5" x1="498" x2="510" y1="236" y2="236"></line>
-<polygon fill="#1f77b4" points="520,236 510,231 510,241"></polygon>
-<rect fill="#e0e0e0" height="36" rx="0" stroke="#111111" stroke-width="1.5" width="80" x="520" y="218"></rect>
-<text fill="#111111" font-size="12" font-weight="700" text-anchor="middle" x="560" y="241">score</text>
-<!-- Comparative judgment: essay pairs -->
-<path d="M 20 336 L 60 336 L 72 348 L 72 402 L 20 402 Z" fill="#ffffff" stroke="#111111" stroke-width="1.5"></path>
-<path d="M 34 328 L 74 328 L 86 340 L 86 394 L 76 394" fill="none" stroke="#111111" stroke-width="1.5"></path>
-<text fill="#111111" font-size="12" text-anchor="middle" x="53" y="420">essay pairs</text>
-<line stroke="#1f77b4" stroke-width="1.5" x1="88" x2="110" y1="366" y2="366"></line>
-<polygon fill="#1f77b4" points="120,366 110,361 110,371"></polygon>
-<rect fill="#f1f1f1" height="64" rx="0" stroke="#111111" stroke-width="1.5" width="180" x="120" y="334"></rect>
-<text fill="#111111" font-size="12" font-weight="700" text-anchor="middle" x="210" y="356">model judge picks the</text>
-<text fill="#111111" font-size="12" font-weight="700" text-anchor="middle" x="210" y="373">better of two</text>
-<text fill="#555555" font-size="12" text-anchor="middle" x="210" y="390">repeated over many pairs</text>
-<line stroke="#1f77b4" stroke-width="1.5" x1="300" x2="312" y1="366" y2="366"></line>
-<polygon fill="#1f77b4" points="322,366 312,361 312,371"></polygon>
-<rect fill="#ffffff" height="44" rx="0" stroke="#111111" stroke-width="1.5" width="176" x="322" y="344"></rect>
-<text fill="#111111" font-size="12" font-weight="700" text-anchor="middle" x="410" y="371">Bradley-Terry ranking</text>
-<line stroke="#1f77b4" stroke-width="1.5" x1="498" x2="510" y1="366" y2="366"></line>
-<polygon fill="#1f77b4" points="520,366 510,361 510,371"></polygon>
-<rect fill="#e0e0e0" height="36" rx="0" stroke="#111111" stroke-width="1.5" width="80" x="520" y="348"></rect>
-<text fill="#111111" font-size="12" font-weight="700" text-anchor="middle" x="560" y="371">rank</text>
-<text fill="#555555" font-size="12" font-style="italic" x="330" y="410">comparative judgment is not trained on the human scores</text>
-<!-- Convergence -->
-<path d="M 600 98 L 616 98 L 616 190 L 622 190" fill="none" stroke="#1f77b4" stroke-width="1.5"></path>
-<polygon fill="#1f77b4" points="632,190 622,185 622,195"></polygon>
-<path d="M 600 236 L 622 236" fill="none" stroke="#1f77b4" stroke-width="1.5"></path>
-<polygon fill="#1f77b4" points="632,236 622,231 622,241"></polygon>
-<path d="M 600 366 L 616 366 L 616 282 L 622 282" fill="none" stroke="#1f77b4" stroke-width="1.5"></path>
-<polygon fill="#1f77b4" points="632,282 622,277 622,287"></polygon>
-<rect fill="#e0e0e0" height="152" rx="0" stroke="#111111" stroke-width="1.5" width="116" x="632" y="160"></rect>
-<text fill="#111111" font-size="12" font-weight="700" text-anchor="middle" x="690" y="216">comparison and</text>
-<text fill="#111111" font-size="12" font-weight="700" text-anchor="middle" x="690" y="234">combination</text>
-<text fill="#111111" font-size="12" text-anchor="middle" x="690" y="252">(triangulation)</text>
-</g>
-</svg>
-
-<div class="figure-caption">
-
-<p><strong>Figure 1. How a score is produced.</strong> The feature-based and hybrid scorers process one essay at a time, while comparative judgment processes essay pairs. Each method produces its own output. The outputs are compared or combined only after all three methods have finished. Comparative judgment is not trained on the human scores.</p>
-</div>
-
-</div>
-
-<h3 id="the-feature-based-scorer">The Feature-Based Scorer</h3>
-<p>The feature-based scorer estimates essay quality from <a href="/evidence/scorer-feature-inventory/#production-feature-inventory">30 named linguistic measures</a>. These measures describe accuracy, sentence structure, vocabulary, task relevance, and organization. The complete feature inventory explains how each measure is calculated.</p>
-<p>A regression model learns how the measures relate to the human scores in ELLIPSE and combines them into one estimate for each essay. Because the measures retain their individual meanings, their contributions to an estimate can be inspected.</p>
-<h3 id="the-hybrid-scorer">The Hybrid Scorer</h3>
-<p>The hybrid scorer combines named linguistic measures with an embedding produced by DeBERTa-v3. The embedding represents the whole essay as 768 numbers. A regression model learns from the human-scored ELLIPSE essays how to combine this representation with <a href="/evidence/scorer-feature-inventory/#production-feature-inventory">36 scalar measures</a> and produce one estimate.</p>
-<p>The hybrid scorer agrees more closely with the ELLIPSE human scores than the feature-based scorer does. However, the individual numbers in the embedding do not have named linguistic meanings. Comparing the two scorers therefore separates what can be achieved with defined linguistic measures from what is gained by adding a whole-essay representation.</p>
-<h3 id="comparative-judgment">Comparative Judgment</h3>
-<p><a href="https://link.springer.com/article/10.3758/s13428-025-02744-w" class="external-link" target="_blank" rel="noopener noreferrer">Comparative judgment</a> estimates relative essay quality through pairwise decisions. A judge selects the stronger essay in each pair, after which a Bradley-Terry model uses the pattern of decisions to place the essays on a shared ranking.</p>
-<p>In the current research system, the judge is a large language model. The method does not use the linguistic measures, essay embeddings, or ELLIPSE grades. Teacher panels can use the same procedure to establish the human reference against which the model judge is evaluated. Because comparative judgment produces a ranking, it can also represent differences between essays that receive the same grade.</p>
-<h2 id="how-i-know-whether-it-works">How I Know Whether It Works</h2>
-<p>Models are evaluated on essays that were excluded from training. The primary evaluation also excludes complete writing tasks. This tests whether a scorer can assess essays written for an unfamiliar task instead of relying on topic-specific patterns. A separate portion of the official ELLIPSE test partition remains sealed until declared evaluation checkpoints.</p>
-<p>Results are reported with quadratic weighted kappa and mean absolute error. Quadratic weighted kappa gives greater weight to larger differences between predicted and human scores. Mean absolute error reports the average difference in scale points. Together, they describe agreement across the scale and the typical size of an error.</p>
-<p>The <a href="/evidence/human-rater-agreement/#test-and-human-reference-roles">two trained ELLIPSE raters have a quadratic weighted kappa of about 0.58 across the double-rated essays</a>. The scorers are evaluated against the raters' combined score, so this value is not a ceiling for model agreement. It establishes that the reference scores contain variation between human judgments.</p>
-<p><a href="/evidence/length-inclusion/#findings-and-interpretation">Few ELLIPSE essays occur near the ends of the scoring scale</a>. <a href="/evidence/scorer-feature-inventory/#where-the-current-errors-are">On the official test partition, the hybrid scorer overestimated essays scored 1 or 2 by an average of 0.240 points. It underestimated essays scored 4 or 5 by 0.244 points, and essays scored 4.5 or 5 by 0.390 points.</a> <a href="/evidence/scorer-feature-inventory/#what-the-counterfactual-tests-add">Counterfactual tests</a> improved separation between high-scoring and middle-scoring essays by changing the effective influence of existing inputs, although overall accuracy did not improve. The current scorer therefore uses some available information at the upper end inefficiently.</p>
-<p>ELLIPSE provides an official training partition and test partition, which allows comparison with published systems evaluated on the same material. In August 2026, the frozen HuleEdu scorers were evaluated once on <a href="/evidence/official-test-benchmark/#full-2-567-row-result">2,567 of the 2,571 official test essays</a>. The hybrid scorer achieved a quadratic weighted kappa of 0.756 with the broader training set described later in this document and 0.744 without it. Its mean absolute error was 0.30 scale points.</p>
-<p>Choi et al. (2026) report a quadratic weighted kappa of 0.726 on the official partition. <a href="/evidence/official-test-benchmark/#raw-inclusive-hybrid-architecture-and-provenance">Their system differs from HuleEdu in its training data and model design</a>. The comparison therefore benchmarks two complete systems on the same test partition rather than isolating one modeling choice. The HuleEdu results reported here come from the hybrid scorer without comparative judgment.</p>
-<h2 id="open-research">Open Research</h2>
-<p>The sections below distinguish completed changes from the research questions that remain open.</p>
-<h3 id="verified-corrections-for-second-language-errors">Verified Corrections for Second-Language Errors</h3>
-<p>Ordinary spelling and grammar checkers miss some errors that are typical of second-language writing, and some proposed corrections change the writer's meaning. I therefore use <a href="/evidence/accepted-correction-scorers/#accepted-correction-semantics">one cumulative correction treatment</a>: eligible LanguageTool repairs are combined with validated exact-span lexical repairs for errors that ordinary tools could not recover. Only safe, single-token lexical pairs enter the durable dictionary. Grammar or syntax changes, compounds, ambiguous contextual substitutions, and multi-token rewrites remain outside it. Once a pair has been accepted, applying it is a deterministic lookup that involves no model call.</p>
-<p>An applied correction still counts as evidence of an error in the essay. The repaired text feeds only the measures that require grammatical analysis, while the fixed whole-essay representation continues to use the original unrepaired essay. This preserves both the error evidence and the writer's original text.</p>
-<p><a href="/evidence/accepted-correction-scorers/#story-48-scorer-comparison">The cumulative correction method was evaluated</a> on 5,470 training essays and tested once on 2,567 official-test essays. On the official test, the transparent scorer reached 0.649 agreement and an average error of 0.388 scale points, while the hybrid scorer reached 0.749 agreement and an average error of 0.317 scale points.</p>
-<p><a href="/evidence/accepted-correction-scorers/#story-50-accepted-package-promotion">The evaluated correction method was then adopted in the current scorers</a>. This adoption reused the already tested methods and did not produce a second set of evaluation results.</p>
-<h3 id="broadening-the-training-set">Broadening the Training Set</h3>
-<p>The <a href="https://github.com/paunchygent/huleedu/blob/f3115b95daaeb7f562abaf6ba786a140a21cf54f/docs/backlog/tasks/task-hule-23-10-01-run-the-full-canonical-whitebox-embedding-and-linear-cj-train-test-evaluation.md#experiment-result">current full evaluation</a> used 5,468 training essays and all 2,567 official-test essays. The embeddings-only score reached 0.7498 agreement and the transparent scorer 0.6553. A separate <a href="https://github.com/paunchygent/huleedu/blob/f3115b95daaeb7f562abaf6ba786a140a21cf54f/docs/backlog/tasks/task-hule-23-10-04-reproduce-the-published-scorer-recipes-through-outer-fold-evaluation.md#result">five-fold reproduction</a> reached 0.7520 and 0.6689. The published grade mapping outperformed the discarded alternative on agreement in every fold, although the alternative reduced some average and severe errors. The mapping therefore changes the balance among outcomes; no single statistic settles that choice.</p>
-<h3 id="comparative-judgment-and-relative-quality">Comparative Judgment and Relative Quality</h3>
-<p>The score-based models learn from the grades assigned to individual essays. Those grades place essays in broad bands, whereas comparative judgment records which of two essays is better written. It can therefore preserve differences between essays that receive the same grade.</p>
-<p>The current full evaluation kept the embeddings-only, transparent, and linear RankNet estimates separate until the final calculation. On the official test, embeddings-only reached 0.7498 agreement with the human scores. Linear RankNet reached 0.6561. Combining all three reached 0.7510, reduced average error from 0.318 to 0.310, and reduced errors of at least one point from 9.2 to 8.2 percent. Its high-score severe-error rate increased from 9.9 to 11.8 percent. RankNet added a small overall improvement, but not an improvement across every part of the scale.</p>
-<p><a href="/evidence/ellipse-cj-ranknet-probe/#full-acquisition-result">The full RankNet experiment</a> used 25,000 comparison pairs across 5,470 essays. On held-out comparisons, the ordinary score-based model reached 0.746 accuracy and 0.500 pair log loss. RankNet trained from the model judge's decisions reached 0.830 accuracy and 0.350 log loss; retaining the score-based ordering as a fixed starting point reached 0.835 and 0.348. The signal is therefore stable enough to predict the judge's choices substantially better than the score-based model.</p>
-<p>This result concerns agreement with the model judge. The score-based model still reconstructed the human grades more closely. Its grade agreement was 0.878, compared with 0.687 for RankNet alone and 0.726 when RankNet adjusted the score-based ordering. The learning curve also did not establish that another acquisition would improve the result. More comparison pairs should therefore wait until the quality of the judgments themselves has been examined.</p>
-<p>A separate evaluation helps locate that question. Gemma judged 760 pairs from four writing tasks, with each pair shown in both orders. It agreed with the higher human grade in 86.0 percent of non-tied judgments and 71.7 percent of half-grade comparisons. Its clearest weakness occurred between 2.0 and 2.5, while its middle and upper-band judgments were more stable overall. This pattern supports a small prompt experiment using the existing comparisons: retain the current prompt as the baseline, test two simple alternatives that explain relevant second-language writing qualities more clearly, and report low-, middle-, high-, and whole-range results. Human assessment will decide whether any change improves the evidence. The experiment will contain no automatic winner, advancement rule, or acquisition trigger.</p>
-<h3 id="linking-the-ellipse-scale-to-the-swedish-course-continuum">Linking the ELLIPSE Scale to the Swedish Course Continuum</h3>
-<p>ELLIPSE scores are defined for one population of learners in the United States. Whether they order Swedish upper-secondary essays sensibly is an open question, and it is the question the <a href="/evidence/cohort-overlap/#swedish-course-distributions-on-the-ellipse-scale">281 scored Swedish essays</a> exist to probe. The retained experiment places the anonymous classroom essays described earlier on ELLIPSE's 1-to-5 scale. The ELLIPSE midpoint is 3. <a href="/evidence/cohort-overlap/#swedish-course-distributions-on-the-ellipse-scale">English 5 cohort medians are roughly 3.2 to 3.5, English 6 medians are 3.9 to 4.1, and the usable English 7 cohort median is about 4.3.</a> The difference is largest between English 5 and English 6 and smaller between English 6 and English 7. These are classroom cohorts, not the separate official anchor essays. This public comparison uses English 7 VT2017 because the later sample is too small.</p>
-<p>The English 7 distance is substantial on this scale. <a href="/evidence/cohort-overlap/#swedish-course-distributions-on-the-ellipse-scale">Only about one in twenty ELLIPSE predictions are 4 or higher, compared with about two in three to three in four predictions for English 7 VT2017.</a> This is why a difference of about 1.3 scale points matters: the English 7 cohort is concentrated in a region that is only the thin upper tail of the ELLIPSE predictions.</p>
-<div class="figure">
-
-<div class="table-scroll" hidden="">
 
 <table>
 <thead>
 <tr>
-<th>Course level and cohort</th>
-<th>Essays</th>
-<th>Transparent median</th>
-<th>Hybrid median</th>
-<th>Transparent at 4+</th>
-<th>Hybrid at 4+</th>
+<th>Scorer</th>
+<th>Evidence used</th>
+<th>Output</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>English 5 level, VT2026 (registered as English 1)</td>
-<td>22</td>
-<td>3.246</td>
-<td>3.379</td>
-<td>9.1%</td>
-<td>18.2%</td>
+<td>Pure-feature whitebox</td>
+<td>30 named measures of accuracy, sentence structure, vocabulary, relevance, and organization</td>
+<td>estimated grade</td>
 </tr>
 <tr>
-<td>English 5 level, VT2017</td>
-<td>46</td>
-<td>3.523</td>
-<td>3.512</td>
-<td>4.3%</td>
-<td>23.9%</td>
+<td>Embeddings</td>
+<td>one 768-number representation of the complete essay</td>
+<td>estimated grade</td>
 </tr>
 <tr>
-<td>English 6 level, VT2023 A</td>
-<td>60</td>
-<td>3.917</td>
-<td>3.960</td>
-<td>38.3%</td>
-<td>48.3%</td>
-</tr>
-<tr>
-<td>English 6 level, VT2023 B</td>
-<td>62</td>
-<td>4.125</td>
-<td>4.141</td>
-<td>54.8%</td>
-<td>59.7%</td>
-</tr>
-<tr>
-<td>English 7 level, VT2017</td>
-<td>24</td>
-<td>4.264</td>
-<td>4.335</td>
-<td>66.7%</td>
-<td>75.0%</td>
-</tr>
-<tr>
-<td>English 7 level, VT2018</td>
-<td>7 (low n)</td>
-<td>4.147</td>
-<td>4.124</td>
-<td>85.7%</td>
-<td>57.1%</td>
+<td>Linear RankNet</td>
+<td>essay representations learned against pairwise choices made by a model judge</td>
+<td>relative-quality estimate</td>
 </tr>
 </tbody>
 </table>
+<div class="figure-caption">
+
+<p><strong>Figure 1. The three current scorer families.</strong> Whitebox and embeddings learn from human-scored essays. RankNet learns from comparative judgments. Their predictions remain separate during evaluation.</p>
 </div>
+
+</div>
+
+<h3 id="the-pure-feature-whitebox-scorer">The Pure-Feature Whitebox Scorer</h3>
+<p>The whitebox scorer estimates essay quality from <a href="/evidence/scorer-feature-inventory/#production-feature-inventory">30 named linguistic measures</a>. These measures describe accuracy, sentence structure, vocabulary, task relevance, and organization. A regression model learns how they relate to the human scores in ELLIPSE. Because the measures retain their individual meanings, their contributions can be inspected.</p>
+<h3 id="the-embeddings-scorer">The Embeddings Scorer</h3>
+<p>The embeddings scorer uses a whole-essay representation produced by DeBERTa-v3. The representation summarizes the essay as 768 numbers, and a regression model learns how that representation relates to the ELLIPSE human scores. It is evaluated as a separate scorer rather than mixed with the named whitebox measures inside one model.</p>
+<h3 id="the-ranknet-comparative-judgment-scorer">The RankNet Comparative-Judgment Scorer</h3>
+<p><a href="https://link.springer.com/article/10.3758/s13428-025-02744-w" class="external-link" target="_blank" rel="noopener noreferrer">Comparative judgment</a> records which of two essays a judge considers better. RankNet learns the pattern in many such decisions and applies it to essays outside the comparison graph. The current model judge is Gemma 4. Human grades are withheld from the judge and are used later to evaluate how its relative-quality signal aligns with the raters.</p>
+<p>The <a href="/evidence/current-essay-scorers/">current scorer evidence page</a> presents these three methods, their official train-test results, and the calibration evidence in one place.</p>
+<h2 id="how-i-know-whether-it-works">How I Know Whether It Works</h2>
+<p>Models are evaluated on essays that were excluded from training. The primary evaluation also excludes complete writing tasks. This tests whether a scorer can assess essays written for an unfamiliar task instead of relying on topic-specific patterns. A separate portion of the official ELLIPSE test partition remains sealed until declared evaluation checkpoints.</p>
+<p>Results are reported with quadratic weighted kappa and mean absolute error. Quadratic weighted kappa gives greater weight to larger differences between predicted and human scores. Mean absolute error reports the average difference in scale points. Together, they describe agreement across the scale and the typical size of an error.</p>
+<p>The <a href="/evidence/human-rater-agreement/#test-and-human-reference-roles">two trained ELLIPSE raters have a quadratic weighted kappa of about 0.58 across the double-rated essays</a>. The scorers are evaluated against the raters' combined score, so this value is not a ceiling for model agreement. It establishes that the reference scores contain variation between human judgments.</p>
+<p><a href="/evidence/length-inclusion/#findings-and-interpretation">Few ELLIPSE essays occur near the ends of the scoring scale</a>, so results at the lowest and highest grades are less stable than results near the middle. The current official evaluation therefore reports average error and severe errors alongside agreement.</p>
+<p>The <a href="/evidence/current-essay-scorers/#official-train-test-evaluation">current official evaluation</a> fitted the whitebox, embeddings, and linear RankNet scorers on 5,468 admitted training essays and evaluated them on all 2,567 official-test essays. Embeddings reached quadratic weighted kappa 0.7498, whitebox 0.6553, and RankNet 0.6561. These are the current external reference results.</p>
+<h2 id="open-research">Open Research</h2>
+<p>The sections below distinguish completed changes from the research questions that remain open.</p>
+<h3 id="verified-corrections-for-second-language-errors">Verified Corrections for Second-Language Errors</h3>
+<p>Ordinary spelling and grammar checkers miss some errors typical of second-language writing, and some proposed corrections change the writer's meaning. The accepted preparation method therefore combines eligible LanguageTool repairs with validated exact-span lexical repairs. Only safe, single-token lexical pairs enter the durable dictionary. An applied correction still counts as evidence of an error; repaired text feeds only the measures that require grammatical analysis.</p>
+<p>This preparation method is used by the current whitebox scorer. Its current result is reported with the embeddings and RankNet results on the <a href="/evidence/current-essay-scorers/">current scorer evidence page</a>.</p>
+<h3 id="current-official-evaluation">Current Official Evaluation</h3>
+<p>The <a href="/evidence/current-essay-scorers/#official-train-test-evaluation">full train-test evaluation</a> is the current score reference. It used 5,468 training essays and all 2,567 official-test essays with the published split-tail mapping. Embeddings reached 0.7498 agreement, the pure-feature whitebox scorer 0.6553, and linear RankNet 0.6561.</p>
+<p>A <a href="/evidence/current-essay-scorers/#reproduction-of-the-grade-mapping">five-fold reproduction</a> separately tested the published whitebox and embeddings recipes on held-out folds from 5,470 essays. The split-tail mapping reached pooled agreement of 0.7520 for embeddings and 0.6689 for whitebox and exceeded the positive-affine alternative in every fold. The full official train-test result remains the external benchmark.</p>
+<h3 id="comparative-judgment-and-ranknet">Comparative Judgment and RankNet</h3>
+<p>The <a href="/evidence/ellipse-cj-ranknet-probe/#current-full-result">current full RankNet experiment</a> used 25,000 model-judge comparisons across 5,470 essays. On held-out pairs, RankNet reached 0.830 accuracy and 0.350 log loss, compared with 0.746 and 0.500 for the ordinary score-based model. The learned signal is stable for predicting Gemma's choices.</p>
+<p>Agreement with Gemma and agreement with human raters are different outcomes. The score-based model reconstructed human grades more closely: kappa 0.878, compared with 0.687 for RankNet and 0.726 when RankNet adjusted the score-based ordering. Gemma's clearest weakness was around grades 2.0 to 2.5. The current prompt experiment therefore tests whether clearer second-language assessment criteria improve that region while preserving performance elsewhere. It reports evidence by score region and makes no automatic selection or acquisition decision.</p>
+<h3 id="linking-the-ellipse-scale-to-the-swedish-course-continuum">Linking the ELLIPSE Scale to the Swedish Course Continuum</h3>
+<p>ELLIPSE scores are defined for one population of learners in the United States. Whether they order Swedish upper-secondary essays sensibly is an open question, and it is the question the <a href="/evidence/cohort-overlap/#swedish-course-distributions-on-the-ellipse-scale">281 scored Swedish essays</a> exist to probe. The retained experiment places the anonymous classroom essays described earlier on ELLIPSE's 1-to-5 scale. The ELLIPSE midpoint is 3. <a href="/evidence/cohort-overlap/#swedish-course-distributions-on-the-ellipse-scale">English 5 cohort medians are roughly 3.2 to 3.5, English 6 medians are 3.9 to 4.1, and the usable English 7 cohort median is about 4.3.</a> The difference is largest between English 5 and English 6 and smaller between English 6 and English 7. These are classroom cohorts, not the separate official anchor essays. This public comparison uses English 7 VT2017 because the later sample is too small.</p>
+<p>The English 7 distance is substantial on this scale. <a href="/evidence/cohort-overlap/#swedish-course-distributions-on-the-ellipse-scale">Only about one in twenty ELLIPSE predictions are 4 or higher, compared with about two in three to three in four predictions for English 7 VT2017.</a> This is why a difference of about 1.3 scale points matters: the English 7 cohort is concentrated in a region that is only the thin upper tail of the ELLIPSE predictions.</p>
+<div class="figure">
 
 <svg aria-label="ELLIPSE score distribution and Swedish English 5, English 6, and English 7 cohort positions on the same scale" height="400" role="img" viewbox="0 0 760 400" width="760" xmlns="http://www.w3.org/2000/svg">
 <g font-family="Verdana, 'DejaVu Sans', sans-serif">
@@ -281,7 +151,7 @@
 
 </div>
 
-<p>The observed distributions place ELLIPSE and the Swedish cohorts on a shared empirical proficiency continuum. Both scorers placed ELLIPSE closest to the first upper-secondary English course. Across the main Swedish cohorts, the score distributions then shifted upward from the first course through English 6 and English 7, with the same ordering under both scorers. A model trained on ELLIPSE therefore responded to the Swedish essays in the direction expected from increasing writing proficiency. This ordered progression provides evidence of meaningful overlap in the writing proficiency measured across the two populations.</p>
+<p>The earlier transfer analysis placed ELLIPSE closest to the first upper-secondary English course. Across the main Swedish cohorts, the estimated distributions shifted upward from the first course through English 6 and English 7. This provides preliminary evidence that an ELLIPSE-trained scorer responds to the Swedish essays in the direction expected from increasing writing proficiency. It is transfer evidence, not a current scorer benchmark.</p>
 <p>ELLIPSE's lower position is consistent with how its population is defined. It contains designated English learners, who leave that category after reaching the required proficiency. Swedish English courses include all students throughout the school system. ELLIPSE therefore overlaps most closely with the lower Swedish course distribution and falls increasingly below the later courses.</p>
 <p>The existing results support using the ELLIPSE-trained scorers to locate Swedish essay populations on the same empirical scale and to identify where their distributions overlap.</p>
 <h3 id="the-teacher-panel">The Teacher Panel</h3>
@@ -290,7 +160,7 @@
 <p>The teacher panel will establish the Swedish reference scale against which the instrument is evaluated. Its judgments, deliberations, and decisions will be retained so that the meaning and provenance of that scale can be inspected. The scores, rankings, and model comparisons require the same standard of accountability. Their research record must show where essays were processed, what was submitted, which model and interface produced each result, and under what data-handling terms.</p>
 <p>Most essay processing in this project takes place on Hemma, a self-hosted research server under my control. The linguistic measures, whole-essay representations, and regression scores are produced there, as are comparisons made by locally hosted model judges. The essay text remains on Hemma throughout these operations.</p>
 <p>The project has so far processed essay text from two sources. ELLIPSE is a public and anonymized research corpus. The Swedish material consists of de-identified student essays, including the anchor essays used as fixed references in earlier model-judge work. Records connecting essay identifiers to individual students remain separate from the texts used in the research pipeline.</p>
-<p>Although most processing remains local, essay text has been sent to external providers in specific experiments. Earlier comparative-judgment work sent pairs from ELLIPSE to GPT-5.4 through the OpenAI API. Later model-judge work used the same model and API to compare de-identified Swedish essays with anchor essays. Provider-hosted correction experiments used ELLIPSE essays only. The current judge evaluation compares Gemma 4 31B through the OpenRouter API with a version running locally on Hemma.</p>
+<p>Although most processing remains local, essay text has been sent to external providers in specific experiments. Earlier comparative-judgment work sent pairs from ELLIPSE to GPT-5.4 through the OpenAI API. Later model-judge work used the same model and API to compare de-identified Swedish essays with anchor essays. Provider-hosted correction experiments used ELLIPSE essays only. The current prompt evaluation uses Gemma 4 31B through the OpenRouter API on a fixed set of public ELLIPSE comparisons.</p>
 <p>Sending an essay to a hosted language model can easily be understood as copying it into a chat page. In a consumer chat service, a person enters the text directly into the provider's application, where it becomes part of a conversation handled under that service's settings and terms. The external experiments in this project used a different process. They began with prepared research data, from which the pipeline constructed a defined request for a named model and operation. The provider received the resulting request through an API and returned its result to the pipeline. The API did not keep the essay local, but it allowed the research system to determine exactly what was submitted and to record how the result was produced.</p>
 <p>Before such a request was created, the essay text had already been separated from the record that connected it to a student. <a href="/evidence/comparative-judgment-request-shape/#prompt-sections-cj-assessment-service">A comparative-judgment request contained the judging instructions, the writing task, and two essays under anonymous identifiers.</a> <a href="/evidence/student-identity-separation/#retained-contract">The identifier-to-student record remained separate and was not submitted.</a> A provider-hosted correction request contained an ELLIPSE essay and the instructions required for the correction task.</p>
 <p>The interface also determines which terms govern the request. OpenAI states that <a href="https://openai.com/business-data/" class="external-link" target="_blank" rel="noopener noreferrer">API inputs and outputs are not used for model training by default</a>, although <a href="https://platform.openai.com/docs/models/default-usage-policies-by-endpoint" class="external-link" target="_blank" rel="noopener noreferrer">they may remain in abuse-monitoring logs for up to 30 days</a>. The training control available in a personal ChatGPT account applies to conversations entered through the ChatGPT service and does not govern requests sent through the OpenAI API. OpenRouter states that <a href="https://openrouter.ai/docs/guides/privacy/data-collection" class="external-link" target="_blank" rel="noopener noreferrer">it does not store prompts or responses unless the account has enabled their logging or use</a>. Because OpenRouter passes a request to the selected model provider, the data policy of that provider also applies.</p>
@@ -313,7 +183,7 @@
 <rect fill="#ffffff" height="34" rx="0" stroke="#bbbbbb" stroke-width="1.5" width="180" x="44" y="142"></rect>
 <text fill="#111111" font-size="12" text-anchor="middle" x="134" y="163">local language models</text>
 <rect fill="#ffffff" height="34" rx="0" stroke="#bbbbbb" stroke-width="1.5" width="212" x="236" y="142"></rect>
-<text fill="#111111" font-size="12" text-anchor="middle" x="342" y="163">the two scoring models</text>
+<text fill="#111111" font-size="12" text-anchor="middle" x="342" y="163">the three scoring models</text>
 <!-- ELLIPSE text node -->
 <rect fill="#ffffff" height="40" rx="0" stroke="#111111" stroke-width="1.5" width="210" x="44" y="192"></rect>
 <text fill="#111111" font-size="12" text-anchor="middle" x="149" y="216">public ELLIPSE essay text</text>
@@ -365,9 +235,9 @@
 
 </div>
 
-<p>The same prepared request can instead be directed to a model running on Hemma. This is why <span class="term" tabindex="0" data-definition="Published weights make local operation possible, but the model's licence, size, and hardware requirements still determine whether it is practical.">open-weight models</span> matter to the project. They allow the judging method to remain the same while the essay text stays within the local research environment. The current Gemma evaluation uses the same fixed comparisons under provider-hosted and local processing so that their agreement, consistency, processing time, and cost can be compared. The retained record identifies the model, interface, submitted material, and processing environment used in each experiment.</p>
+<p>The same prepared request can instead be directed to a model running on Hemma. This is why <span class="term" tabindex="0" data-definition="Published weights make local operation possible, but the model's licence, size, and hardware requirements still determine whether it is practical.">open-weight models</span> matter to the project. They allow the judging method to remain the same while the essay text stays within the local research environment. Each experiment records the model, interface, submitted material, and processing environment used.</p>
 <h2 id="what-can-be-claimed-today">What Can Be Claimed Today</h2>
-<p>The system can produce essay-quality estimates from three partly distinct methods. In the held-out experiment, their equal average had the strongest point estimate, although paired resampling did not clearly distinguish it from the combined scorer and the combined scorer was stronger on the out-of-fold training essays. On the official ELLIPSE test partition, the hybrid scorer has also agreed with the human raters more closely than a published comparison system (Choi et al., 2026), under the descriptive comparison stated in the section on evaluation. The system's estimates are most reliable in the middle of the 1 to 5 scale, and the weakening at the extremes has been measured and quantified. Its evidence about Swedish student writing is transfer evidence from an American learner corpus, ordered plausibly by course level but not yet anchored to Swedish grading standards. The instrument can therefore support research on assessment, and it cannot yet support assessment decisions, which is the boundary the teacher panel and the exemplar work are designed to test.</p>
+<p>The current evidence supports three distinct scorer families: pure-feature whitebox, embeddings, and RankNet learned from model-judge comparisons. Embeddings has the strongest individual agreement with the official ELLIPSE test scores. RankNet captures Gemma's comparative choices reliably, but those choices do not yet reconstruct the human grades as closely. Performance is strongest in the middle of the 1-to-5 scale and weaker at the tails. Evidence about Swedish student writing remains transfer evidence from an American learner corpus and is not yet anchored to Swedish grading standards. The instrument can support research on assessment; teacher-panel evidence is still required before it can support assessment decisions.</p>
 <h2 id="cited-work">Cited Work</h2>
 <p>Choi, H., Kim, S., Liermann, W., Seong, J., and Huang, J.-X. (2026). <a href="https://arxiv.org/pdf/2602.01747" class="external-link" target="_blank" rel="noopener noreferrer">Enhancing Automated Essay Scoring With Three Techniques: Two-Stage Fine-Tuning, Score Alignment, and Self-Training</a>. IEEE Access, 14, 117193-117208.</p>
 <p>Kinnear, G., Jones, I., and Davies, B. (2025). <a href="https://link.springer.com/article/10.3758/s13428-025-02744-w" class="external-link" target="_blank" rel="noopener noreferrer">Comparative judgment as a research tool: A meta-analysis of application and reliability</a>. Behavior Research Methods, 57, 222.</p>
