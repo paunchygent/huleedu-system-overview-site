@@ -96,8 +96,20 @@
       "title": "Learning from comparative-judgment decisions",
       "import": false,
       "sourceRepo": "huleedu",
-      "sourceRevision": "8fe970fd37e413ddaf8ad060953887b780e4da83",
-      "sourcePath": "docs/reference/ref-hule-research-ellipse-cj-inductive-ranknet-and-fusion-experiment-synthesis-ellipse-cj-inductive-ranknet-and-fusion-experiment-synthesis.md"
+      "sourceRevision": "f3115b95daaeb7f562abaf6ba786a140a21cf54f",
+      "sourcePath": "docs/reference/ref-hule-research-ellipse-cj-inductive-ranknet-and-fusion-experiment-synthesis-ellipse-cj-inductive-ranknet-and-fusion-experiment-synthesis.md",
+      "supportingSources": [
+        {
+          "sourceRepo": "huleedu",
+          "sourceRevision": "f3115b95daaeb7f562abaf6ba786a140a21cf54f",
+          "sourcePath": "docs/backlog/tasks/task-hule-23-10-01-run-the-full-canonical-whitebox-embedding-and-linear-cj-train-test-evaluation.md"
+        },
+        {
+          "sourceRepo": "huleedu",
+          "sourceRevision": "f3115b95daaeb7f562abaf6ba786a140a21cf54f",
+          "sourcePath": "docs/backlog/tasks/task-hule-23-10-04-reproduce-the-published-scorer-recipes-through-outer-fold-evaluation.md"
+        }
+      ]
     },
     {
       "slug": "human-rater-agreement",

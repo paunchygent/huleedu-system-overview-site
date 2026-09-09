@@ -1,71 +1,73 @@
 ## Question
 
-Scores place essays into a small number of levels. Comparative judgment records
-which of two essays is better and can therefore preserve differences between
-essays that share a score. This experiment asked two separate questions:
+Comparative judgment records which of two essays a model judge considers
+better. RankNet asks whether those decisions contain a stable pattern that can
+be learned from essay representations and applied to new essays. Grade
+agreement asks a separate question: whether the learned ordering matches the
+human scores.
 
-1. Can a model learn from comparative decisions and predict decisions for
-   essays it has not seen before?
-2. Does that learned ordering improve prediction of the human scores?
+## Initial Essay-Disjoint Result
 
-## Experiment
+The first experiment used one ELLIPSE writing task. It trained on 4,500
+comparisons among 282 essays and tested on 3,000 comparisons among 185
+different essays. Both used the same essay representation.
 
-The experiment used comparative judgments from one ELLIPSE writing task. The
-training material contained 282 essays and 4,500 pairwise decisions. The test
-material contained 185 different essays and 3,000 decisions. No test essay or
-test decision was used to train or select a model.
+| Estimate | Pair log loss | Pair accuracy | Grade agreement |
+| --- | ---: | ---: | ---: |
+| Score-based model | 0.5366 | 0.7193 | **0.7999** |
+| RankNet trained from comparative judgments | **0.4968** | 0.7543 | 0.7131 |
+| RankNet adjustment to the score-based ordering | 0.5061 | **0.7577** | 0.7349 |
 
-Four estimates were compared:
+The genuine comparative decisions improved prediction of held-out pair
+choices. A control trained from directions derived from the human grades
+did not, so the result did not arise merely from changing the training format.
+The score-based model remained closer to the human grades.
 
-- the accepted regression scorer trained from human scores;
-- a pairwise model trained from directions derived from those same scores;
-- a pairwise model trained from the genuine comparative judgments; and
-- a pairwise model that used both the regression scorer's ordering and the
-  genuine comparative judgments.
+<span id="full-acquisition-result"></span>
 
-The pairwise models used RankNet. In this experiment, RankNet means a model
-that learns one quality value for each essay from pairwise decisions and uses
-the difference between two values to predict which essay will be preferred.
-All learned models received the same fixed numerical representation of each
-essay, so the comparison changed the training evidence rather than the essay
-information supplied to the model.
+## Full Acquisition Result
 
-## Results
+The later experiment used 25,000 comparative-judgment pairs across 5,470
+ELLIPSE essays. Its held-out pair evaluation contained 1,650 comparisons. The
+final refit used all 25,000 pairs, but the values below come from the held-out
+evaluation rather than that refit.
 
-Lower pair log loss is better. Higher pair accuracy and agreement with human
-scores are better. Mean absolute error is the average distance from the human
-score, so lower is better.
-
-| Estimate | Pair log loss | Pair accuracy | Agreement with human scores | Mean absolute error |
+| Estimate | Pair log loss | Pair accuracy | Grade agreement | High-grade severe errors |
 | --- | ---: | ---: | ---: | ---: |
-| Accepted regression scorer | 0.5366 | 0.7193 | **0.7999** | **0.2514** |
-| Pairwise model trained from score differences | 0.7313 | 0.6907 | 0.7534 | 0.3000 |
-| Pairwise model trained from comparative judgments | **0.4968** | 0.7543 | 0.7131 | 0.2973 |
-| Pairwise model combining regression order and comparative judgments | 0.5061 | **0.7577** | 0.7349 | 0.2892 |
+| Score-based model | 0.5005 | 0.7461 | **0.8782** | **3.85%** |
+| RankNet trained from comparative judgments | 0.3503 | 0.8303 | 0.6868 | 34.97% |
+| RankNet adjustment to the score-based ordering | **0.3482** | **0.8348** | 0.7260 | 30.42% |
 
-The models trained from genuine comparative judgments predicted the held-out
-pair decisions more accurately than the accepted regression scorer. The model
-trained from score-derived pairs did not, which shows that the result was not
-produced merely by changing from single-essay training to pairwise training.
+The larger experiment confirms that the model judge's decisions contain a
+strong and learnable signal. Both RankNet estimates predicted those decisions
+better than the score-based model. They did not reconstruct the
+human grades as well, particularly at the high end. RankNet is therefore a
+stable model of the judge's comparative choices, while disagreement between
+those choices and human grades remains part of the evidence.
 
-The grade-facing result went in the other direction. The accepted regression
-scorer remained strongest both in agreement with the human scores and in
-average error. The comparative judgments therefore contained learnable
-relative-quality information, but this experiment did not show how to turn
-that information into better human-score prediction.
+The validation log loss improved as the fit budget grew from 25 to 100 percent,
+but the uncertainty interval for the final increase included zero. The result
+does not establish that acquiring more pairs would improve the learned signal.
 
-## Limits
+## Current Scorer Comparison
 
-This is one fixed experiment on one ELLIPSE writing task. It does not establish
-transfer across writing tasks, learner populations, or Swedish essays. The
-185-essay test set has now been examined, so further work on the same set is
-exploratory. The result has no uncertainty interval and does not establish
-that RankNet should replace the accepted scorer.
+The subsequent full train/test evaluation kept embeddings, transparent
+features, and linear RankNet separate until final combination. Embeddings-only
+reached 0.7498 grade agreement on all 2,567 official-test essays. Linear
+RankNet reached 0.6561. Their three-way combination reached 0.7510 and reduced
+average and severe error, while increasing high-grade severe errors. The
+comparison supports examining several outcomes rather than treating one
+aggregate statistic as a decision.
 
-The experiment concerns earlier comparative judgments, not the current
-evaluation of open-weight model judges and not the separate human teacher
-panel. It does not select a judge model or contribute to the teacher-mediated
-anchor set.
+## Interpretation
+
+The next question concerns the comparative decisions themselves. Gemma was
+least aligned with human grades around 2.0 to 2.5, while its middle and upper
+comparisons were more stable overall. A small prompt comparison can test
+whether clearer second-language writing criteria improve that lower region
+without obscuring performance elsewhere. It should report the evidence by
+score region and leave every conclusion, later trial, and acquisition decision
+to human assessment.
 
 The complete retained analysis is recorded in HuleEdu revision
-[`8fe970fd37e413ddaf8ad060953887b780e4da83`](https://github.com/paunchygent/huleedu/blob/8fe970fd37e413ddaf8ad060953887b780e4da83/docs/reference/ref-hule-research-ellipse-cj-inductive-ranknet-and-fusion-experiment-synthesis-ellipse-cj-inductive-ranknet-and-fusion-experiment-synthesis.md).
+[`f3115b95daaeb7f562abaf6ba786a140a21cf54f`](https://github.com/paunchygent/huleedu/blob/f3115b95daaeb7f562abaf6ba786a140a21cf54f/docs/reference/ref-hule-research-ellipse-cj-inductive-ranknet-and-fusion-experiment-synthesis-ellipse-cj-inductive-ranknet-and-fusion-experiment-synthesis.md).
