@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Comparative-Judgment Experiments | HuleEdu</title>
+  <link rel="icon" href="/favicon.svg">
+  <link rel="stylesheet" href="/evidence/evidence.css">
+  <link rel="canonical" href="https://research.hule.education/evidence/comparative-judgment-experiments/">
+</head>
+<body>
+  <header class="page-header">
+    <nav class="page-nav" aria-label="Research navigation">
+      <a href="/huleedu-system-overview/"><span aria-hidden="true">←</span> System overview</a>
+      <a href="/code/">Research code <span aria-hidden="true">→</span></a>
+    </nav>
+    <h1>Comparative-Judgment Experiments</h1>
+  </header>
+  <main>
+    <article class="markdown-body"><p>Latest reported comparison completed <strong>September 13, 2026</strong>. These experiments
+measure whether Gemma selects the essay with the higher human score. They
+examine the judgments used to train RankNet.</p>
+<p><span id="parser-stabilized-text-september-13-2026"></span></p>
+<h2>Parser-Stabilized Text — September 13, 2026</h2>
+<p>Gemma compared the same 504 pairs from 396 essays across 18 writing prompts.
+The panel covers human scores from 2.0 to 4.0 and deliberately balances score
+regions. It does not represent their natural frequency in the corpus.</p>
+<table>
+<thead>
+<tr>
+<th>Arm</th>
+<th>Text shown to Gemma</th>
+<th align="right">Agreement with the higher human score</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Full baseline</td>
+<td>Original essay text with the full judging instructions</td>
+<td align="right">76.69%</td>
+</tr>
+<tr>
+<td>Parser-stabilized</td>
+<td>Text prepared for grammatical analysis, with the same judging instructions</td>
+<td align="right">75.96%</td>
+</tr>
+</tbody></table>
+<p>Parser-stabilized text is the exact text stream supplied to the grammatical
+parser after the accepted preparation procedure. That procedure applies
+eligible LanguageTool repairs and validated lexical repairs. Both essays in
+each pair receive the treatment. The experiment tests whether changing the
+text in this way changes the model judge&#39;s choices.</p>
+<p>Each arm contains three repetitions in both A/B orders: 3,024 judgments per
+arm. All planned observations were usable. The model was Gemma 4 31B through
+OpenRouter&#39;s DeepInfra FP8 provider profile.</p>
+<p><span id="difference-and-uncertainty"></span></p>
+<h2>Difference and Uncertainty</h2>
+<p>The parser-stabilized arm was 0.73 percentage points lower than the baseline.
+A bootstrap that resampled complete writing-prompt groups gave a 95% interval
+from <strong>−2.15 to +0.63 percentage points</strong>. The interval includes zero.</p>
+<p>There were 334 changed outcomes: 156 gains and 178 losses relative to the
+baseline. Results across adjacent score regions were mixed:</p>
+<table>
+<thead>
+<tr>
+<th>Human-score comparison</th>
+<th align="right">Full baseline</th>
+<th align="right">Parser-stabilized</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2.0 versus 2.5</td>
+<td align="right">71.67%</td>
+<td align="right">69.26%</td>
+</tr>
+<tr>
+<td>2.5 versus 3.0</td>
+<td align="right">79.07%</td>
+<td align="right">80.37%</td>
+</tr>
+<tr>
+<td>3.0 versus 3.5</td>
+<td align="right">72.78%</td>
+<td align="right">71.48%</td>
+</tr>
+<tr>
+<td>3.5 versus 4.0</td>
+<td align="right">60.93%</td>
+<td align="right">59.81%</td>
+</tr>
+</tbody></table>
+<p>The observed difference does not establish an improvement from this text
+treatment. These results concern the model judge; they do not measure a
+change in the final essay scorer.</p>
+<p><span id="experiment-scope"></span></p>
+<h2>Experiment Scope</h2>
+<p>This page reports the completed comparison between <code>full-baseline</code> and
+<code>full-baseline-parser-stabilized</code>. The broader study includes other instruction
+and rubric conditions and separate mechanism probes. Its completion requires
+separate verification.</p>
+<p><span id="sources"></span></p>
+<h2>Sources</h2>
+<p>Retained record: <code>TASK-HULE-23-10-06</code>, parser-stabilized experiment closeout of
+September 13, 2026, and the corresponding ELLIPSE CJ experiment synthesis.
+The uncertainty estimate uses 2,000 bootstrap resamples, with a complete prompt
+group as the resampling unit.</p>
+<p><a href="/evidence/current-essay-scorers/">Scorer evaluation</a> reports agreement with
+human essay scores. <a href="/evidence/ellipse-cj-ranknet-probe/">RankNet acquisition and performance</a>
+reports the existing pair pool and the effect of different pair budgets.</p>
+</article>
+  </main>
+  <footer class="page-footer">
+    <p class="source-line"><a href="/evidence/source/comparative-judgment-experiments.md">Markdown source</a><span aria-hidden="true"> · </span>Source revision <code>de13c748df4c</code></p>
+  </footer>
+</body>
+</html>

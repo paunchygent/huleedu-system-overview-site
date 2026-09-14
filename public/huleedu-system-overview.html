@@ -21,227 +21,57 @@
 </head>
 <body>
 <h1 id="huleedu-the-essay-scoring-system">HuleEdu: The Essay-Scoring System</h1>
-<div class="meta">Last updated <time id="last-updated" datetime="2026-09-10">September 10, 2026</time>.</div>
+<div class="meta">Page updated <time id="last-updated" datetime="2026-09-14">September 14, 2026</time>. Experiment dates appear with each result.</div>
 
-<nav class="document-links" aria-label="Research code"><a href="/code/">Browse the research code <span aria-hidden="true">→</span></a><a href="https://codeberg.org/paunchygent/huleedu-research-code">Codeberg repository <span aria-hidden="true">↗</span></a></nav>
+<nav class="document-links" aria-label="Research code">
+<a href="https://research.hule.education/code/">Browse the research code</a>
+<a href="https://codeberg.org/paunchygent/huleedu-research-code">Codeberg repository</a>
+</nav>
 
-<hr />
-<h2 id="about-this-document">About This Document</h2>
-<p>The system behind my research has grown past the point where a description in passing works. This document explains what the system is made of, how a score is produced, how I test whether the scores mean anything, and which systems process student text when the instrument runs. It assumes no background in machine learning or programming. The results it mentions are current at the last-updated date shown above, and none of them is final.</p>
-<h2 id="what-the-system-is">What the System Is</h2>
-<p>HuleEdu is a research instrument for developing and evaluating methods that help teachers assess and grade essays written by learners of English in Sweden. It is intended to sort essays, suggest likely grades for straightforward cases, and identify essays that require closer human judgment. Teachers shape the instrument by comparing essays and selecting anchors that represent writing quality in a course or assessment context. These judgments provide the reference standard used to evaluate and calibrate the models. The instrument's assessments must be open to inspection so that teachers can understand and explain them.</p>
-<h2 id="the-essays-the-system-learns-from">The Essays the System Learns From</h2>
-<p>A scoring method must learn from essays that already have trusted human scores, and it needs many of them. The system works with two collections of essays.</p>
-<p>The first collection is <a href="https://github.com/scrosseye/ELLIPSE-Corpus" target="_blank" rel="noopener noreferrer">ELLIPSE</a><span class="external-marker" aria-hidden="true">↗</span>, a public research corpus, or collection of texts assembled for study. It contains roughly 6,500 essays written by school-age learners of English in the United States, each scored independently by two trained human raters on a scale from 1 to 5 in half-point increments. Because the corpus was released in anonymized form for research use, it contains no identifiable students.</p>
-<p>Because two trained raters scored every essay independently, the corpus also shows how often and how far trained raters disagree with each other. That record of human disagreement becomes the benchmark against which the system's agreement must be read, and I return to it in the section on evaluation.</p>
-<p>The second collection is private Swedish research material rather than a public dataset. It contains <a href="/evidence/cohort-overlap/#swedish-course-distributions-on-the-ellipse-scale">281 prompt-resolvable essays</a> written by my own upper-secondary students in English 5, English 6, and English 7, together with the assessment exemplars associated with their national tests. These courses are now named English 1, English 2, and English 3, so both naming systems occur in the retained material. The essays use anonymous identifiers; only my separate private records connect them to individual students.</p>
-<p>ELLIPSE provides thousands of essays, each rated twice by trained raters, so it is the material the methods learn from. The Swedish essays do not have comparable double-rated reference scores, and 281 essays are far too few to learn from. They therefore serve a different purpose by providing transfer evidence: evidence about whether a method learned from one population also applies to another. The system learns nothing from the Swedish essays.</p>
-<h2 id="how-a-score-is-produced">How a Score Is Produced</h2>
-<p>The current research compares three separate scorers. Each produces its own estimate, so its contribution and failure pattern remain visible.</p>
-<div class="figure">
-
+<h2 id="purpose">Purpose</h2>
+<p>HuleEdu is a research instrument for investigating how technology can support teachers who assess English essays in Swedish upper-secondary education. It produces score estimates and comparisons that teachers can inspect and question. Teachers retain responsibility for assessment decisions.</p>
+<p>The planned teacher panel will select anchor essays and discuss their quality. The panel's decisions, reasons, and disagreements will establish a reference against which the instrument can be evaluated.</p>
+<h2 id="data">Data</h2>
+<p>The scorers learn from human-scored essays in the public <a href="https://github.com/scrosseye/ELLIPSE-Corpus">ELLIPSE corpus</a>. Scores range from 1 to 5 in half-point steps. The prepared data contain 5,470 training essays and 2,567 official test essays. Two declared training exclusions leave 5,468 essays for the latest scorer evaluation. Test essays are excluded from training and model selection.</p>
+<p>A separate Swedish collection contains <a href="https://research.hule.education/evidence/cohort-overlap/#english-6-vt2026-data-exclusion">281 scored records representing 224 distinct essay texts</a> from English 5, 6, and 7, now called English 1, 2, and 3. Duplicated registrations are excluded from the classroom comparison. These essays provide evidence about transfer to Swedish learners. They are excluded from scorer training and lack the comparable double-rated reference scores used for ELLIPSE.</p>
+<h2 id="scoring-methods">Scoring Methods</h2>
+<p>Each scorer produces a separate estimate. The combined scorer takes a weighted average of those estimates, a method called late fusion.</p>
 <table>
 <thead>
 <tr>
 <th>Scorer</th>
-<th>Evidence used</th>
-<th>Output</th>
+<th>How it learns</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Pure-feature whitebox</td>
-<td>30 named measures of accuracy, sentence structure, vocabulary, relevance, and organization</td>
-<td>estimated grade</td>
+<td>Whitebox</td>
+<td>Learns from human scores and <a href="https://research.hule.education/evidence/scorer-feature-inventory/#production-feature-inventory">30 named linguistic measures</a> of accuracy, sentence structure, vocabulary, relevance, and organization.</td>
 </tr>
 <tr>
 <td>Embeddings</td>
-<td>one 768-number representation of the complete essay</td>
-<td>estimated grade</td>
+<td>Learns from human scores and a numerical representation of each essay, produced by DeBERTa-v3 on the research server.</td>
 </tr>
 <tr>
 <td>Linear RankNet</td>
-<td>essay representations learned against pairwise choices made by a model judge</td>
-<td>relative-quality estimate</td>
+<td>Learns from pairwise judgments made by Gemma, a language model used as a judge. It estimates relative quality for new essays.</td>
 </tr>
 </tbody>
 </table>
-<div class="figure-caption">
-
-<p><strong>Figure 1. The three current scorer families.</strong> Whitebox and embeddings learn from human-scored essays. RankNet learns from comparative judgments. Their predictions remain separate during evaluation.</p>
-</div>
-
-</div>
-
-<h3 id="the-pure-feature-whitebox-scorer">The Pure-Feature Whitebox Scorer</h3>
-<p>The whitebox scorer estimates essay quality from <a href="/evidence/scorer-feature-inventory/#production-feature-inventory">30 named linguistic measures</a>. These measures describe accuracy, sentence structure, vocabulary, task relevance, and organization. A regression model learns how they relate to the human scores in ELLIPSE. Because the measures retain their individual meanings, their contributions can be inspected.</p>
-<h3 id="the-embeddings-scorer">The Embeddings Scorer</h3>
-<p>The embeddings scorer uses a whole-essay representation produced by DeBERTa-v3. The representation summarizes the essay as 768 numbers, and a regression model learns how that representation relates to the ELLIPSE human scores. It is evaluated as a separate scorer rather than mixed with the named whitebox measures inside one model.</p>
-<h3 id="the-ranknet-comparative-judgment-scorer">The RankNet Comparative-Judgment Scorer</h3>
-<p><a href="https://link.springer.com/article/10.3758/s13428-025-02744-w" class="external-link" target="_blank" rel="noopener noreferrer">Comparative judgment</a> records which of two essays a judge considers better. RankNet learns the pattern in many such decisions and applies it to essays outside the comparison graph. The current model judge is Gemma 4. Human grades are withheld from the judge and are used later to evaluate how its relative-quality signal aligns with the raters.</p>
-<p>The <a href="/evidence/current-essay-scorers/">current scorer evidence page</a> presents these three methods, their official train-test results, and the calibration evidence in one place.</p>
-<h2 id="how-i-know-whether-it-works">How I Know Whether It Works</h2>
-<p>Models are evaluated on essays that were excluded from training. The primary evaluation also excludes complete writing tasks. This tests whether a scorer can assess essays written for an unfamiliar task instead of relying on topic-specific patterns. A separate portion of the official ELLIPSE test partition remains sealed until declared evaluation checkpoints.</p>
-<p>Results are reported with quadratic weighted kappa and mean absolute error. Quadratic weighted kappa gives greater weight to larger differences between predicted and human scores. Mean absolute error reports the average difference in scale points. Together, they describe agreement across the scale and the typical size of an error.</p>
-<p>The <a href="/evidence/human-rater-agreement/#test-and-human-reference-roles">two trained ELLIPSE raters have a quadratic weighted kappa of about 0.58 across the double-rated essays</a>. The scorers are evaluated against the raters' combined score, so this value is not a ceiling for model agreement. It establishes that the reference scores contain variation between human judgments.</p>
-<p><a href="/evidence/length-inclusion/#findings-and-interpretation">Few ELLIPSE essays occur near the ends of the scoring scale</a>, so results at the lowest and highest grades are less stable than results near the middle. The current official evaluation therefore reports average error and severe errors alongside agreement.</p>
-<p>The <a href="/evidence/current-essay-scorers/#official-train-test-evaluation">latest full train-test fusion evaluation</a> fitted the whitebox, embeddings, and linear RankNet scorers on 5,468 admitted training essays and evaluated their combined prediction on all 2,567 official-test essays. With weights of 0.50 embeddings, 0.25 whitebox, and 0.25 RankNet, the official scorer reached quadratic weighted kappa 0.7510, mean absolute error 0.3105, and root mean squared error 0.4453. This combined result is the current external reference. The individual component results remain diagnostic evidence.</p>
-<h2 id="open-research">Open Research</h2>
-<p>The sections below distinguish completed changes from the research questions that remain open.</p>
-<h3 id="verified-corrections-for-second-language-errors">Verified Corrections for Second-Language Errors</h3>
-<p>Ordinary spelling and grammar checkers miss some errors typical of second-language writing, and some proposed corrections change the writer's meaning. The accepted preparation method therefore combines eligible LanguageTool repairs with validated exact-span lexical repairs. Only safe, single-token lexical pairs enter the durable dictionary. An applied correction still counts as evidence of an error; repaired text feeds only the measures that require grammatical analysis.</p>
-<p>This preparation method is used by the current whitebox scorer. Its current result is reported with the embeddings and RankNet results on the <a href="/evidence/current-essay-scorers/">current scorer evidence page</a>.</p>
-<h3 id="current-official-evaluation">Current Official Evaluation</h3>
-<p>The <a href="/evidence/current-essay-scorers/#official-train-test-evaluation">latest full train-test fusion evaluation</a> is the current score reference. It used 5,468 training essays and all 2,567 official-test essays with the published split-tail mapping for the whitebox and embeddings components. The selected combination weights embeddings at 0.50, pure-feature whitebox at 0.25, and linear RankNet at 0.25. It reached quadratic weighted kappa 0.7510, mean absolute error 0.3105, and root mean squared error 0.4453.</p>
-<p>A <a href="/evidence/current-essay-scorers/#reproduction-of-the-grade-mapping">five-fold reproduction</a> separately tested the published whitebox and embeddings recipes on held-out folds from 5,470 essays. The split-tail mapping reached pooled agreement of 0.7520 for embeddings and 0.6689 for whitebox and exceeded the positive-affine alternative in every fold. These component results reproduce the grade-mapping recipes; the latest full late-fusion result remains the external benchmark.</p>
-<h3 id="comparative-judgment-and-ranknet">Comparative Judgment and RankNet</h3>
-<p>The <a href="/evidence/ellipse-cj-ranknet-probe/#current-acquired-evidence">current RankNet evidence</a> contains 50,000 unordered essay pairs across 5,470 essays. Every pair was judged in both A/B orientations, producing 100,000 model-judge decisions. The available held-out pair metrics come from the first 25,000-pair snapshot: RankNet reached 0.830 accuracy and 0.350 log loss, compared with 0.746 and 0.500 for the ordinary score-based model. Those metrics describe the earlier snapshot rather than a new held-out evaluation of all 50,000 pairs.</p>
-<p>Agreement with Gemma and agreement with human raters are different outcomes. The score-based model reconstructed human grades more closely: kappa 0.878, compared with 0.687 for RankNet and 0.726 when RankNet adjusted the score-based ordering. Gemma's clearest weakness was around grades 2.0 to 2.5. The current prompt experiment therefore tests whether clearer second-language assessment criteria improve that region while preserving performance elsewhere. It reports evidence by score region and makes no automatic selection or acquisition decision.</p>
-<h3 id="linking-the-ellipse-scale-to-the-swedish-course-continuum">Linking the ELLIPSE Scale to the Swedish Course Continuum</h3>
-<p>ELLIPSE scores are defined for one population of learners in the United States. Whether they order Swedish upper-secondary essays sensibly is an open question, and it is the question the <a href="/evidence/cohort-overlap/#swedish-course-distributions-on-the-ellipse-scale">281 scored Swedish essays</a> exist to probe. The retained experiment places the anonymous classroom essays described earlier on ELLIPSE's 1-to-5 scale. The ELLIPSE midpoint is 3. <a href="/evidence/cohort-overlap/#swedish-course-distributions-on-the-ellipse-scale">English 5 cohort medians are roughly 3.2 to 3.5, English 6 medians are 3.9 to 4.1, and the usable English 7 cohort median is about 4.3.</a> The difference is largest between English 5 and English 6 and smaller between English 6 and English 7. These are classroom cohorts, not the separate official anchor essays. This public comparison uses English 7 VT2017 because the later sample is too small.</p>
-<p>The English 7 distance is substantial on this scale. <a href="/evidence/cohort-overlap/#swedish-course-distributions-on-the-ellipse-scale">Only about one in twenty ELLIPSE predictions are 4 or higher, compared with about two in three to three in four predictions for English 7 VT2017.</a> This is why a difference of about 1.3 scale points matters: the English 7 cohort is concentrated in a region that is only the thin upper tail of the ELLIPSE predictions.</p>
-<div class="figure">
-
-<svg aria-label="ELLIPSE score distribution and Swedish English 5, English 6, and English 7 cohort positions on the same scale" height="400" role="img" viewbox="0 0 760 400" width="760" xmlns="http://www.w3.org/2000/svg">
-<g font-family="Verdana, 'DejaVu Sans', sans-serif">
-<!-- Reliability band (mid-scale) -->
-<rect fill="#f1f1f1" height="162" width="240" x="260" y="88"></rect>
-<text fill="#111111" font-size="12" font-weight="700" text-anchor="middle" x="380" y="78">most reliable region</text>
-<!-- Density curve -->
-<path d="M 90 249 C 230 244, 260 122, 380 118 C 500 122, 530 244, 670 249" fill="none" stroke="#111111" stroke-width="2.5"></path>
-<text fill="#111111" font-size="12" text-anchor="middle" x="380" y="106">ELLIPSE essays (schematic)</text>
-<!-- Proficiency cap bracket -->
-<path d="M 560 178 L 560 170 L 680 170 L 680 178" fill="none" stroke="#555555" stroke-width="1.5"></path>
-<text fill="#555555" font-size="12" text-anchor="middle" x="620" y="140">learners who become proficient</text>
-<text fill="#555555" font-size="12" text-anchor="middle" x="620" y="157">leave the ELLIPSE population</text>
-<!-- Axis -->
-<line stroke="#111111" stroke-width="1.5" x1="80" x2="680" y1="250" y2="250"></line>
-<line stroke="#111111" stroke-width="1.5" x1="80" x2="80" y1="250" y2="256"></line>
-<line stroke="#111111" stroke-width="1.5" x1="230" x2="230" y1="250" y2="256"></line>
-<line stroke="#111111" stroke-width="1.5" x1="380" x2="380" y1="250" y2="256"></line>
-<line stroke="#111111" stroke-width="1.5" x1="530" x2="530" y1="250" y2="256"></line>
-<line stroke="#111111" stroke-width="1.5" x1="680" x2="680" y1="250" y2="256"></line>
-<text fill="#111111" font-size="12" text-anchor="middle" x="80" y="272">1</text>
-<text fill="#111111" font-size="12" text-anchor="middle" x="230" y="272">2</text>
-<text fill="#111111" font-size="12" text-anchor="middle" x="380" y="272">3</text>
-<text fill="#111111" font-size="12" text-anchor="middle" x="530" y="272">4</text>
-<text fill="#111111" font-size="12" text-anchor="middle" x="680" y="272">5</text>
-<text fill="#555555" font-size="12" text-anchor="middle" x="720" y="272">score</text>
-<!-- Midpoint guide -->
-<line stroke="#999999" stroke-dasharray="4 3" stroke-width="1" x1="380" x2="380" y1="250" y2="320"></line>
-<line stroke="#999999" stroke-dasharray="4 3" stroke-width="1" x1="380" x2="380" y1="344" y2="372"></line>
-<text fill="#555555" font-size="12" text-anchor="middle" x="380" y="390">scale midpoint (3)</text>
-<!-- Swedish cohort ranges -->
-<rect fill="#1f77b4" height="10" rx="0" width="60" x="387" y="296"></rect>
-<text fill="#111111" font-size="12" text-anchor="end" x="374" y="306">English 5 (vocational)</text>
-<rect fill="#1f77b4" height="10" rx="0" width="75" x="440" y="326"></rect>
-<text fill="#111111" font-size="12" text-anchor="end" x="432" y="336">English 6</text>
-<rect fill="#1f77b4" height="10" rx="0" width="75" x="537" y="356"></rect>
-<text fill="#111111" font-size="12" text-anchor="end" x="529" y="366">English 7</text>
-<text fill="#555555" font-size="12" text-anchor="middle" x="574" y="390">about 1.3 above the midpoint</text>
-<text fill="#555555" font-size="12" x="80" y="336">Swedish cohorts</text>
-<text fill="#555555" font-size="12" x="80" y="353">(schematic ranges)</text>
-</g>
-</svg>
-
-<div class="figure-caption">
-
-<p><strong>Figure 3. Comparison of Swedish course cohorts with ELLIPSE.</strong> The ELLIPSE curve is schematic. The course positions summarize the same classroom-cohort comparison described above. The English 7 position uses VT2017 and does not use the separate official anchor essays or the very small VT2018 sample.</p>
-</div>
-
-</div>
-
-<p>The earlier transfer analysis placed ELLIPSE closest to the first upper-secondary English course. Across the main Swedish cohorts, the estimated distributions shifted upward from the first course through English 6 and English 7. This provides preliminary evidence that an ELLIPSE-trained scorer responds to the Swedish essays in the direction expected from increasing writing proficiency. It is transfer evidence, not a current scorer benchmark.</p>
-<p>ELLIPSE's lower position is consistent with how its population is defined. It contains designated English learners, who leave that category after reaching the required proficiency. Swedish English courses include all students throughout the school system. ELLIPSE therefore overlaps most closely with the lower Swedish course distribution and falls increasingly below the later courses.</p>
-<p>The existing results support using the ELLIPSE-trained scorers to locate Swedish essay populations on the same empirical scale and to identify where their distributions overlap.</p>
-<h3 id="the-teacher-panel">The Teacher Panel</h3>
-<p>The comparisons so far measure models against rater scores. The reference that matters for the project is teacher judgment. The planned teacher panel develops an anchor set: selected essays together with the teachers' judgments, rationales, disagreements, compromises, and shared interpretation of the grading standard. The anchor essays therefore do more than mark points on a scale. They retain the professional reasoning through which the panel defines and discusses writing quality. The resulting anchor set is then compared with the comparative-judgment ranking and the ELLIPSE-trained scorers. In this design the instrument is the thing being checked, and teacher judgment is the thing it is checked against. That ordering is a standing commitment of the project. However well the lanes agree with each other or with the ELLIPSE raters, the question that decides whether the instrument can support Swedish assessment work is whether its outputs hold up against the judgment of the teachers who do that work.</p>
-<h2 id="where-computation-happens-and-where-data-goes">Where Computation Happens and Where Data Goes</h2>
-<p>The teacher panel will establish the Swedish reference scale against which the instrument is evaluated. Its judgments, deliberations, and decisions will be retained so that the meaning and provenance of that scale can be inspected. The scores, rankings, and model comparisons require the same standard of accountability. Their research record must show where essays were processed, what was submitted, which model and interface produced each result, and under what data-handling terms.</p>
-<p>Most essay processing in this project takes place on Hemma, a self-hosted research server under my control. The linguistic measures, whole-essay representations, and regression scores are produced there, as are comparisons made by locally hosted model judges. The essay text remains on Hemma throughout these operations.</p>
-<p>The project has so far processed essay text from two sources. ELLIPSE is a public and anonymized research corpus. The Swedish material consists of de-identified student essays, including the anchor essays used as fixed references in earlier model-judge work. Records connecting essay identifiers to individual students remain separate from the texts used in the research pipeline.</p>
-<p>Although most processing remains local, essay text has been sent to external providers in specific experiments. Earlier comparative-judgment work sent pairs from ELLIPSE to GPT-5.4 through the OpenAI API. Later model-judge work used the same model and API to compare de-identified Swedish essays with anchor essays. Provider-hosted correction experiments used ELLIPSE essays only. The current prompt evaluation uses Gemma 4 31B through the OpenRouter API on a fixed set of public ELLIPSE comparisons.</p>
-<p>Sending an essay to a hosted language model can easily be understood as copying it into a chat page. In a consumer chat service, a person enters the text directly into the provider's application, where it becomes part of a conversation handled under that service's settings and terms. The external experiments in this project used a different process. They began with prepared research data, from which the pipeline constructed a defined request for a named model and operation. The provider received the resulting request through an API and returned its result to the pipeline. The API did not keep the essay local, but it allowed the research system to determine exactly what was submitted and to record how the result was produced.</p>
-<p>Before such a request was created, the essay text had already been separated from the record that connected it to a student. <a href="/evidence/comparative-judgment-request-shape/#prompt-sections-cj-assessment-service">A comparative-judgment request contained the judging instructions, the writing task, and two essays under anonymous identifiers.</a> <a href="/evidence/student-identity-separation/#retained-contract">The identifier-to-student record remained separate and was not submitted.</a> A provider-hosted correction request contained an ELLIPSE essay and the instructions required for the correction task.</p>
-<p>The interface also determines which terms govern the request. OpenAI states that <a href="https://openai.com/business-data/" class="external-link" target="_blank" rel="noopener noreferrer">API inputs and outputs are not used for model training by default</a>, although <a href="https://platform.openai.com/docs/models/default-usage-policies-by-endpoint" class="external-link" target="_blank" rel="noopener noreferrer">they may remain in abuse-monitoring logs for up to 30 days</a>. The training control available in a personal ChatGPT account applies to conversations entered through the ChatGPT service and does not govern requests sent through the OpenAI API. OpenRouter states that <a href="https://openrouter.ai/docs/guides/privacy/data-collection" class="external-link" target="_blank" rel="noopener noreferrer">it does not store prompts or responses unless the account has enabled their logging or use</a>. Because OpenRouter passes a request to the selected model provider, the data policy of that provider also applies.</p>
-<div class="figure">
-
-<svg aria-label="Boundary diagram showing which essay text is transmitted" height="540" role="img" viewbox="0 0 760 540" width="760" xmlns="http://www.w3.org/2000/svg">
-<g font-family="Verdana, 'DejaVu Sans', sans-serif">
-<!-- Outer boundary: home server -->
-<rect fill="none" height="490" rx="0" stroke="#555555" stroke-dasharray="7 5" stroke-width="1.5" width="568" x="12" y="20"></rect>
-<!-- Hemma box -->
-<rect fill="#f1f1f1" height="350" rx="0" stroke="#111111" stroke-width="2" width="428" x="32" y="58"></rect>
-<text fill="#111111" font-size="13" font-weight="700" x="44" y="82">Hemma (home server)</text>
-<!-- Components -->
-<rect fill="#ffffff" height="34" rx="0" stroke="#bbbbbb" stroke-width="1.5" width="120" x="44" y="96"></rect>
-<text fill="#111111" font-size="12" text-anchor="middle" x="104" y="117">parser</text>
-<rect fill="#ffffff" height="34" rx="0" stroke="#bbbbbb" stroke-width="1.5" width="130" x="176" y="96"></rect>
-<text fill="#111111" font-size="12" text-anchor="middle" x="241" y="117">error checkers</text>
-<rect fill="#ffffff" height="34" rx="0" stroke="#bbbbbb" stroke-width="1.5" width="130" x="318" y="96"></rect>
-<text fill="#111111" font-size="12" text-anchor="middle" x="383" y="117">embedding model</text>
-<rect fill="#ffffff" height="34" rx="0" stroke="#bbbbbb" stroke-width="1.5" width="180" x="44" y="142"></rect>
-<text fill="#111111" font-size="12" text-anchor="middle" x="134" y="163">local language models</text>
-<rect fill="#ffffff" height="34" rx="0" stroke="#bbbbbb" stroke-width="1.5" width="212" x="236" y="142"></rect>
-<text fill="#111111" font-size="12" text-anchor="middle" x="342" y="163">the three scoring models</text>
-<!-- ELLIPSE text node -->
-<rect fill="#ffffff" height="40" rx="0" stroke="#111111" stroke-width="1.5" width="210" x="44" y="192"></rect>
-<text fill="#111111" font-size="12" text-anchor="middle" x="149" y="216">public ELLIPSE essay text</text>
-<!-- Swedish student and anchor-essay node -->
-<rect fill="#ffffff" height="56" rx="0" stroke="#111111" stroke-width="1.5" width="220" x="44" y="244"></rect>
-<text fill="#111111" font-size="12" font-weight="700" text-anchor="middle" x="154" y="262">Swedish student and</text>
-<text fill="#111111" font-size="12" font-weight="700" text-anchor="middle" x="154" y="278">anchor essays</text>
-<text fill="#555555" font-size="12" text-anchor="middle" x="154" y="294">(anonymous identifiers)</text>
-<!-- Converging arrows into the gateway -->
-<path d="M 254 212 L 430 212 L 430 242" fill="none" stroke="#1f77b4" stroke-width="2"></path>
-<path d="M 264 272 L 430 272 L 430 242" fill="none" stroke="#1f77b4" stroke-width="2"></path>
-<line stroke="#1f77b4" stroke-width="2" x1="430" x2="460" y1="242" y2="242"></line>
-<polygon fill="#1f77b4" points="470,242 460,237 460,247"></polygon>
-<!-- What crosses the boundary -->
-<text fill="#111111" font-size="12" font-weight="700" text-anchor="middle" x="246" y="330">what crosses the boundary</text>
-<text fill="#111111" font-size="12" text-anchor="middle" x="246" y="348">essay text under anonymous identifiers</text>
-<text fill="#555555" font-size="11.5" text-anchor="middle" x="246" y="366">comparative judgment sends ELLIPSE pairs and</text>
-<text fill="#555555" font-size="11.5" text-anchor="middle" x="246" y="383">de-identified Swedish essays and anchor essays</text>
-<text fill="#555555" font-size="11.5" text-anchor="middle" x="246" y="400">correction candidates come from ELLIPSE only</text>
-<!-- Controlled external request -->
-<rect fill="#e0e0e0" height="84" rx="0" stroke="#111111" stroke-width="2" width="104" x="470" y="200"></rect>
-<text fill="#111111" font-size="12" font-weight="700" text-anchor="middle" x="522" y="226">controlled</text>
-<text fill="#111111" font-size="12" font-weight="700" text-anchor="middle" x="522" y="243">request</text>
-<text fill="#111111" font-size="11.5" text-anchor="middle" x="522" y="261">declared text</text>
-<text fill="#111111" font-size="11.5" text-anchor="middle" x="522" y="276">only</text>
-<!-- The crossing arrow -->
-<line stroke="#1f77b4" stroke-width="2" x1="574" x2="618" y1="242" y2="242"></line>
-<polygon fill="#1f77b4" points="628,242 618,237 618,247"></polygon>
-<!-- External providers -->
-<rect fill="#ffffff" height="70" rx="0" stroke="#555555" stroke-width="1.5" width="120" x="628" y="207"></rect>
-<text fill="#111111" font-size="12" font-weight="700" text-anchor="middle" x="688" y="237">external API</text>
-<text fill="#111111" font-size="12" font-weight="700" text-anchor="middle" x="688" y="255">providers</text>
-<!-- Offline identity record with stopped path -->
-<rect fill="#ffffff" height="52" rx="0" stroke="#111111" stroke-width="1.5" width="250" x="44" y="432"></rect>
-<text fill="#111111" font-size="12" font-weight="700" text-anchor="middle" x="169" y="453">identifier-to-student record</text>
-<text fill="#555555" font-size="12" text-anchor="middle" x="169" y="471">offline, never transmitted</text>
-<line stroke="#111111" stroke-dasharray="5 4" stroke-width="1.5" x1="294" x2="448" y1="458" y2="458"></line>
-<circle cx="466" cy="458" fill="#ffffff" r="12" stroke="#d62728" stroke-width="2.5"></circle>
-<line stroke="#d62728" stroke-width="2.5" x1="458" x2="474" y1="450" y2="466"></line>
-<line stroke="#d62728" stroke-width="2.5" x1="474" x2="458" y1="450" y2="466"></line>
-<text fill="#111111" font-size="12" font-weight="700" text-anchor="middle" x="371" y="426">never crosses the boundary</text>
-</g>
-</svg>
-
-<div class="figure-caption">
-
-<p><strong>Figure 2. Local processing on Hemma and the requests sent to external providers.</strong></p>
-</div>
-
-</div>
-
-<p>The same prepared request can instead be directed to a model running on Hemma. This is why <span class="term" tabindex="0" data-definition="Published weights make local operation possible, but the model's licence, size, and hardware requirements still determine whether it is practical.">open-weight models</span> matter to the project. They allow the judging method to remain the same while the essay text stays within the local research environment. Each experiment records the model, interface, submitted material, and processing environment used.</p>
-<h2 id="what-can-be-claimed-today">What Can Be Claimed Today</h2>
-<p>The current official scorer combines pure-feature whitebox, embeddings, and linear RankNet through late fusion. It reached quadratic weighted kappa 0.7510 on the complete official ELLIPSE test set and is HuleEdu's result for comparison with other work on that partition. The component results explain the contribution and limitations of each estimate. RankNet captures Gemma's comparative choices reliably, but those choices do not yet reconstruct the human grades as closely. Performance is strongest in the middle of the 1-to-5 scale and weaker at the tails. Evidence about Swedish student writing remains transfer evidence from an American learner corpus and is not yet anchored to Swedish grading standards. The instrument can support research on assessment; teacher-panel evidence is still required before it can support assessment decisions.</p>
-<h2 id="cited-work">Cited Work</h2>
-<p>Choi, H., Kim, S., Liermann, W., Seong, J., and Huang, J.-X. (2026). <a href="https://arxiv.org/pdf/2602.01747" class="external-link" target="_blank" rel="noopener noreferrer">Enhancing Automated Essay Scoring With Three Techniques: Two-Stage Fine-Tuning, Score Alignment, and Self-Training</a>. IEEE Access, 14, 117193-117208.</p>
-<p>Kinnear, G., Jones, I., and Davies, B. (2025). <a href="https://link.springer.com/article/10.3758/s13428-025-02744-w" class="external-link" target="_blank" rel="noopener noreferrer">Comparative judgment as a research tool: A meta-analysis of application and reliability</a>. Behavior Research Methods, 57, 222.</p>
-<p>Pollitt, A. (2012). <a href="https://www.researchgate.net/publication/263381234_The_method_of_Adaptive_Comparative_Judgement" class="external-link" target="_blank" rel="noopener noreferrer">The method of adaptive comparative judgment</a>. Assessment in Education: Principles, Policy &amp; Practice, 19(3), 281-300.</p>
+<p>Evaluation measures agreement with human scores. Quadratic weighted kappa gives greater weight to larger score differences; mean absolute error is the average distance from the human score. Predicting Gemma's choices is measured separately from agreement with human scores.</p>
+<h2 id="current-results">Current Results</h2>
+<h3 id="scorer-evaluation--september-9-2026">Scorer Evaluation — September 9, 2026</h3>
+<p>The combined scorer was evaluated on all 2,567 official test essays after training and selection on 5,468 essays. It reached weighted kappa <strong>0.751</strong> and mean absolute error <strong>0.310</strong>. Adding linear RankNet to embeddings and whitebox slightly improved overall results, but increased severe errors among high-scoring essays. The <a href="https://research.hule.education/evidence/current-essay-scorers/#official-train-test-evaluation">five-arm evaluation</a> reports the complete comparison and error rates.</p>
+<h3 id="judge-experiment--september-13-2026">Judge Experiment — September 13, 2026</h3>
+<p>Gemma compared the same 504 essay pairs using the original text and text prepared for grammatical analysis. Agreement with the higher human score was <strong>76.69%</strong> and <strong>75.96%</strong>, respectively. The estimated difference was uncertain. The <a href="https://research.hule.education/evidence/comparative-judgment-experiments/#parser-stabilized-text-september-13-2026">experiment results</a> define the text treatment and report differences across score regions.</p>
+<h3 id="pair-acquisition--september-57-2026">Pair Acquisition — September 5–7, 2026</h3>
+<p>Two acquisition stages collected <strong>50,000 unique essay pairs</strong>. Gemma judged each pair in both orders, producing 100,000 judgments. The <a href="https://research.hule.education/evidence/ellipse-cj-ranknet-probe/#performance-by-pair-count">acquisition and performance graphs</a> show when pairs were collected and how results changed with the number used.</p>
+<h2 id="open-questions">Open Questions</h2>
+<p>The next research questions concern which judging instructions help Gemma assess learner writing, whether further pairs improve the scorer, and how well the estimates correspond to Swedish teacher judgment. Each experiment informs a human decision about the next study.</p>
+<p>A teacher-mediated anchor set is still needed to relate the instrument's outputs to Swedish assessment standards.</p>
+<h2 id="data-handling">Data Handling</h2>
+<p>Most essay processing runs on Hemma, a research server under my control. Some experiments send public ELLIPSE essays or de-identified Swedish essays to external model providers through their APIs. The private records connecting student identities to essay identifiers are stored separately and are excluded from those requests.</p>
+<p>The <a href="https://research.hule.education/evidence/research-data-handling/">data-handling account</a> identifies the providers, explains what a request contains, and links to the relevant data policies.</p>
   <script>
     (() => {
       const element = document.getElementById("last-updated");

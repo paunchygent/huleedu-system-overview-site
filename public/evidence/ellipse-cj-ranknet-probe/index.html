@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Learning from comparative-judgment decisions | HuleEdu</title>
+  <title>RankNet Acquisition and Performance | HuleEdu</title>
   <link rel="icon" href="/favicon.svg">
   <link rel="stylesheet" href="/evidence/evidence.css">
   <link rel="canonical" href="https://research.hule.education/evidence/ellipse-cj-ranknet-probe/">
@@ -14,87 +14,111 @@
       <a href="/huleedu-system-overview/"><span aria-hidden="true">←</span> System overview</a>
       <a href="/code/">Research code <span aria-hidden="true">→</span></a>
     </nav>
-    <h1>Learning from comparative-judgment decisions</h1>
-    <p class="source-line"><a href="/evidence/source/ellipse-cj-ranknet-probe.md">View Markdown source</a><span aria-hidden="true"> · </span>evidence revision <code>9bdaf7560c47</code></p>
+    <h1>RankNet Acquisition and Performance</h1>
   </header>
   <main>
-    <article class="markdown-body"><p><span id="research-question"></span></p>
-<h2>Research Question</h2>
-<p>Comparative judgment records which of two essays a model judge considers
-better. RankNet asks whether those decisions contain a stable pattern that can
-be learned from essay representations and applied to new essays. Grade
-agreement asks a separate question: whether the learned ordering matches the
-human scores.</p>
-<p><span id="full-acquisition-result"></span></p>
+    <article class="markdown-body"><p>Pairs acquired <strong>September 5–7, 2026</strong>. Performance evaluated <strong>September 7–8, 2026</strong>. This page tracks the number of acquired pairs and the contribution of RankNet to combined essay scores.</p>
 <p><span id="current-acquired-evidence"></span></p>
 <h2>Current Acquired Evidence</h2>
-<p>The current research pool contains 50,000 unordered comparative-judgment pairs
-across 5,470 ELLIPSE essays. Each pair was judged in both A/B orientations,
-giving 100,000 model-judge decisions. The first acquisition supplied 25,000
-pairs and a later adaptive acquisition supplied another 25,000.</p>
-<p><span id="held-out-result-from-the-first-acquisition"></span></p>
-<h3>Held-Out Result From the First Acquisition</h3>
-<p>The held-out metrics below come from the first 25,000-pair snapshot. Its pair
-evaluation contained 1,650 held-out pairs. The first-stage final refit used all
-25,000 pairs, but the values below come from the held-out evaluation rather
-than that refit. They do not describe a fresh held-out evaluation of the full
-50,000-pair pool.</p>
+<p>The research pool contains 50,000 unique unordered essay pairs across 5,470 ELLIPSE essays. Gemma judged each pair in both orders, A/B and B/A, producing 100,000 judgments. Reversing the order creates another judgment of the same pair. Retried requests and later evaluations do not add new pairs.</p>
 <table>
 <thead>
 <tr>
-<th>Estimate</th>
-<th align="right">Pair log loss</th>
-<th align="right">Pair accuracy</th>
-<th align="right">Grade agreement</th>
-<th align="right">High-grade severe errors</th>
+<th>Acquisition completed</th>
+<th>Stage</th>
+<th align="right">New pairs</th>
+<th align="right">Total pairs</th>
+<th align="right">Total judgments</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>Score-based model</td>
-<td align="right">0.5005</td>
-<td align="right">0.7461</td>
-<td align="right"><strong>0.8782</strong></td>
-<td align="right"><strong>3.85%</strong></td>
+<td>September 5, 2026</td>
+<td>Fixed pair selection</td>
+<td align="right">25,000</td>
+<td align="right">25,000</td>
+<td align="right">50,000</td>
 </tr>
 <tr>
-<td>RankNet trained from comparative judgments</td>
-<td align="right">0.3503</td>
-<td align="right">0.8303</td>
-<td align="right">0.6868</td>
-<td align="right">34.97%</td>
-</tr>
-<tr>
-<td>RankNet adjustment to the score-based ordering</td>
-<td align="right"><strong>0.3482</strong></td>
-<td align="right"><strong>0.8348</strong></td>
-<td align="right">0.7260</td>
-<td align="right">30.42%</td>
+<td>September 7, 2026</td>
+<td>Adaptive pair selection</td>
+<td align="right">25,000</td>
+<td align="right">50,000</td>
+<td align="right">100,000</td>
 </tr>
 </tbody></table>
-<p>That first-stage experiment confirms that the model judge&#39;s decisions contain a
-strong and learnable signal. Both RankNet estimates predicted those decisions
-better than the score-based model. They did not reconstruct the
-human grades as well, particularly at the high end. RankNet is therefore a
-stable model of the judge&#39;s comparative choices, while disagreement between
-those choices and human grades remains part of the evidence.</p>
-<p>The validation log loss improved as the fit budget grew from 25 to 100 percent,
-but the uncertainty interval for the final increase included zero. The result
-does not establish that acquiring more pairs would improve the learned signal.</p>
-<p><span id="interpretation"></span></p>
-<h2>Interpretation</h2>
-<p>The next question concerns the comparative decisions themselves. Gemma was
-least aligned with human grades around 2.0 to 2.5, while its middle and upper
-comparisons were more stable overall. A small prompt comparison can test
-whether clearer second-language writing criteria improve that lower region
-without obscuring performance elsewhere. It should report the evidence by
-score region and leave every conclusion, later trial, and acquisition decision
-to human assessment.</p>
-<p>The <a href="/evidence/current-essay-scorers/">current scorer evidence</a> places this
-result beside the official whitebox and embeddings evaluation. The
-<a href="/code/">public research-code browser</a> and
-<a href="https://codeberg.org/paunchygent/huleedu-research-code">Codeberg repository</a>
-provide the corresponding public source.</p>
+<p><img src="/evidence/ranknet/acquisition-timeline-20260914.svg" alt="Acquisition completion dates: 25,000 unique pairs on September 5 and 50,000 on September 7, 2026."></p>
+<p><span id="performance-by-pair-count"></span></p>
+<h2>Performance by Pair Count</h2>
+<p>The following comparison uses the same 5,468 essays, evaluation folds, and grade mapping at every pair count. Embeddings and whitebox form the baseline. Two series add either linear or nonlinear RankNet. These are results on held-out training folds; the <a href="/evidence/current-essay-scorers/#official-train-test-evaluation">official test evaluation</a> uses a separate set of 2,567 essays.</p>
+<p><img src="/evidence/ranknet/performance-by-pairs-20260914.svg" alt="Weighted kappa and severe errors across 0, 12,500, 25,000, 37,500, and 50,000 unique pairs for linear and nonlinear RankNet fusion."></p>
+<table>
+<thead>
+<tr>
+<th align="right">Unique pairs</th>
+<th align="right">Judgments</th>
+<th align="right">Linear fusion kappa</th>
+<th align="right">Nonlinear fusion kappa</th>
+<th align="right">Linear severe errors</th>
+<th align="right">Nonlinear severe errors</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0.71108</td>
+<td align="right">0.71108</td>
+<td align="right">495</td>
+<td align="right">495</td>
+</tr>
+<tr>
+<td align="right">12,500</td>
+<td align="right">25,000</td>
+<td align="right">0.71892</td>
+<td align="right">0.71730</td>
+<td align="right">443</td>
+<td align="right">465</td>
+</tr>
+<tr>
+<td align="right">25,000</td>
+<td align="right">50,000</td>
+<td align="right">0.72240</td>
+<td align="right">0.71919</td>
+<td align="right">431</td>
+<td align="right">443</td>
+</tr>
+<tr>
+<td align="right">37,500</td>
+<td align="right">75,000</td>
+<td align="right">0.72039</td>
+<td align="right">0.71633</td>
+<td align="right">441</td>
+<td align="right">462</td>
+</tr>
+<tr>
+<td align="right">50,000</td>
+<td align="right">100,000</td>
+<td align="right">0.72372</td>
+<td align="right">0.71747</td>
+<td align="right">429</td>
+<td align="right">461</td>
+</tr>
+</tbody></table>
+<p>At zero pairs, both series show the embeddings-plus-whitebox baseline. A severe error differs from the human score by at least one point.</p>
+<p>From 25,000 to 50,000 pairs, linear fusion kappa rises by 0.00132 and severe errors fall by two. Nonlinear fusion kappa falls over that interval. Neither series improves at every increase in pair count. The second stage also changes the selection policy, so pair quantity alone cannot explain the changes.</p>
+<p>The intermediate budgets were evaluated retrospectively on September 8. They are not measurements taken during each acquisition round. Per-round scorer results and uncertainty intervals for every budget are unavailable.</p>
+<p><span id="earlier-experiments"></span></p>
+<h2>Earlier Experiments</h2>
+<p><strong>August 30, 2026 — existing-edge probe.</strong> Linear RankNet used 4,500 training edges across 282 essays and 3,000 test edges across 185 essays. Those historical comparisons had one orientation each and are excluded from the acquisition totals above.</p>
+<p><strong>September 5, 2026 — first-acquisition evaluation.</strong> On 1,650 held-out pairs from the first 25,000-pair pool, linear RankNet predicted Gemma&#39;s choices with 83.03% agreement and log loss 0.3503. A score-based control reached 74.61% and 0.5005. Lower log loss indicates better probability predictions.</p>
+<p>The same early analysis reconstructed human scores less closely with RankNet: weighted kappa was 0.6868, compared with 0.8782 for the score-based control. The control&#39;s training-fold history did not match the RankNet split, which limits that comparison. These historical results use different evaluation splits from the matched curves above.</p>
+<p><span id="sources-and-downloads"></span></p>
+<h2>Sources and Downloads</h2>
+<p><a href="/evidence/ranknet/acquisition-timeline-20260914.csv">Acquisition data (CSV)</a> · <a href="/evidence/ranknet/performance-by-pairs-20260914.csv">Performance data (CSV)</a></p>
+<p>Retained records: <code>TASK-HULE-23-05-01</code> (first acquisition), <code>TASK-HULE-23-09-03</code> (additional acquisition and matched budget evaluation), and <code>TASK-HULE-23-06-01</code> (first-acquisition analysis). Figure dates identify this publication; experiment dates appear above. The <a href="/evidence/comparative-judgment-experiments/">judge experiments</a> report changes to Gemma&#39;s input separately.</p>
 </article>
   </main>
+  <footer class="page-footer">
+    <p class="source-line"><a href="/evidence/source/ellipse-cj-ranknet-probe.md">Markdown source</a><span aria-hidden="true"> · </span>Source revision <code>de13c748df4c</code></p>
+  </footer>
 </body>
 </html>

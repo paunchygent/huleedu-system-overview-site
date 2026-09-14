@@ -2,21 +2,16 @@
   "documents": [
     {
       "slug": "current-essay-scorers",
-      "title": "Current essay scorers and official evaluation",
+      "title": "Scorer Evaluation",
       "import": false,
       "sourceRepo": "huleedu",
-      "sourceRevision": "9bdaf7560c4766da10bf89195d4e72cf0779b5fc",
+      "sourceRevision": "de13c748df4c7bbb15edcf1471e8902599619e1d",
       "sourcePath": "docs/backlog/tasks/task-hule-23-10-01-run-the-full-canonical-whitebox-embedding-and-linear-cj-train-test-evaluation.md",
       "supportingSources": [
         {
           "sourceRepo": "huleedu",
-          "sourceRevision": "9bdaf7560c4766da10bf89195d4e72cf0779b5fc",
+          "sourceRevision": "de13c748df4c7bbb15edcf1471e8902599619e1d",
           "sourcePath": "docs/backlog/tasks/task-hule-23-10-04-reproduce-the-published-scorer-recipes-through-outer-fold-evaluation.md"
-        },
-        {
-          "sourceRepo": "huleedu",
-          "sourceRevision": "9bdaf7560c4766da10bf89195d4e72cf0779b5fc",
-          "sourcePath": "docs/reference/ref-hule-research-ellipse-cj-inductive-ranknet-and-fusion-experiment-synthesis-ellipse-cj-inductive-ranknet-and-fusion-experiment-synthesis.md"
         }
       ]
     },
@@ -105,21 +100,21 @@
     },
     {
       "slug": "ellipse-cj-ranknet-probe",
-      "title": "Learning from comparative-judgment decisions",
+      "title": "RankNet Acquisition and Performance",
       "import": false,
       "sourceRepo": "huleedu",
-      "sourceRevision": "9bdaf7560c4766da10bf89195d4e72cf0779b5fc",
-      "sourcePath": "docs/reference/ref-hule-research-ellipse-cj-inductive-ranknet-and-fusion-experiment-synthesis-ellipse-cj-inductive-ranknet-and-fusion-experiment-synthesis.md",
+      "sourceRevision": "de13c748df4c7bbb15edcf1471e8902599619e1d",
+      "sourcePath": "docs/backlog/tasks/task-hule-23-09-03-run-the-additional-comparison-stage-and-evaluate-matched-cj-fusion.md",
       "supportingSources": [
         {
           "sourceRepo": "huleedu",
-          "sourceRevision": "9bdaf7560c4766da10bf89195d4e72cf0779b5fc",
-          "sourcePath": "docs/backlog/tasks/task-hule-23-10-01-run-the-full-canonical-whitebox-embedding-and-linear-cj-train-test-evaluation.md"
+          "sourceRevision": "de13c748df4c7bbb15edcf1471e8902599619e1d",
+          "sourcePath": "docs/reference/ref-hule-research-ellipse-cj-inductive-ranknet-and-fusion-experiment-synthesis-ellipse-cj-inductive-ranknet-and-fusion-experiment-synthesis.md"
         },
         {
           "sourceRepo": "huleedu",
-          "sourceRevision": "9bdaf7560c4766da10bf89195d4e72cf0779b5fc",
-          "sourcePath": "docs/backlog/tasks/task-hule-23-10-04-reproduce-the-published-scorer-recipes-through-outer-fold-evaluation.md"
+          "sourceRevision": "de13c748df4c7bbb15edcf1471e8902599619e1d",
+          "sourcePath": "docs/backlog/tasks/task-hule-23-05-01-run-the-first-50-000-row-gemma-4-ellipse-cj-acquisition.md"
         }
       ]
     },
@@ -166,6 +161,29 @@
       "sourceRepo": "huleedu",
       "sourceRevision": "535970e527fe6f56c96b19b5befc26310fd043fc",
       "sourcePath": "docs/reference/ref-hule-general-cj-to-llm-prompt-contract-cj-to-llm-prompt-contract.md"
+    },
+    {
+      "slug": "comparative-judgment-experiments",
+      "title": "Comparative-Judgment Experiments",
+      "import": false,
+      "sourceRepo": "huleedu",
+      "sourceRevision": "de13c748df4c7bbb15edcf1471e8902599619e1d",
+      "sourcePath": "docs/backlog/tasks/task-hule-23-10-06-build-the-reusable-ellipse-judge-experiment-adapter-engine-and-run-the-expanded-ablation-protocol.md",
+      "supportingSources": [
+        {
+          "sourceRepo": "huleedu",
+          "sourceRevision": "de13c748df4c7bbb15edcf1471e8902599619e1d",
+          "sourcePath": "docs/reference/ref-hule-research-ellipse-cj-inductive-ranknet-and-fusion-experiment-synthesis-ellipse-cj-inductive-ranknet-and-fusion-experiment-synthesis.md"
+        }
+      ]
+    },
+    {
+      "slug": "research-data-handling",
+      "title": "Research Data Handling",
+      "import": false,
+      "sourceRepo": "huleeduos",
+      "sourceRevision": "4975a76877c63384a7e0581bcce98172cbeedc3b",
+      "sourcePath": "forskning/forskningsplan/supervision/huleedu-system-overview.md"
     }
   ],
   "assetCopies": [
