@@ -137,6 +137,26 @@
       overflow-x: auto;
     }
 
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95em;
+      margin-block: 1rem;
+    }
+
+    th,
+    td {
+      text-align: left;
+      vertical-align: top;
+      padding: 0.6rem;
+      border-bottom: 1px solid #c8c8c8;
+    }
+
+    th:first-child,
+    td:first-child {
+      width: 24%;
+    }
+
     .cohort-evidence-table {
       width: 100%;
       border-collapse: collapse;

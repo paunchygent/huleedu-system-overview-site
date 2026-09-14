@@ -1,57 +1,46 @@
-## Research Question
-
-Comparative judgment records which of two essays a model judge considers
-better. RankNet asks whether those decisions contain a stable pattern that can
-be learned from essay representations and applied to new essays. Grade
-agreement asks a separate question: whether the learned ordering matches the
-human scores.
-
-<span id="full-acquisition-result"></span>
+Pairs acquired **September 5–7, 2026**. Performance evaluated **September 7–8, 2026**. This page tracks the number of acquired pairs and the contribution of RankNet to combined essay scores.
 
 ## Current Acquired Evidence
 
-The current research pool contains 50,000 unordered comparative-judgment pairs
-across 5,470 ELLIPSE essays. Each pair was judged in both A/B orientations,
-giving 100,000 model-judge decisions. The first acquisition supplied 25,000
-pairs and a later adaptive acquisition supplied another 25,000.
+The research pool contains 50,000 unique unordered essay pairs across 5,470 ELLIPSE essays. Gemma judged each pair in both orders, A/B and B/A, producing 100,000 judgments. Reversing the order creates another judgment of the same pair. Retried requests and later evaluations do not add new pairs.
 
-### Held-Out Result From the First Acquisition
+| Acquisition completed | Stage | New pairs | Total pairs | Total judgments |
+| --- | --- | ---: | ---: | ---: |
+| September 5, 2026 | Fixed pair selection | 25,000 | 25,000 | 50,000 |
+| September 7, 2026 | Adaptive pair selection | 25,000 | 50,000 | 100,000 |
 
-The held-out metrics below come from the first 25,000-pair snapshot. Its pair
-evaluation contained 1,650 held-out pairs. The first-stage final refit used all
-25,000 pairs, but the values below come from the held-out evaluation rather
-than that refit. They do not describe a fresh held-out evaluation of the full
-50,000-pair pool.
+![Acquisition completion dates: 25,000 unique pairs on September 5 and 50,000 on September 7, 2026.](/evidence/ranknet/acquisition-timeline-20260914.svg)
 
-| Estimate | Pair log loss | Pair accuracy | Grade agreement | High-grade severe errors |
-| --- | ---: | ---: | ---: | ---: |
-| Score-based model | 0.5005 | 0.7461 | **0.8782** | **3.85%** |
-| RankNet trained from comparative judgments | 0.3503 | 0.8303 | 0.6868 | 34.97% |
-| RankNet adjustment to the score-based ordering | **0.3482** | **0.8348** | 0.7260 | 30.42% |
+## Performance by Pair Count
 
-That first-stage experiment confirms that the model judge's decisions contain a
-strong and learnable signal. Both RankNet estimates predicted those decisions
-better than the score-based model. They did not reconstruct the
-human grades as well, particularly at the high end. RankNet is therefore a
-stable model of the judge's comparative choices, while disagreement between
-those choices and human grades remains part of the evidence.
+The following comparison uses the same 5,468 essays, evaluation folds, and grade mapping at every pair count. Embeddings and whitebox form the baseline. Two series add either linear or nonlinear RankNet. These are results on held-out training folds; the [official test evaluation](/evidence/current-essay-scorers/#official-train-test-evaluation) uses a separate set of 2,567 essays.
 
-The validation log loss improved as the fit budget grew from 25 to 100 percent,
-but the uncertainty interval for the final increase included zero. The result
-does not establish that acquiring more pairs would improve the learned signal.
+![Weighted kappa and severe errors across 0, 12,500, 25,000, 37,500, and 50,000 unique pairs for linear and nonlinear RankNet fusion.](/evidence/ranknet/performance-by-pairs-20260914.svg)
 
-## Interpretation
+| Unique pairs | Judgments | Linear fusion kappa | Nonlinear fusion kappa | Linear severe errors | Nonlinear severe errors |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 0 | 0 | 0.71108 | 0.71108 | 495 | 495 |
+| 12,500 | 25,000 | 0.71892 | 0.71730 | 443 | 465 |
+| 25,000 | 50,000 | 0.72240 | 0.71919 | 431 | 443 |
+| 37,500 | 75,000 | 0.72039 | 0.71633 | 441 | 462 |
+| 50,000 | 100,000 | 0.72372 | 0.71747 | 429 | 461 |
 
-The next question concerns the comparative decisions themselves. Gemma was
-least aligned with human grades around 2.0 to 2.5, while its middle and upper
-comparisons were more stable overall. A small prompt comparison can test
-whether clearer second-language writing criteria improve that lower region
-without obscuring performance elsewhere. It should report the evidence by
-score region and leave every conclusion, later trial, and acquisition decision
-to human assessment.
+At zero pairs, both series show the embeddings-plus-whitebox baseline. A severe error differs from the human score by at least one point.
 
-The [current scorer evidence](/evidence/current-essay-scorers/) places this
-result beside the official whitebox and embeddings evaluation. The
-[public research-code browser](/code/) and
-[Codeberg repository](https://codeberg.org/paunchygent/huleedu-research-code)
-provide the corresponding public source.
+From 25,000 to 50,000 pairs, linear fusion kappa rises by 0.00132 and severe errors fall by two. Nonlinear fusion kappa falls over that interval. Neither series improves at every increase in pair count. The second stage also changes the selection policy, so pair quantity alone cannot explain the changes.
+
+The intermediate budgets were evaluated retrospectively on September 8. They are not measurements taken during each acquisition round. Per-round scorer results and uncertainty intervals for every budget are unavailable.
+
+## Earlier Experiments
+
+**August 30, 2026 — existing-edge probe.** Linear RankNet used 4,500 training edges across 282 essays and 3,000 test edges across 185 essays. Those historical comparisons had one orientation each and are excluded from the acquisition totals above.
+
+**September 5, 2026 — first-acquisition evaluation.** On 1,650 held-out pairs from the first 25,000-pair pool, linear RankNet predicted Gemma's choices with 83.03% agreement and log loss 0.3503. A score-based control reached 74.61% and 0.5005. Lower log loss indicates better probability predictions.
+
+The same early analysis reconstructed human scores less closely with RankNet: weighted kappa was 0.6868, compared with 0.8782 for the score-based control. The control's training-fold history did not match the RankNet split, which limits that comparison. These historical results use different evaluation splits from the matched curves above.
+
+## Sources and Downloads
+
+[Acquisition data (CSV)](/evidence/ranknet/acquisition-timeline-20260914.csv) · [Performance data (CSV)](/evidence/ranknet/performance-by-pairs-20260914.csv)
+
+Retained records: `TASK-HULE-23-05-01` (first acquisition), `TASK-HULE-23-09-03` (additional acquisition and matched budget evaluation), and `TASK-HULE-23-06-01` (first-acquisition analysis). Figure dates identify this publication; experiment dates appear above. The [judge experiments](/evidence/comparative-judgment-experiments/) report changes to Gemma's input separately.

@@ -87,11 +87,13 @@ const renderPage = (document, body) => {
       <a href="/code/">Research code <span aria-hidden="true">→</span></a>
     </nav>
     <h1>${title}</h1>
-    <p class="source-line"><a href="/evidence/source/${slug}.md">View Markdown source</a><span aria-hidden="true"> · </span>evidence revision <code>${sourceRevision}</code></p>
   </header>
   <main>
     <article class="markdown-body">${body}</article>
   </main>
+  <footer class="page-footer">
+    <p class="source-line"><a href="/evidence/source/${slug}.md">Markdown source</a><span aria-hidden="true"> · </span>Source revision <code>${sourceRevision}</code></p>
+  </footer>
 </body>
 </html>
 `;

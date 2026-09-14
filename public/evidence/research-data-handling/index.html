@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Research Data Handling | HuleEdu</title>
+  <link rel="icon" href="/favicon.svg">
+  <link rel="stylesheet" href="/evidence/evidence.css">
+  <link rel="canonical" href="https://research.hule.education/evidence/research-data-handling/">
+</head>
+<body>
+  <header class="page-header">
+    <nav class="page-nav" aria-label="Research navigation">
+      <a href="/huleedu-system-overview/"><span aria-hidden="true">←</span> System overview</a>
+      <a href="/code/">Research code <span aria-hidden="true">→</span></a>
+    </nav>
+    <h1>Research Data Handling</h1>
+  </header>
+  <main>
+    <article class="markdown-body"><p>Account reviewed <strong>September 14, 2026</strong>. This page describes the data handling
+used by the experiments reported in the research overview.</p>
+<p><span id="essay-sources-and-identity"></span></p>
+<h2>Essay Sources and Identity</h2>
+<p>ELLIPSE is a public research corpus released in anonymized form. The Swedish
+research material contains de-identified classroom essays and assessment
+examples. Private records connecting student identities to essay identifiers
+are stored separately from the texts used in the research pipeline.</p>
+<p>The <a href="/evidence/student-identity-separation/#retained-contract">identity-separation record</a>
+describes that boundary. Identity mappings are excluded from model requests.</p>
+<p><span id="local-processing"></span></p>
+<h2>Local Processing</h2>
+<p>Most processing runs on Hemma, a research server under my control. It produces
+linguistic measures, whole-essay representations, and regression scores.
+DeBERTa-v3 converts essay text into a numerical representation locally. This
+step does not send the essay to a chat service.</p>
+<p>Open-weight language models can also run on Hemma. In that case, the same
+prepared judging request is processed locally, and the essay text remains on
+the server.</p>
+<p><span id="requests-to-external-providers"></span></p>
+<h2>Requests to External Providers</h2>
+<p>Earlier experiments sent ELLIPSE essay pairs to GPT-5.4 through the OpenAI API.
+Other experiments used the same model and API to compare de-identified Swedish
+essays with anchor essays. Provider-hosted correction experiments used
+ELLIPSE essays only. The September 2026 Gemma experiments used public ELLIPSE
+comparisons through OpenRouter and its DeepInfra FP8 provider profile.</p>
+<p>A <a href="/evidence/comparative-judgment-request-shape/#prompt-sections-cj-assessment-service">comparative-judgment request</a>
+contains the judging instructions, writing prompt, and two essays under
+anonymous identifiers. A correction request contains an ELLIPSE essay and
+instructions for the correction task. The research pipeline records the
+request, model, provider, and result.</p>
+<p>These requests use provider APIs. Their data policies differ from those of
+consumer chat products. Sending text through an API still transfers it to the
+provider; it does not keep the text local.</p>
+<p><span id="provider-policies-and-sources"></span></p>
+<h2>Provider Policies and Sources</h2>
+<p>The applicable terms depend on the provider, endpoint, and account settings.
+The providers describe them in <a href="https://openai.com/business-data/">OpenAI&#39;s business-data policy</a>,
+<a href="https://platform.openai.com/docs/guides/your-data">OpenAI&#39;s API data controls</a>,
+and <a href="https://openrouter.ai/docs/guides/privacy/data-collection">OpenRouter&#39;s data-collection policy</a>.
+When OpenRouter routes a request to another provider, that provider&#39;s terms
+also apply.</p>
+<p>This account retains the data-processing description from the maintained
+HuleEdu system overview. Experiment dates and outcomes appear on the
+<a href="/evidence/current-essay-scorers/">scorer evaluation</a>,
+<a href="/evidence/comparative-judgment-experiments/">judge experiment</a>, and
+<a href="/evidence/ellipse-cj-ranknet-probe/">acquisition</a> pages.</p>
+</article>
+  </main>
+  <footer class="page-footer">
+    <p class="source-line"><a href="/evidence/source/research-data-handling.md">Markdown source</a><span aria-hidden="true"> · </span>Source revision <code>4975a76877c6</code></p>
+  </footer>
+</body>
+</html>

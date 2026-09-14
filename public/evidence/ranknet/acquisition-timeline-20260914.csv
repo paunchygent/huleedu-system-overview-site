@@ -1,0 +1,3 @@
+acquisition_completed,stage,new_unique_pairs,cumulative_unique_pairs,cumulative_judgments
+2026-09-05,fixed,25000,25000,50000
+2026-09-07,adaptive,25000,50000,100000

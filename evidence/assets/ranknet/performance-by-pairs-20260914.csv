@@ -1,0 +1,6 @@
+cumulative_unique_pairs,cumulative_judgments,linear_fusion_qwk,nonlinear_fusion_qwk,linear_severe_errors,nonlinear_severe_errors,evaluation_essays
+0,0,0.71108,0.71108,495,495,5468
+12500,25000,0.71892,0.71730,443,465,5468
+25000,50000,0.72240,0.71919,431,443,5468
+37500,75000,0.72039,0.71633,441,462,5468
+50000,100000,0.72372,0.71747,429,461,5468
