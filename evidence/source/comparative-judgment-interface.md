@@ -4,9 +4,9 @@ Updated September 15, 2026. Current work focuses on preparing the comparative-ju
 
 The comparison workspace presents two essays side by side. The rater compares them against the assessment criteria and records a judgment. Assessment information remains available from the header, alongside an option to report that the pair cannot be assessed.
 
-[![Rater comparison workspace with Text A and Text B side by side.](/evidence/cj-interface/rater-comparison-20260912.png)](/evidence/cj-interface/rater-comparison-20260912.png)
+[![Rater comparison workspace with the curated SLEC essays side by side.](/evidence/cj-interface/rater-slec-20260915.png)](/evidence/cj-interface/rater-slec-20260915.png)
 
-Comparison workspace, September 12, 2026.
+Comparison workspace with the curated SLEC tutorial essays, September 15, 2026.
 
 ## Administration Interface
 
