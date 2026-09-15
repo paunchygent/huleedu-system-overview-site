@@ -45,7 +45,7 @@ repeatable property of the fitted system; correcting one observed output does
 not remove the failure pattern elsewhere. For that reason, gross and two-grade
 errors are operational evidence, not secondary decoration around QWK.
 
-The verified ELLIPSE pairwise human-rater Overall QWK is
+The verified ELLIPSE pairwise rater Overall QWK is
 `0.5849381457369485` over 5,728 admitted pairs. It demonstrates genuine rating
 difficulty in this population. It is contextual evidence, not a universal
 machine ceiling or a substitute for MAE and the machine error ladder, because

@@ -47,8 +47,8 @@ change in the final essay scorer.
 
 This page reports the completed comparison between `full-baseline` and
 `full-baseline-parser-stabilized`. The broader study includes other instruction
-and rubric conditions and separate mechanism probes. Its completion requires
-separate verification.
+and rubric conditions and separate mechanism probes. That experiment task has
+been verified and closed; this page covers only the comparison above.
 
 ## Sources
 
