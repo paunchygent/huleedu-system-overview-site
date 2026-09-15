@@ -1,4 +1,4 @@
-# Human-rater agreement evidence
+# Rater Agreement Evidence
 
 Retained source:
 `docs/reference/ref-hule-research-selection-decision-noise-asymmetry.md`
