@@ -12,8 +12,21 @@
           "sourceRepo": "huleedu",
           "sourceRevision": "23490f2742236a848dab6c5ba2f8dc612f77908d",
           "sourcePath": "docs/backlog/tasks/task-hule-24-13-13-overhaul-the-human-cj-administrator-tablet-and-phone-compositions.md"
+        },
+        {
+          "sourceRepo": "huleedu",
+          "sourceRevision": "3e0ecd32c11b9703fddd735214bb2d7401ac9cea",
+          "sourcePath": "docs/reference/ref-hule-research-comparative-judgment-time-reliability-and-feasibility-comparative-judgment-time-reliability-and-feasibility.md"
         }
       ]
+    },
+    {
+      "slug": "comparative-judgment-feasibility",
+      "title": "Comparative Judgment: Time, Reliability, and Feasibility",
+      "import": false,
+      "sourceRepo": "huleedu",
+      "sourceRevision": "3e0ecd32c11b9703fddd735214bb2d7401ac9cea",
+      "sourcePath": "docs/reference/ref-hule-research-comparative-judgment-time-reliability-and-feasibility-comparative-judgment-time-reliability-and-feasibility.md"
     },
     {
       "slug": "current-essay-scorers",
