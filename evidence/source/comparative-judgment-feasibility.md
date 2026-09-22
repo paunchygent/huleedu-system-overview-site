@@ -1,0 +1,112 @@
+A common objection to comparative judgment (CJ) is that it is impractical and too time-consuming. This page examines that objection against published evidence. A single comparison takes considerably less time than an absolute grading of the same texts. Reaching a reliable scale requires many comparisons per text, and the total time then becomes comparable to, not lower than, reliable absolute grading. At that cost, CJ produces a scale that depends less on individual rater severity, and it has been piloted and evaluated in high-stakes examinations and used operationally in school-level assessment of writing.
+
+For Study 1, this evidence supports a bounded design. A panel of teachers judges a set of candidate anchor essays through CJ, and the resulting scale becomes material for mediated panel discussion, through which the teachers establish the anchor set.
+
+## Time per Comparison Compared With Absolute Grading
+
+In CJ, a rater reads two responses to the same task and decides which one better demonstrates the intended quality. The rater does not produce two grades and compare them afterward. In an Austrian national EFL test, a subset of judges decided quickly without reading the scripts in detail, and the authors conclude that participants "could judge both fast and reliably" (Sickinger et al., 2025, p. 156).
+
+Studies that timed both methods on the same or similar material report the following. A comparison involves two texts; the absolute-grading column refers to one text.
+
+| Study and material                                                                       | CJ, time per comparison                               | Absolute grading, time per text     |
+| ---------------------------------------------------------------------------------------- | ----------------------------------------------------- | ----------------------------------- |
+| Coertjens et al. (2017): Dutch argumentative texts, upper-secondary, at most one A4 page | about 2.6 min (1:17 per text in the first comparison) | 7:08 (first rubric rating)          |
+| Benton & Gallacher (2018): GCSE English essays, about 500 words each                     | 3.5 min (mean)                                        | about 7 min                         |
+| Steedle & Ferrara (2016): US grade-11 state essays, trained teachers                     | 62 s (median)                                         | 119 s (mean)                        |
+| Marshall et al. (2020): New Zealand NCEA English reports, at least 350 words             | about 84 s (derived from 7 min judge time per script) | about 7.2 min                       |
+| Bouwer et al. (2024): Flemish primary descriptive texts                                  | about 64 s                                            | about 79 s (rating with benchmarks) |
+| Sickinger et al. (2025): Austrian Year 8 national EFL test, A2 and B1 tasks              | 34 s and 51 s (medians)                               | 240 s and 420 s (self-reported)     |
+
+Coertjens et al. (2017) summarize the first judgment of a text as 5.5 times faster through pairwise comparison than through a rubric. Comparison time follows reading time: Benton and Gallacher (2018) note that 3.5 minutes for a pair of 500-word essays is close to normal on-screen reading speed. For the 250–600-word English essays in Study 1, this reading rate gives an estimate of 1.75–4.2 minutes per comparison. The estimate transfers an L1 rate to L2 essays and has to be checked in a pilot with the participating teachers; the comparison application records how long each pair stays in view, so the pilot supplies these timings. For paragraphs of about 150 words written by learners of English, Şahin (2021) reports 4.17 minutes per comparison for instructors and expects full essays to take two to three times as long, which would give about 8.3–12.5 minutes per comparison.
+
+## Total Time for a Reliable Scale
+
+The time advantage of a single comparison does not carry over to total cost, because each text must appear in many comparisons. Across 49 CJ assessments, a scale separation reliability of .70 required 10–14 comparisons per text and .90 required 26–37 (Verhavert et al., 2019).
+
+When both methods are compared at equal reliability, the total time is similar. In Coertjens et al. (2017), 10 comparisons per text reached a reliability of .69 in 10:36 minutes of judge time per text, while two rubric ratings reached .67 in 11:34. At higher levels the two methods also followed nearly the same time curve, and the authors conclude that both methods require almost the same time investment to reach equally stable rank orders. Steedle and Ferrara (2016) reached a reliability above .80 at about nine judgments per essay; the authors put this at 279 seconds per essay with the median comparison time, against 239 seconds for double rubric scoring at the mean rubric time, or 17 percent more time. The mean comparison time of 93.5 seconds gives about 421 seconds per essay, or roughly 76 percent more. Bouwer et al. (2024) warn that the total time needed for reliable CJ scores can exceed the time needed for reliable absolute ratings.
+
+What CJ offers at a similar cost is a scale that depends less on individual raters. Swedish national-test studies show that rank orders are relatively stable across raters while absolute grades vary substantially (Erickson, 2009; Skolinspektionen, 2021). CJ asks raters only for the relative decision. In Coertjens et al. (2017), the share of score variance attributable to raters was 21.9 percent for rubrics and 14.6 percent for CJ. In Sickinger et al. (2025), the teachers' judgments were more consistent under CJ than under analytic rating in every group except one teacher without experience of the marking scheme.
+
+The number of comparisons remains the main practical cost at scale (Kinnear et al., 2025). In this project, a language model makes the same pairwise comparisons as a judge (an LLM-as-judge); the project's hypothesis is that this approach addresses the cost. In the Study 1 design, human comparisons are limited to the candidate anchor essays; they are not repeated for every new set of student essays.
+
+## Use in High-Stakes and Low-Stakes Assessment
+
+CJ is not confined to research settings. It has been piloted in examination awarding and grade-boundary setting, evaluated on national and state test material, and used in moderation and school-level assessment of writing. The high-stakes uses reported here are pilots and evaluations; the school-level uses include operational assessment at scale.
+
+| Setting                                                                     | Use                                                                                                                                                                                                    | Result                                                                                                                                                 |
+| --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Examinations and national or state tests**                                |                                                                                                                                                                                                        |                                                                                                                                                        |
+| England, examination awarding (Ofqual, 2019)                                | Paired CJ piloted for maintaining grade standards across exam years                                                                                                                                    | At about ten judgments per script, estimated awarding workload similar to current practice (6–16 judge-days); roughly double at higher judgment counts |
+| England, OCR examinations (Benton et al., 2022)                             | CJ pilots for setting grade boundaries                                                                                                                                                                 | About 30 judge-hours per exercise; 13–139 hours across studies                                                                                         |
+| Austria, Year 8 national EFL test (Sickinger et al., 2025)                  | 27 teachers judged national-test scripts without prior CJ training                                                                                                                                     | Reliability .89–.92; correlation .77–.83 with expert analytic scores                                                                                   |
+| United States, grade-11 state essays (Steedle & Ferrara, 2016)              | Trained teachers judged state-assessment essays in an evaluation of CJ as a scoring method                                                                                                             | Reliability .89 and .90; above .80 at about nine judgments per essay                                                                                   |
+| New Zealand, NCEA English (Marshall et al., 2020)                           | Teachers and moderators judged students' summative reports; grade boundaries were located afterward by grading six scripts near each boundary traditionally and finding their positions in the ranking | Reliability .85; judge time about 7 min per script, similar to traditional marking                                                                     |
+| England, moderation of non-exam assessment (Vidal Rodeiro & Chambers, 2022) | Six moderators compared candidate portfolios                                                                                                                                                           | Reliability .76; correlation .85 with marks                                                                                                            |
+| **School and classroom assessment**                                         |                                                                                                                                                                                                        |                                                                                                                                                        |
+| England, primary writing (Wheadon et al., 2020)                             | Teacher panels across schools assessed 55,599 pupils                                                                                                                                                   | Median 11–41 s per decision; 330 decisions per hour                                                                                                    |
+| Australia, primary writing (Heldsinger & Humphry, 2010)                     | 17 classroom teachers across one school                                                                                                                                                                | Reliability .98; correlation .92 with the large-scale testing program                                                                                  |
+| Australia, classroom essay assessment (Humphry & Heldsinger, 2019, 2020)    | Teachers first calibrate exemplars through pairwise comparison, then assess new essays against the calibrated exemplars                                                                                | Reliability .96 in the first, pairwise stage, with 23 teachers after 30 minutes of training                                                            |
+| **Research comparison**                                                     |                                                                                                                                                                                                        |                                                                                                                                                        |
+| Flanders, primary writing (Bouwer et al., 2024)                             | 14 undergraduate students rated primary-school texts by benchmark rating or by CJ, with or without CJ training                                                                                         | Reliability .82 with training and .79 without, at 15 comparisons per text                                                                              |
+
+The two-stage method of Humphry and Heldsinger (2019, 2020) and the statistics study of Marshall et al. (2020), in which six official boundary scripts were judged alongside the student scripts and fell in the correct order, are the closest precedents for Study 1: a scale produced through pairwise comparison becomes the reference against which later essays are placed.
+
+## Implications for Study 1
+
+Study 1 examines how teachers collectively mediate essay quality into an anchor set. CJ gives this mediation a common starting point. Each teacher contributes relative judgments, and the resulting scale shows where the panel's judgments converge and where they do not. Disagreement is expected: in van Daal et al. (2017), 18–22 percent of individual decisions went against the final rank order, while the scales still reached reliabilities of .74–.86. Judges found pairs harder when the two texts lay close on the final scale, and decisions that went against the final order felt hard however far apart the texts lay. The essays that fit the scale poorly, including discordant texts, are therefore likely to be where the panel discussion does most of its work. The discussion then settles which essays represent which grade levels and records the teachers' rationales.
+
+The panel workload can be estimated in advance. For illustration, the table assumes 40 candidate anchor essays, a panel of six teachers, random pairing, and 1.75–4.2 minutes per comparison. Panel discussion time is not included. The comparison counts come from assessments with random pairing; the comparison application stops at a target reliability only with its non-adaptive pair selection, which spreads comparisons across the essays instead of targeting them from interim results.
+
+| Target reliability | Comparisons per essay | Comparisons in total | Panel hours | Hours per teacher |
+| -----------------: | --------------------: | -------------------: | ----------: | ----------------: |
+|                .70 |                 10–14 |              200–280 |    5.8–19.6 |           1.0–3.3 |
+|                .80 |              about 17 |                  340 |    9.9–23.8 |           1.7–4.0 |
+|                .90 |                 26–37 |              520–740 |   15.2–51.8 |           2.5–8.6 |
+
+At the slower rate suggested by Şahin (2021), the .80 level would require 47–71 panel hours, or 8–12 hours per teacher. For comparison, double absolute grading of the same 40 essays at about 7 minutes per essay takes about 9 hours, and in Coertjens et al. (2017) two ratings per text reached a reliability of .67. The time cost of the CJ stage is therefore of the same order as careful double grading of the candidate essays, and it is paid once, when the anchor set is established.
+
+## Limits
+
+- No available study times the comparison of 250–600-word essays written by Swedish upper-secondary students in L2 English. The estimates above transfer L1 reading rates and must be replaced by timings from a pilot with the participating teachers.
+- The evidence on total cost points in different directions: Coertjens et al. (2017) report parity, Steedle and Ferrara (2016) 17 percent more time for CJ when median comparison time is set against mean rubric time (about 76 percent more with mean times on both sides), and Bouwer et al. (2024) warn that CJ can take longer.
+- Scale reliability is not agreement between raters, and it does not by itself establish validity. Adaptive pairing can also inflate reported reliability (Verhavert et al., 2019).
+
+## References
+
+Benton, T., & Gallacher, T. (2018). Is comparative judgement just a quick form of multiple marking? *Research Matters, 26*, 22–28. [https://www.cambridgeassessment.org.uk/Images/514987-is-comparative-judgement-just-a-quick-form-of-multiple-marking-.pdf](https://www.cambridgeassessment.org.uk/Images/514987-is-comparative-judgement-just-a-quick-form-of-multiple-marking-.pdf)
+
+Benton, T., Gill, T., Hughes, S., & Leech, T. (2022). A summary of OCR's pilots of the use of comparative judgement in setting grade boundaries. *Research Matters, 33*. [https://doi.org/10.17863/CAM.100424](https://doi.org/10.17863/CAM.100424)
+
+Bouwer, R., Lesterhuis, M., De Smedt, F., Van Keer, H., & De Maeyer, S. (2024). Comparative approaches to the assessment of writing: Reliability and validity of benchmark rating and comparative judgement. *Journal of Writing Research, 15*(3), 497–518. [https://doi.org/10.17239/jowr-2024.15.03.03](https://doi.org/10.17239/jowr-2024.15.03.03)
+
+Coertjens, L., Lesterhuis, M., Verhavert, S., Van Gasse, R., & De Maeyer, S. (2017). Teksten beoordelen met criterialijsten of via paarsgewijze vergelijking: Een afweging van betrouwbaarheid en tijdsinvestering. *Pedagogische Studiën, 94*(4), 283–303. [https://hdl.handle.net/2078.1/192419](https://hdl.handle.net/2078.1/192419)
+
+Erickson, G. (2009). *Nationella prov i engelska – en studie av bedömarsamstämmighet*. Göteborgs universitet. [https://gupea.ub.gu.se/bitstream/handle/2077/21781/gupea_2077_21781_1.pdf](https://gupea.ub.gu.se/bitstream/handle/2077/21781/gupea_2077_21781_1.pdf)
+
+Heldsinger, S., & Humphry, S. (2010). Using the method of pairwise comparison to obtain reliable teacher assessments. *The Australian Educational Researcher, 37*(2), 1–19. [https://doi.org/10.1007/BF03216919](https://doi.org/10.1007/BF03216919)
+
+Humphry, S. M., & Heldsinger, S. (2019). A two-stage method for classroom assessments of essay writing. *Journal of Educational Measurement, 56*(4), 505–520. [https://doi.org/10.1111/jedm.12223](https://doi.org/10.1111/jedm.12223)
+
+Humphry, S. M., & Heldsinger, S. (2020). A two-stage method for obtaining reliable teacher assessments of writing. *Frontiers in Education, 5*, 6. [https://doi.org/10.3389/feduc.2020.00006](https://doi.org/10.3389/feduc.2020.00006)
+
+Kinnear, G., Jones, I., & Davies, B. (2025). Comparative judgement as a research tool: A meta-analysis of application and reliability. *Behavior Research Methods, 57*(8), Article 222. [https://doi.org/10.3758/s13428-025-02744-w](https://doi.org/10.3758/s13428-025-02744-w)
+
+Marshall, N., Shaw, K., Hunter, J., & Jones, I. (2020). Assessment by comparative judgement: An application to secondary statistics and English in New Zealand. *New Zealand Journal of Educational Studies, 55*(1), 49–71. [https://doi.org/10.1007/s40841-020-00163-3](https://doi.org/10.1007/s40841-020-00163-3)
+
+Ofqual. (2019). *Improving awarding: 2018/2019 pilots* (Ofqual/19/6575). Office of Qualifications and Examinations Regulation. [https://assets.publishing.service.gov.uk/media/5df2419340f0b6094e25ac37/Improving_awarding\_-\_FINAL196575.pdf](https://assets.publishing.service.gov.uk/media/5df2419340f0b6094e25ac37/Improving_awarding_-_FINAL196575.pdf)
+
+Şahin, M. G. (2021). Feasibility of using comparative judgement and student judges to assess writing performance of English language learners. *Journal of Pedagogical Research, 5*(4), 140–154. [https://doi.org/10.33902/JPR.2021474154](https://doi.org/10.33902/JPR.2021474154)
+
+Sickinger, R., Brunfaut, T., & Pill, J. (2025). Comparative judgement for evaluating young learners' EFL writing performances: Reliability and teacher perceptions of holistic and dimension-based judgements. *Language Testing, 42*(2), 137–166. [https://doi.org/10.1177/02655322241288847](https://doi.org/10.1177/02655322241288847)
+
+Skolinspektionen. (2021). *Ombedömning av nationella prov 2019*. Skolinspektionen. [https://www.skolinspektionen.se/globalassets/publikationssok/granskningsrapporter/omrattning/2021/ombedomning-av-nationella-prov-2019.pdf](https://www.skolinspektionen.se/globalassets/publikationssok/granskningsrapporter/omrattning/2021/ombedomning-av-nationella-prov-2019.pdf)
+
+Steedle, J. T., & Ferrara, S. (2016). Evaluating comparative judgment as an approach to essay scoring. *Applied Measurement in Education, 29*(3), 211–223. [https://doi.org/10.1080/08957347.2016.1171769](https://doi.org/10.1080/08957347.2016.1171769)
+
+van Daal, T., Lesterhuis, M., Coertjens, L., van de Kamp, M.-T., Donche, V., & De Maeyer, S. (2017). The complexity of assessing student work using comparative judgment: The moderating role of decision accuracy. *Frontiers in Education, 2*, 44. [https://doi.org/10.3389/feduc.2017.00044](https://doi.org/10.3389/feduc.2017.00044)
+
+Verhavert, S., Bouwer, R., Donche, V., & De Maeyer, S. (2019). A meta-analysis on the reliability of comparative judgement. *Assessment in Education: Principles, Policy & Practice, 26*(5), 541–562. [https://doi.org/10.1080/0969594X.2019.1602027](https://doi.org/10.1080/0969594X.2019.1602027)
+
+Vidal Rodeiro, C. L., & Chambers, L. (2022). Moderation of non-exam assessments: Is comparative judgement a practical alternative? *Research Matters, 33*, 100–119. [https://doi.org/10.17863/CAM.100428](https://doi.org/10.17863/CAM.100428)
+
+Wheadon, C., Barmby, P., Christodoulou, D., & Henderson, B. (2020). A comparative judgement approach to the large-scale assessment of primary writing in England. *Assessment in Education: Principles, Policy & Practice, 27*(1), 46–64. [https://doi.org/10.1080/0969594X.2019.1700212](https://doi.org/10.1080/0969594X.2019.1700212)
