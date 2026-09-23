@@ -15,17 +15,17 @@
         },
         {
           "sourceRepo": "huleedu",
-          "sourceRevision": "e42c956e5c65e9ca2b0948e3622d7d33d04daba9",
+          "sourceRevision": "ae31d77916259ba690f8cd5bfa3351d1db1a169a",
           "sourcePath": "docs/reference/ref-hule-research-comparative-judgment-time-reliability-and-feasibility-comparative-judgment-time-reliability-and-feasibility.md"
         }
       ]
     },
     {
       "slug": "comparative-judgment-feasibility",
-      "title": "Comparative Judgment: Time, Reliability, and Feasibility",
+      "title": "Comparative Judgment: Time, Reliability, and Scale",
       "import": false,
       "sourceRepo": "huleedu",
-      "sourceRevision": "e42c956e5c65e9ca2b0948e3622d7d33d04daba9",
+      "sourceRevision": "ae31d77916259ba690f8cd5bfa3351d1db1a169a",
       "sourcePath": "docs/reference/ref-hule-research-comparative-judgment-time-reliability-and-feasibility-comparative-judgment-time-reliability-and-feasibility.md"
     },
     {
