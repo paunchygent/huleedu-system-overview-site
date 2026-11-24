@@ -10,8 +10,10 @@ for `research.hule.education`.
   or AI-gateway runtime for the own-domain deployment.
 - Keep `compose.yaml` attached to the shared external `hule-network` and route
   `research.hule.education` through `VIRTUAL_HOST` and `LETSENCRYPT_HOST`.
-- Keep the production container restart policy at `always`. The site must
-  return after a container crash, Docker daemon restart, or Hemma restart.
+- Keep the production container restart policy at `on-failure`. Docker
+  restarts the site after a crash; the skill-repository phase unit
+  `hemma-services-research-site.service` starts it after a Docker daemon
+  restart or Hemma restart.
 - Deploy only from the tracked `main` branch through the canonical Hemma
   checkout at `/home/paunchygent/apps/huleedu-system-overview-site`. Do not
   hand-edit or copy tracked files into the production checkout.
@@ -46,7 +48,7 @@ for `research.hule.education`.
 - `docker compose config --quiet`
 - `docker compose build`
 - Confirm the container is healthy and its effective restart policy is
-  `always`.
+  `on-failure`.
 - Confirm the canonical public path returns HTTP 200 over HTTPS with the
   expected page title and a certificate for `research.hule.education`.
 - `git diff --check`
