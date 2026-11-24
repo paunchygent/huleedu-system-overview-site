@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     image: huleedu-research-site:local
     container_name: huleedu-research-site
-    restart: always
+    restart: on-failure
     expose:
       - "80"
     volumes:
